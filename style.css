@@ -670,6 +670,16 @@ main.page {
   font-size: .82rem; font-weight: 600; line-height: 1.3; white-space: nowrap; text-decoration: none;
 }
 .q-list a.q-solve:hover { background: var(--accent-bg); border-color: var(--accent-bg); color: var(--on-accent); }
+/* 1問だけのカテゴリ（初級の全カテゴリ、実践の一部）: PC 幅では2列の左列だけが使われ、
+   「解く」が列の右端（行の中ほど）に浮くため、「解く」をタイトルのすぐ右に置く。
+   一覧が1列になる幅（スマホなど）では、他のカテゴリと同じく「解く」を右端にそろえたままにする。
+   2列になるかどうかは画面幅ではなく .level-section の中の幅で決まる（260px×2＋間16px = 536px）ので、
+   コンテナクエリで判定する。2問以上のリスト（中級・上級）は変えない */
+.level-section { container-type: inline-size; }
+@container (min-width: 536px) {
+  .q-list > li:only-child { gap: 12px; }
+  .q-list > li:only-child > a.q-link { flex: 0 1 auto; }
+}
 .list-actions { margin: 0 0 8px; }
 .level-jump ul {
   display: flex; flex-wrap: wrap; gap: 6px;
@@ -694,6 +704,40 @@ main.page {
 .category-heading {
   margin: 16px 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--border); font-size: 1rem;
 }
+/* カテゴリのまとまり（div.category-group = h3.category-heading ＋ ul.q-list）。
+   通常のレベル（中級・上級・実践）では枠も余白も付けず、見た目は従来どおり
+   （div には padding も border もないので、見出しの上余白もそのまま効く）。 */
+
+/* 全カテゴリが1問ずつのレベル（section.level-section.level-compact。今は初級）:
+   1問ごとに見出しと区切り線が縦に並んで長くなり、PC では右側が空くため、
+   カテゴリを小さなカードにして横に並べる。列数は section の中の幅で自動
+   （カード最小 240px: PC は3列、タブレットは2列、360px は1列）。
+   見出し（h2）と説明（p）は全列にまたがらせる */
+.level-section.level-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 10px 12px;
+  align-items: stretch;
+}
+.level-compact > .level-heading,
+.level-compact > .level-desc { grid-column: 1 / -1; }
+.level-compact > .level-heading { margin-bottom: -6px; } /* 行間（gap）の分だけ詰め、見出しと説明を従来の間隔に */
+.level-compact > .level-desc { margin-bottom: 2px; }
+.level-compact .category-group {
+  min-width: 0;
+  padding: 8px 12px 6px;
+  background: var(--panel);
+  border: 1px solid var(--border); border-radius: 6px;
+}
+/* カードの中の見出し: 上余白と区切り線はカードの枠が代わりに担う */
+.level-compact .category-heading {
+  margin: 0 0 2px; padding-bottom: 0; border-bottom: 0;
+  font-size: .92rem; line-height: 1.5; color: var(--muted);
+}
+/* カードの中では「解く」をカードの右端にそろえる（どのカードでも同じ位置に並ぶ）。
+   上の @container の「タイトルのすぐ右」は列が広いとき用なので、ここでは戻す */
+.level-compact .q-list > li:only-child > a.q-link { flex: 1 1 auto; }
+.level-compact .q-list a.q-link { padding-left: 0; }
 
 /* 規約などの文書ページ（about / privacy / terms） */
 .doc {
