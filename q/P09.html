@@ -1,0 +1,185 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>データにおかしなところがないか｜データ品質のSQL実践問題（実践9）｜SQL練習帳</title>
+  <meta name="description" content="（システム部の課長より）来期から新しい分析ツールにデータを移すんだけど、その前に今のデータにおかしなところがないか、一通り洗い出しておいてくれる？見つかったも…｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/P09.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="データにおかしなところがないか｜データ品質のSQL実践問題（実践9）｜SQL練習帳">
+  <meta property="og:description" content="（システム部の課長より）来期から新しい分析ツールにデータを移すんだけど、その前に今のデータにおかしなところがないか、一通り洗い出しておいてくれる？見つかったも…｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/P09.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#practice">実践</a></li>
+        <li aria-current="page">9. データにおかしなところがないか</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="P09" data-level="practice">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">実践 9</span>
+          <span class="badge badge-category">データ品質</span>
+        </p>
+        <h1 class="page-title">データにおかしなところがないか</h1>
+        <p class="problem-desc">（システム部の課長より）来期から新しい分析ツールにデータを移すんだけど、その前に今のデータにおかしなところがないか、一通り洗い出しておいてくれる？見つかったものは、あとで担当部署に直してもらうつもり。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=P09">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+
+      <section class="practice-box" aria-labelledby="practice-heading">
+        <h2 id="practice-heading" class="box-heading">自分で確認しよう</h2>
+        <p class="box-note">実践問題には決まった答えがありません。結果が出たら、次の点を確かめてから、問題の画面で「完了」にしましょう。</p>
+        <ul class="checkpoints"><li>どんな観点（存在しない参照・重複・ルール違反・NULL と空文字の混在 など）で調べたかを一覧にでき、漏れがないか。</li>
+<li>存在しない顧客IDの注文のように、INNER JOIN すると見えなくなる不整合を見つけられたか。</li>
+<li>同じ人の二重登録を、何が同じなら同じ人とみなすか（氏名だけ／氏名と生年月日／メール）決めたか。同姓の別人を誤って重複にしていないか。</li>
+<li>NULL と空文字（&#39;&#39;）を区別して調べたか。</li>
+<li>直す担当者が使えるように、どのテーブルのどのIDかが分かる形にしたか。問題がなかった観点も「0件」と報告できるか。</li></ul>
+      </section>
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">「おかしい」の種類を先に書き出しましょう。例: 存在しないIDを指している（NOT EXISTS）、重複している（GROUP BY ... HAVING COUNT(*) &gt;= 2）、業務のルールと合わない（送料）、NULL と空文字が混ざっている など。種類ごとの SELECT を UNION ALL でつなげば1つの表にできます。</p>
+      </details>
+
+
+      <details class="answer-box examples-box">
+        <summary>解答例を見る</summary>
+        <div class="examples"><div class="example">
+<p class="example-title">解答例 1</p>
+<pre class="code-block"><code>SELECT * FROM (
+  SELECT &#39;存在しない顧客の注文&#39; AS 種類, &#39;orders&#39; AS テーブル, o.id AS ID,
+         &#39;customer_id = &#39; || o.customer_id || &#39; が customers にない&#39; AS 内容
+  FROM orders o
+  WHERE NOT EXISTS (SELECT 1 FROM customers c WHERE c.id = o.customer_id)
+  UNION ALL
+  SELECT &#39;注文のない顧客のレビュー&#39;, &#39;reviews&#39;, r.id,
+         &#39;customer_id = &#39; || r.customer_id || &#39; には注文が1件もない&#39;
+  FROM reviews r
+  WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = r.customer_id)
+  UNION ALL
+  SELECT &#39;同じ顧客・同じ商品の重複レビュー&#39;, &#39;reviews&#39;, r.id,
+         &#39;customer_id = &#39; || r.customer_id || &#39;, product_id = &#39; || r.product_id || &#39; に複数のレビュー&#39;
+  FROM reviews r
+  WHERE (SELECT COUNT(*) FROM reviews r2
+         WHERE r2.customer_id = r.customer_id AND r2.product_id = r.product_id) &gt;= 2
+  UNION ALL
+  SELECT &#39;二重登録の疑い&#39;, &#39;customers&#39;, c.id,
+         &#39;氏名・生年月日・メールが同じ顧客: id &#39; ||
+         (SELECT group_concat(c2.id) FROM customers c2
+          WHERE c2.id &lt;&gt; c.id AND c2.name = c.name
+            AND c2.birth_date = c.birth_date AND c2.email = c.email)
+  FROM customers c
+  WHERE EXISTS (SELECT 1 FROM customers c2
+                WHERE c2.id &lt;&gt; c.id AND c2.name = c.name
+                  AND c2.birth_date = c.birth_date AND c2.email = c.email)
+  UNION ALL
+  SELECT &#39;クーポンコードが空文字&#39;, &#39;orders&#39;, o.id,
+         &#39;coupon_code が NULL ではなく空文字&#39;
+  FROM orders o
+  WHERE o.coupon_code = &#39;&#39;
+)
+ORDER BY 種類, ID</code></pre>
+<p class="example-note">解釈: 見つかった不整合を1行ずつ「種類・テーブル・ID・内容」で並べる。二重登録は「氏名・生年月日・メールがすべて同じ」場合とする（同姓の別人を拾わないため）。長所: そのまま担当部署への修正依頼リストになる。どのIDを直せばよいかが分かる。注意点: 見つからなかった観点は行が出ないので、「調べたが0件だった」ことが伝わらない（解答例2で補う）。二重登録の片方（あとから登録した方）で新規会員クーポンが使われているかなど、業務上の影響は別に確認する。</p>
+</div>
+<div class="example">
+<p class="example-title">解答例 2</p>
+<pre class="code-block"><code>SELECT 1 AS No, &#39;存在しない顧客の注文&#39; AS チェック項目,
+       (SELECT COUNT(*) FROM orders o
+        WHERE NOT EXISTS (SELECT 1 FROM customers c WHERE c.id = o.customer_id)) AS 件数
+UNION ALL
+SELECT 2, &#39;存在しない注文・商品を指す明細&#39;,
+       (SELECT COUNT(*) FROM order_items oi
+        WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.id = oi.order_id)
+           OR NOT EXISTS (SELECT 1 FROM products p WHERE p.id = oi.product_id))
+UNION ALL
+SELECT 3, &#39;明細が1行もない注文&#39;,
+       (SELECT COUNT(*) FROM orders o
+        WHERE NOT EXISTS (SELECT 1 FROM order_items oi WHERE oi.order_id = o.id))
+UNION ALL
+SELECT 4, &#39;送料のルール（明細合計5000円以上で0円、未満で500円）と合わない注文&#39;,
+       (SELECT COUNT(*) FROM (
+          SELECT o.id, o.shipping_fee, SUM(oi.quantity * oi.unit_price) AS total
+          FROM orders o
+          JOIN order_items oi ON oi.order_id = o.id
+          GROUP BY o.id, o.shipping_fee) t
+        WHERE t.shipping_fee &lt;&gt; CASE WHEN t.total &gt;= 5000 THEN 0 ELSE 500 END)
+UNION ALL
+SELECT 5, &#39;存在しない商品・顧客を指すレビュー&#39;,
+       (SELECT COUNT(*) FROM reviews r
+        WHERE NOT EXISTS (SELECT 1 FROM products p WHERE p.id = r.product_id)
+           OR NOT EXISTS (SELECT 1 FROM customers c WHERE c.id = r.customer_id))
+UNION ALL
+SELECT 6, &#39;注文が1件もない顧客のレビュー&#39;,
+       (SELECT COUNT(*) FROM reviews r
+        WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = r.customer_id))
+UNION ALL
+SELECT 7, &#39;同じ顧客・同じ商品への重複レビュー（組の数）&#39;,
+       (SELECT COUNT(*) FROM (
+          SELECT customer_id, product_id FROM reviews
+          GROUP BY customer_id, product_id HAVING COUNT(*) &gt;= 2))
+UNION ALL
+SELECT 8, &#39;氏名と生年月日が同じ顧客（組の数）&#39;,
+       (SELECT COUNT(*) FROM customers a
+        JOIN customers b ON a.id &lt; b.id AND a.name = b.name AND a.birth_date = b.birth_date)
+UNION ALL
+SELECT 9, &#39;クーポンコードが空文字の注文&#39;,
+       (SELECT COUNT(*) FROM orders WHERE coupon_code = &#39;&#39;)
+UNION ALL
+SELECT 10, &#39;注文日が2025年の外にある注文&#39;,
+       (SELECT COUNT(*) FROM orders
+        WHERE ordered_on &lt; &#39;2025-01-01&#39; OR ordered_on &gt; &#39;2025-12-31&#39;)
+UNION ALL
+SELECT 11, &#39;（参考）メールアドレスが未登録の顧客&#39;,
+       (SELECT COUNT(*) FROM customers WHERE email IS NULL)
+ORDER BY No</code></pre>
+<p class="example-note">解釈: 調べた観点ごとに件数だけを出す「点検表」にする。問題のなかった観点も 0 件として載せる。長所: 何を調べたかが一目で分かり、「漏れなく点検した」ことを報告できる。来期以降も同じ SQL で定期的に点検できる。注意点: 件数しか出ないので、直すには解答例1のような明細が別に必要。メール未登録は入力が任意なら不整合ではないので「参考」とした。何を不整合とみなすかは、業務の担当者と合意する。</p>
+</div></div>
+      </details>
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="P08.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">実践 8. 登録した時期ごとの継続（コホート）</span></a><a class="page-nav-link page-nav-next" href="P10.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">実践 10. 部署別の人件費と人員構成</span></a></nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

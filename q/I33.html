@@ -1,0 +1,125 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>自分のカテゴリの平均より高い商品｜サブクエリ（副問い合わせ）のSQL練習問題（中級33）｜SQL練習帳</title>
+  <meta name="description" content="同じカテゴリの平均価格より高い商品を探します。products テーブルから、価格（price）が「その商品と同じカテゴリ（category_id）の商品の平…｜中級の「サブクエリ（副問い合わせ）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I33.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="自分のカテゴリの平均より高い商品｜サブクエリ（副問い合わせ）のSQL練習問題（中級33）｜SQL練習帳">
+  <meta property="og:description" content="同じカテゴリの平均価格より高い商品を探します。products テーブルから、価格（price）が「その商品と同じカテゴリ（category_id）の商品の平…｜中級の「サブクエリ（副問い合わせ）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I33.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">33. 自分のカテゴリの平均より高い商品</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I33" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 33</span>
+          <span class="badge badge-category">サブクエリ（副問い合わせ）</span>
+        </p>
+        <h1 class="page-title">自分のカテゴリの平均より高い商品</h1>
+        <p class="problem-desc">同じカテゴリの平均価格より高い商品を探します。products テーブルから、価格（price）が「その商品と同じカテゴリ（category_id）の商品の平均価格」より高い商品を取り出してください。平均とちょうど同じ価格の商品は含めません（商品が1つしかないカテゴリの商品は、自分自身が平均なので含まれません）。列は id, name, category_id, price の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I33">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">category_id</th><th scope="col">price</th></tr></thead><tbody>
+<tr><td>4</td><td>漆塗りの汁椀</td><td>10</td><td>3500</td></tr>
+<tr><td>5</td><td>信楽焼のマグカップ</td><td>10</td><td>2400</td></tr>
+<tr><td>6</td><td>白磁プレート（大）</td><td>11</td><td>2800</td></tr>
+<tr><td>9</td><td>ステンレスカトラリーセット</td><td>11</td><td>4200</td></tr>
+<tr><td>11</td><td>鉄のフライパン26cm</td><td>5</td><td>5800</td></tr>
+<tr><td>12</td><td>ステンレス片手鍋</td><td>5</td><td>4800</td></tr>
+<tr><td>16</td><td>土鍋6号</td><td>5</td><td>6500</td></tr>
+<tr><td>18</td><td>折りたたみテーブル</td><td>6</td><td>12800</td></tr>
+<tr><td>19</td><td>ブックシェルフ</td><td>6</td><td>15800</td></tr>
+<tr><td>21</td><td>フロアライト</td><td>7</td><td>14800</td></tr>
+<tr><td>23</td><td>LEDデスクライト</td><td>12</td><td>6800</td></tr>
+<tr><td>27</td><td>万年筆</td><td>8</td><td>12000</td></tr>
+<tr><td>33</td><td>2025年手帳</td><td>9</td><td>2000</td></tr>
+<tr><td>34</td><td>2026年手帳</td><td>9</td><td>2200</td></tr>
+<tr><td>37</td><td>アロマディフューザー</td><td>2</td><td>5500</td></tr>
+<tr><td>40</td><td>ホーローケトル</td><td>5</td><td>7200</td></tr>
+</tbody></table></div>
+        <p class="expected-count">16 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">副問い合わせの中から外側の行を参照できます（相関副問い合わせ）。外側の products に別名 p を付け、副問い合わせの WHERE で p.category_id と比べます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT p.id, p.name, p.category_id, p.price FROM products p WHERE p.price &gt; (SELECT AVG(p2.price) FROM products p2 WHERE p2.category_id = p.category_id)</code></pre>
+        <p class="answer-explanation">相関副問い合わせは、外側の行ごとに「その行のカテゴリの平均」を計算し直します。カテゴリごとに比べる基準が変わるのがポイントです。全商品の平均と比べると、安い文房具は1つも残らず、高い家具はすべて残ってしまいます。&gt;= にすると、1商品だけのカテゴリ（竹の弁当箱）が含まれます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I32.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 32. 注文回数ごとの顧客数</span></a><a class="page-nav-link page-nav-next" href="I34.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 34. 商品ごとのレビュー件数と平均評価</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「サブクエリ（副問い合わせ）」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I28.html">中級 28. 最も早く発売された商品</a></li>
+<li><a href="I29.html">中級 29. 在籍中の社員の平均より給与が高い人</a></li>
+<li><a href="I30.html">中級 30. 全商品の平均価格との差</a></li>
+<li><a href="I31.html">中級 31. 注文1件あたりの平均購入金額</a></li>
+<li><a href="I32.html">中級 32. 注文回数ごとの顧客数</a></li>
+<li><a href="I34.html">中級 34. 商品ごとのレビュー件数と平均評価</a></li>
+<li><a href="I35.html">中級 35. 部署ごとの一番新しいメンバー</a></li>
+<li><a href="I36.html">中級 36. 満点のレビューを書いた会員（EXISTS）</a></li>
+<li><a href="I37.html">中級 37. 有効な注文が1件もない会員（NOT EXISTS）</a></li>
+<li><a href="I38.html">中級 38. 買っていない商品へのレビュー</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

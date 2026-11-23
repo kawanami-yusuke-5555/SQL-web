@@ -1,0 +1,154 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/list.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL練習問題 一覧（全100問）｜初級から実践まで｜SQL練習帳</title>
+  <meta name="description" content="SQL練習帳の全100問の一覧。SELECT・WHERE の基本から、集計・JOIN・サブクエリ、ウィンドウ関数・CTE、業務の依頼に答える実践問題まで。どの問題もブラウザで解けて、登録は不要です。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SQL練習問題 一覧（全100問）｜初級から実践まで｜SQL練習帳">
+  <meta property="og:description" content="SQL練習帳の全100問の一覧。SELECT・WHERE の基本から、集計・JOIN・サブクエリ、ウィンドウ関数・CTE、業務の依頼に答える実践問題まで。どの問題もブラウザで解けて、登録は不要です。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/index.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page list-page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li aria-current="page">問題一覧</li>
+      </ol>
+    </nav>
+
+    <h1 class="page-title">SQL練習問題 一覧（全100問）</h1>
+    <p class="page-lead">問題を選ぶと、問題文と「期待される結果」の表、ヒント、模範解答を1ページで見られます。そのページの「この問題を解く」から、ブラウザでSQLを書いて答え合わせができます。</p>
+    <p class="solve list-actions"><a class="solve-btn" href="../index.html?id=B01">ブラウザでそのまま解く（最初の問題から）</a></p>
+
+    <!-- レベルの見出しへ移動（id はレベルの key。生成器が LIST_HTML の h2 に付ける） -->
+    <nav class="level-jump" aria-label="レベルへ移動">
+      <ul>
+        <li><a href="#beginner">初級</a></li>
+        <li><a href="#intermediate">中級</a></li>
+        <li><a href="#advanced">上級</a></li>
+        <li><a href="#practice">実践</a></li>
+      </ul>
+    </nav>
+
+    <section class="level-section" aria-labelledby="beginner">
+<h2 id="beginner" class="level-heading">初級<span class="level-count">（10問）</span></h2>
+<p class="level-desc">SELECT・WHERE・ORDER BY など、1つのテーブルから行と列を取り出す基本。</p>
+<h3 class="category-heading">列の指定と別名</h3>
+<ul class="q-list"><li><a href="B01.html"><span class="q-num">1.</span> 列を選んで名前を付ける</a></li></ul>
+<h3 class="category-heading">比較演算子</h3>
+<ul class="q-list"><li><a href="B02.html"><span class="q-num">2.</span> 在庫が少ない商品</a></li></ul>
+<h3 class="category-heading">AND・OR</h3>
+<ul class="q-list"><li><a href="B03.html"><span class="q-num">3.</span> 安い文房具（500円以下）</a></li></ul>
+<h3 class="category-heading">IN</h3>
+<ul class="q-list"><li><a href="B04.html"><span class="q-num">4.</span> 関西の会員</a></li></ul>
+<h3 class="category-heading">BETWEEN</h3>
+<ul class="q-list"><li><a href="B05.html"><span class="q-num">5.</span> 期間を指定した注文（6月上旬）</a></li></ul>
+<h3 class="category-heading">LIKE</h3>
+<ul class="q-list"><li><a href="B06.html"><span class="q-num">6.</span> 「ペン」を含む商品名</a></li></ul>
+<h3 class="category-heading">IS NULL</h3>
+<ul class="q-list"><li><a href="B07.html"><span class="q-num">7.</span> メールアドレス未登録の会員</a></li></ul>
+<h3 class="category-heading">ORDER BY（複数キー）</h3>
+<ul class="q-list"><li><a href="B08.html"><span class="q-num">8.</span> 部署ごとに給与の高い順</a></li></ul>
+<h3 class="category-heading">LIMIT</h3>
+<ul class="q-list"><li><a href="B09.html"><span class="q-num">9.</span> 在庫のある高額商品 上位5件</a></li></ul>
+<h3 class="category-heading">DISTINCT</h3>
+<ul class="q-list"><li><a href="B10.html"><span class="q-num">10.</span> クーポンコードの種類</a></li></ul>
+</section>
+
+<section class="level-section" aria-labelledby="intermediate">
+<h2 id="intermediate" class="level-heading">中級<span class="level-count">（50問）</span></h2>
+<p class="level-desc">集計（GROUP BY）・JOIN・NULL の扱い・CASE 式・サブクエリ・日付関数・集合演算。データ分析の中心になる書き方。</p>
+<h3 class="category-heading">集計</h3>
+<ul class="q-list"><li><a href="I01.html"><span class="q-num">1.</span> COUNT(*) と COUNT(列) の違い</a></li><li><a href="I02.html"><span class="q-num">2.</span> カテゴリごとの商品数</a></li><li><a href="I03.html"><span class="q-num">3.</span> 部署ごとの在籍人数と給与の合計</a></li><li><a href="I04.html"><span class="q-num">4.</span> 会員の多い都道府県順</a></li><li><a href="I05.html"><span class="q-num">5.</span> レビューが4件以上ある商品</a></li><li><a href="I06.html"><span class="q-num">6.</span> 有効な注文が7件以上の会員</a></li><li><a href="I07.html"><span class="q-num">7.</span> レビューを書いた会員は何人？</a></li><li><a href="I08.html"><span class="q-num">8.</span> 同じ商品に2回以上レビューした会員</a></li></ul>
+<h3 class="category-heading">JOIN</h3>
+<ul class="q-list"><li><a href="I09.html"><span class="q-num">9.</span> 高額商品とカテゴリ名</a></li><li><a href="I10.html"><span class="q-num">10.</span> 部署名ごとの在籍人数</a></li><li><a href="I11.html"><span class="q-num">11.</span> 一度も注文していない会員</a></li><li><a href="I12.html"><span class="q-num">12.</span> 全部署の所属人数（0人の部署も）</a></li><li><a href="I13.html"><span class="q-num">13.</span> 新しい会員の有効な注文件数（ON に条件を書く）</a></li><li><a href="I14.html"><span class="q-num">14.</span> 注文明細に商品名を付ける（3テーブル）</a></li><li><a href="I15.html"><span class="q-num">15.</span> カテゴリ別の売上金額（4テーブル）</a></li><li><a href="I16.html"><span class="q-num">16.</span> 社員と上司の名前（自己結合）</a></li><li><a href="I17.html"><span class="q-num">17.</span> 同姓同名の会員の組（自己結合）</a></li></ul>
+<h3 class="category-heading">NULL処理</h3>
+<ul class="q-list"><li><a href="I18.html"><span class="q-num">18.</span> 未登録のメールアドレスを「未登録」と表示</a></li><li><a href="I19.html"><span class="q-num">19.</span> 社員の部署名（未配属は「未配属」）</a></li><li><a href="I20.html"><span class="q-num">20.</span> 家具の注文数量（一度も注文されていない商品は 0）</a></li></ul>
+<h3 class="category-heading">CASE式</h3>
+<ul class="q-list"><li><a href="I21.html"><span class="q-num">21.</span> 注文の状態を日本語で表示</a></li><li><a href="I22.html"><span class="q-num">22.</span> 食器の価格帯を分類する</a></li><li><a href="I23.html"><span class="q-num">23.</span> 価格帯ごとの商品数</a></li><li><a href="I24.html"><span class="q-num">24.</span> 部署ごとの在籍者数と退職者数（条件付き集計）</a></li><li><a href="I25.html"><span class="q-num">25.</span> 調理器具の上半期・下半期の販売数量</a></li></ul>
+<h3 class="category-heading">サブクエリ（副問い合わせ）</h3>
+<ul class="q-list"><li><a href="I26.html"><span class="q-num">26.</span> 低い評価が付いた商品</a></li><li><a href="I27.html"><span class="q-num">27.</span> 部下のいない社員（NOT IN と NULL）</a></li><li><a href="I28.html"><span class="q-num">28.</span> 最も早く発売された商品</a></li><li><a href="I29.html"><span class="q-num">29.</span> 在籍中の社員の平均より給与が高い人</a></li><li><a href="I30.html"><span class="q-num">30.</span> 全商品の平均価格との差</a></li><li><a href="I31.html"><span class="q-num">31.</span> 注文1件あたりの平均購入金額</a></li><li><a href="I32.html"><span class="q-num">32.</span> 注文回数ごとの顧客数</a></li><li><a href="I33.html"><span class="q-num">33.</span> 自分のカテゴリの平均より高い商品</a></li><li><a href="I34.html"><span class="q-num">34.</span> 商品ごとのレビュー件数と平均評価</a></li><li><a href="I35.html"><span class="q-num">35.</span> 部署ごとの一番新しいメンバー</a></li><li><a href="I36.html"><span class="q-num">36.</span> 満点のレビューを書いた会員（EXISTS）</a></li><li><a href="I37.html"><span class="q-num">37.</span> 有効な注文が1件もない会員（NOT EXISTS）</a></li><li><a href="I38.html"><span class="q-num">38.</span> 買っていない商品へのレビュー</a></li></ul>
+<h3 class="category-heading">日付・文字列関数</h3>
+<ul class="q-list"><li><a href="I39.html"><span class="q-num">39.</span> 月ごとの注文件数（strftime）</a></li><li><a href="I40.html"><span class="q-num">40.</span> 直近14日間の注文（date）</a></li><li><a href="I41.html"><span class="q-num">41.</span> 原価の表示ラベルを作る（||）</a></li><li><a href="I42.html"><span class="q-num">42.</span> 氏名を姓と名に分ける（substr・instr）</a></li><li><a href="I43.html"><span class="q-num">43.</span> 文字の出現回数を数える（replace・length）</a></li><li><a href="I44.html"><span class="q-num">44.</span> 登録から初回購入までの日数（julianday）</a></li><li><a href="I45.html"><span class="q-num">45.</span> 今日時点の年齢</a></li></ul>
+<h3 class="category-heading">集合演算</h3>
+<ul class="q-list"><li><a href="I46.html"><span class="q-num">46.</span> 要対応の商品リスト（UNION）</a></li><li><a href="I47.html"><span class="q-num">47.</span> 会員ごとの活動回数（UNION ALL）</a></li><li><a href="I48.html"><span class="q-num">48.</span> 年始と年末の両方に買った会員（INTERSECT）</a></li><li><a href="I49.html"><span class="q-num">49.</span> 今の定価と違う単価で売れた商品（EXCEPT）</a></li><li><a href="I50.html"><span class="q-num">50.</span> 下半期に来なくなった会員（EXCEPT）</a></li></ul>
+</section>
+
+<section class="level-section" aria-labelledby="advanced">
+<h2 id="advanced" class="level-heading">上級<span class="level-count">（30問）</span></h2>
+<p class="level-desc">CTE（WITH 句）・ウィンドウ関数・前月比（LAG）・グループ内の上位N件・縦横変換など、分析の定番の手法。</p>
+<h3 class="category-heading">CTE（WITH句）</h3>
+<ul class="q-list"><li><a href="A01.html"><span class="q-num">1.</span> WITH 句で注文ごとの合計を作る</a></li><li><a href="A02.html"><span class="q-num">2.</span> 平均より売れている商品（CTE を2回使う）</a></li><li><a href="A03.html"><span class="q-num">3.</span> 売上とレビューを別々に集計してから結合する</a></li><li><a href="A04.html"><span class="q-num">4.</span> CTE をつないで会員を区分ごとに集計する</a></li></ul>
+<h3 class="category-heading">順位系ウィンドウ関数</h3>
+<ul class="q-list"><li><a href="A05.html"><span class="q-num">5.</span> ROW_NUMBER で通し番号を振る</a></li><li><a href="A06.html"><span class="q-num">6.</span> RANK と DENSE_RANK の違い</a></li><li><a href="A07.html"><span class="q-num">7.</span> 部署ごとの給与順位（PARTITION BY）</a></li><li><a href="A08.html"><span class="q-num">8.</span> NTILE で会員を4つのグループに分ける</a></li></ul>
+<h3 class="category-heading">集計ウィンドウ関数</h3>
+<ul class="q-list"><li><a href="A09.html"><span class="q-num">9.</span> 月別売上の累計</a></li><li><a href="A10.html"><span class="q-num">10.</span> カテゴリ別売上の構成比</a></li><li><a href="A11.html"><span class="q-num">11.</span> 会員ごとの購入額の累計（同じ日の注文に注意）</a></li><li><a href="A12.html"><span class="q-num">12.</span> 直近3回の注文金額の移動平均（フレーム指定）</a></li></ul>
+<h3 class="category-heading">LAG・LEAD</h3>
+<ul class="q-list"><li><a href="A13.html"><span class="q-num">13.</span> 前月との売上の差（売上0の月も含める）</a></li><li><a href="A14.html"><span class="q-num">14.</span> 前回の注文からの日数</a></li><li><a href="A15.html"><span class="q-num">15.</span> 値上げ前の最後の販売（LEAD）</a></li></ul>
+<h3 class="category-heading">再帰CTE</h3>
+<ul class="q-list"><li><a href="A16.html"><span class="q-num">16.</span> 注文のない月も含めた月別の注文件数</a></li><li><a href="A17.html"><span class="q-num">17.</span> キッチンの配下のカテゴリをすべて</a></li><li><a href="A18.html"><span class="q-num">18.</span> 社長から各社員までの経路</a></li><li><a href="A19.html"><span class="q-num">19.</span> 配下のカテゴリを含めたカテゴリ別売上</a></li></ul>
+<h3 class="category-heading">グループ内上位N件</h3>
+<ul class="q-list"><li><a href="A20.html"><span class="q-num">20.</span> カテゴリごとの高額商品 上位2件（廃番を除く）</a></li><li><a href="A21.html"><span class="q-num">21.</span> カテゴリごとの売れ筋 上位2位（同数は含める）</a></li><li><a href="A22.html"><span class="q-num">22.</span> 四半期ごとの売上上位3商品</a></li></ul>
+<h3 class="category-heading">ピボット（縦横変換）</h3>
+<ul class="q-list"><li><a href="A23.html"><span class="q-num">23.</span> 月別・ステータス別の注文件数を横に並べる</a></li><li><a href="A24.html"><span class="q-num">24.</span> 最上位カテゴリ × 四半期の売上表</a></li></ul>
+<h3 class="category-heading">連続期間・欠番</h3>
+<ul class="q-list"><li><a href="A25.html"><span class="q-num">25.</span> 注文が途切れた期間</a></li><li><a href="A26.html"><span class="q-num">26.</span> 連続購入が3か月以上の期間</a></li></ul>
+<h3 class="category-heading">総合問題</h3>
+<ul class="q-list"><li><a href="A27.html"><span class="q-num">27.</span> 月別売上の累計と前月差（8月も含む）</a></li><li><a href="A28.html"><span class="q-num">28.</span> カテゴリ平均より売れている商品</a></li><li><a href="A29.html"><span class="q-num">29.</span> 初回購入月ごとのリピート率</a></li><li><a href="A30.html"><span class="q-num">30.</span> 部長ごとの配下の人数と人件費</a></li></ul>
+</section>
+
+<section class="level-section" aria-labelledby="practice">
+<h2 id="practice" class="level-heading">実践<span class="level-count">（10問）</span></h2>
+<p class="level-desc">「月次の売上レポートがほしい」のような業務の依頼に、自分で結果の形を決めて答える。決まった答えはなく、チェックポイントで確かめる。</p>
+<h3 class="category-heading">売上分析</h3>
+<ul class="q-list"><li><a href="P01.html"><span class="q-num">1.</span> 月次売上レポート</a></li></ul>
+<h3 class="category-heading">顧客分析</h3>
+<ul class="q-list"><li><a href="P02.html"><span class="q-num">2.</span> 休眠顧客にクーポンを送りたい</a></li><li><a href="P03.html"><span class="q-num">3.</span> リピート率を知りたい</a></li></ul>
+<h3 class="category-heading">在庫管理</h3>
+<ul class="q-list"><li><a href="P04.html"><span class="q-num">4.</span> 発注したほうがいい商品</a></li></ul>
+<h3 class="category-heading">商品分析</h3>
+<ul class="q-list"><li><a href="P05.html"><span class="q-num">5.</span> 商品のABC分析</a></li><li><a href="P06.html"><span class="q-num">6.</span> カテゴリ別の売れ筋と不振</a></li><li><a href="P07.html"><span class="q-num">7.</span> レビュー評価と売上の関係</a></li></ul>
+<h3 class="category-heading">コホート分析</h3>
+<ul class="q-list"><li><a href="P08.html"><span class="q-num">8.</span> 登録した時期ごとの継続（コホート）</a></li></ul>
+<h3 class="category-heading">データ品質</h3>
+<ul class="q-list"><li><a href="P09.html"><span class="q-num">9.</span> データにおかしなところがないか</a></li></ul>
+<h3 class="category-heading">人事分析</h3>
+<ul class="q-list"><li><a href="P10.html"><span class="q-num">10.</span> 部署別の人件費と人員構成</a></li></ul>
+</section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

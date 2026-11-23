@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>キッチンの配下のカテゴリをすべて｜再帰CTEのSQL練習問題（上級17）｜SQL練習帳</title>
+  <meta name="description" content="階層になったカテゴリを、再帰CTE で上から下までたどります。categories テーブル（parent_id が親カテゴリのID）から、カテゴリ「キッチン…｜上級の「再帰CTE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A17.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="キッチンの配下のカテゴリをすべて｜再帰CTEのSQL練習問題（上級17）｜SQL練習帳">
+  <meta property="og:description" content="階層になったカテゴリを、再帰CTE で上から下までたどります。categories テーブル（parent_id が親カテゴリのID）から、カテゴリ「キッチン…｜上級の「再帰CTE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A17.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">17. キッチンの配下のカテゴリをすべて</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A17" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 17</span>
+          <span class="badge badge-category">再帰CTE</span>
+        </p>
+        <h1 class="page-title">キッチンの配下のカテゴリをすべて</h1>
+        <p class="problem-desc">階層になったカテゴリを、再帰CTE で上から下までたどります。categories テーブル（parent_id が親カテゴリのID）から、カテゴリ「キッチン」（id = 1）と、その配下にあるすべてのカテゴリ（子・孫…）を取り出してください。列は id, name, depth の順です。depth はキッチンからの深さで、キッチン自身を 0、その子を 1、孫を 2 とします。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A17">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">depth</th></tr></thead><tbody>
+<tr><td>1</td><td>キッチン</td><td>0</td></tr>
+<tr><td>5</td><td>調理器具</td><td>1</td></tr>
+<tr><td>4</td><td>食器</td><td>1</td></tr>
+<tr><td>10</td><td>和食器</td><td>2</td></tr>
+<tr><td>11</td><td>洋食器</td><td>2</td></tr>
+</tbody></table></div>
+        <p class="expected-count">5 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">WITH RECURSIVE の最初の行を「id = 1 のカテゴリ（depth 0）」にし、次の行は「parent_id が直前に見つけたカテゴリの id であるカテゴリ（depth + 1）」として categories を JOIN します。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH RECURSIVE sub(id, name, depth) AS ( SELECT id, name, 0 FROM categories WHERE id = 1 UNION ALL SELECT c.id, c.name, s.depth + 1 FROM categories c JOIN sub s ON c.parent_id = s.id) SELECT id, name, depth FROM sub</code></pre>
+        <p class="answer-explanation">自己結合を1回するだけでは「子」までしか届かず、孫の和食器・洋食器が漏れます。再帰CTEなら、新しい行が見つからなくなるまで JOIN を繰り返すので、階層が何段あっても配下をすべてたどれます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A16.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 16. 注文のない月も含めた月別の注文件数</span></a><a class="page-nav-link page-nav-next" href="A18.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 18. 社長から各社員までの経路</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「再帰CTE」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A16.html">上級 16. 注文のない月も含めた月別の注文件数</a></li>
+<li><a href="A18.html">上級 18. 社長から各社員までの経路</a></li>
+<li><a href="A19.html">上級 19. 配下のカテゴリを含めたカテゴリ別売上</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

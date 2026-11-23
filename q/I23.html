@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>価格帯ごとの商品数｜CASE式のSQL練習問題（中級23）｜SQL練習帳</title>
+  <meta name="description" content="商品を3つの価格帯に分け、価格帯ごとの商品数を数えます。products テーブルの全商品（廃番も含む）を、価格（price）で次の3つの価格帯に分け、価格帯…｜中級の「CASE式」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I23.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="価格帯ごとの商品数｜CASE式のSQL練習問題（中級23）｜SQL練習帳">
+  <meta property="og:description" content="商品を3つの価格帯に分け、価格帯ごとの商品数を数えます。products テーブルの全商品（廃番も含む）を、価格（price）で次の3つの価格帯に分け、価格帯…｜中級の「CASE式」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I23.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">23. 価格帯ごとの商品数</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I23" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 23</span>
+          <span class="badge badge-category">CASE式</span>
+        </p>
+        <h1 class="page-title">価格帯ごとの商品数</h1>
+        <p class="problem-desc">商品を3つの価格帯に分け、価格帯ごとの商品数を数えます。products テーブルの全商品（廃番も含む）を、価格（price）で次の3つの価格帯に分け、価格帯ごとの商品の数を取り出してください。1000 円未満は &#39;1000円未満&#39;、1000 円以上 5000 円未満は &#39;1000〜4999円&#39;、5000 円以上は &#39;5000円以上&#39; です。列は 価格帯, 商品の数 の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I23">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">price_band</th><th scope="col">COUNT(*)</th></tr></thead><tbody>
+<tr><td>1000〜4999円</td><td>18</td></tr>
+<tr><td>1000円未満</td><td>10</td></tr>
+<tr><td>5000円以上</td><td>12</td></tr>
+</tbody></table></div>
+        <p class="expected-count">3 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">CASE 式で作った値でも GROUP BY できます。SELECT に書いた CASE 式に別名を付け、GROUP BY にその別名（または同じ CASE 式）を書きます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT CASE WHEN price &lt; 1000 THEN &#39;1000円未満&#39; WHEN price &lt; 5000 THEN &#39;1000〜4999円&#39; ELSE &#39;5000円以上&#39; END AS price_band, COUNT(*) FROM products GROUP BY price_band</code></pre>
+        <p class="answer-explanation">CASE 式で「行ごとに分類したラベル」を作り、そのラベルで GROUP BY すると、元の列にない区分で集計できます。GROUP BY price のように元の列でまとめると、価格の種類ごとにばらばらの行になってしまいます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I22.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 22. 食器の価格帯を分類する</span></a><a class="page-nav-link page-nav-next" href="I24.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 24. 部署ごとの在籍者数と退職者数（条件付き集計）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「CASE式」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I21.html">中級 21. 注文の状態を日本語で表示</a></li>
+<li><a href="I22.html">中級 22. 食器の価格帯を分類する</a></li>
+<li><a href="I24.html">中級 24. 部署ごとの在籍者数と退職者数（条件付き集計）</a></li>
+<li><a href="I25.html">中級 25. 調理器具の上半期・下半期の販売数量</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>高額商品とカテゴリ名｜JOINのSQL練習問題（中級9）｜SQL練習帳</title>
+  <meta name="description" content="高額商品の一覧に、テーブルを結合してカテゴリ名を付けます。products テーブル（商品）と categories テーブル（カテゴリ）を結合して、価格（p…｜中級の「JOIN」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I09.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="高額商品とカテゴリ名｜JOINのSQL練習問題（中級9）｜SQL練習帳">
+  <meta property="og:description" content="高額商品の一覧に、テーブルを結合してカテゴリ名を付けます。products テーブル（商品）と categories テーブル（カテゴリ）を結合して、価格（p…｜中級の「JOIN」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I09.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">9. 高額商品とカテゴリ名</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I09" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 9</span>
+          <span class="badge badge-category">JOIN</span>
+        </p>
+        <h1 class="page-title">高額商品とカテゴリ名</h1>
+        <p class="problem-desc">高額商品の一覧に、テーブルを結合してカテゴリ名を付けます。products テーブル（商品）と categories テーブル（カテゴリ）を結合して、価格（price）が 10000 円以上の商品の、商品ID・商品名・カテゴリ名を取り出してください。商品の category_id が、カテゴリの id を指しています。列は products.id, products.name, categories.name の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I09">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">name</th></tr></thead><tbody>
+<tr><td>18</td><td>折りたたみテーブル</td><td>家具</td></tr>
+<tr><td>19</td><td>ブックシェルフ</td><td>家具</td></tr>
+<tr><td>21</td><td>フロアライト</td><td>照明</td></tr>
+<tr><td>22</td><td>ペンダントライト</td><td>照明</td></tr>
+<tr><td>27</td><td>万年筆</td><td>筆記具</td></tr>
+</tbody></table></div>
+        <p class="expected-count">5 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">FROM products AS p JOIN categories AS c ON 結合の条件 で2つのテーブルをつなぎます。同じ名前の列（id, name）は「p.name」のようにテーブル名（別名）を付けて区別します。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT p.id, p.name, c.name FROM products AS p INNER JOIN categories AS c ON c.id = p.category_id WHERE p.price &gt;= 10000</code></pre>
+        <p class="answer-explanation">JOIN の ON には「どの列とどの列が対応するか」を書きます。ここでは商品の category_id とカテゴリの id です。ON c.id = p.id のように対応しない列同士をつなぐと、まったく関係のない行が組み合わされます（今回は0行になります）。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I08.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 8. 同じ商品に2回以上レビューした会員</span></a><a class="page-nav-link page-nav-next" href="I10.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 10. 部署名ごとの在籍人数</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「JOIN」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I10.html">中級 10. 部署名ごとの在籍人数</a></li>
+<li><a href="I11.html">中級 11. 一度も注文していない会員</a></li>
+<li><a href="I12.html">中級 12. 全部署の所属人数（0人の部署も）</a></li>
+<li><a href="I13.html">中級 13. 新しい会員の有効な注文件数（ON に条件を書く）</a></li>
+<li><a href="I14.html">中級 14. 注文明細に商品名を付ける（3テーブル）</a></li>
+<li><a href="I15.html">中級 15. カテゴリ別の売上金額（4テーブル）</a></li>
+<li><a href="I16.html">中級 16. 社員と上司の名前（自己結合）</a></li>
+<li><a href="I17.html">中級 17. 同姓同名の会員の組（自己結合）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

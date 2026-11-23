@@ -1,0 +1,160 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>月次売上レポート｜売上分析のSQL実践問題（実践1）｜SQL練習帳</title>
+  <meta name="description" content="（経営企画の課長より）来週の経営会議で、2025年の売上がどう推移したかを見せたいんだ。月ごとの売上をまとめてもらえる？件数も分かるとうれしい。グラフにするつ…｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/P01.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="月次売上レポート｜売上分析のSQL実践問題（実践1）｜SQL練習帳">
+  <meta property="og:description" content="（経営企画の課長より）来週の経営会議で、2025年の売上がどう推移したかを見せたいんだ。月ごとの売上をまとめてもらえる？件数も分かるとうれしい。グラフにするつ…｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/P01.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#practice">実践</a></li>
+        <li aria-current="page">1. 月次売上レポート</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="P01" data-level="practice">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">実践 1</span>
+          <span class="badge badge-category">売上分析</span>
+        </p>
+        <h1 class="page-title">月次売上レポート</h1>
+        <p class="problem-desc">（経営企画の課長より）来週の経営会議で、2025年の売上がどう推移したかを見せたいんだ。月ごとの売上をまとめてもらえる？件数も分かるとうれしい。グラフにするつもりだから、そのまま使える形だと助かるよ。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=P01">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+
+      <section class="practice-box" aria-labelledby="practice-heading">
+        <h2 id="practice-heading" class="box-heading">自分で確認しよう</h2>
+        <p class="box-note">実践問題には決まった答えがありません。結果が出たら、次の点を確かめてから、問題の画面で「完了」にしましょう。</p>
+        <ul class="checkpoints"><li>キャンセル（cancelled）と返品（returned）の注文を売上から除いたか。除く・別に出す、どちらにしても理由を説明できるか。</li>
+<li>発送済み・未着（shipped）の注文を売上に含めるか決めたか（12月末の注文が該当する）。</li>
+<li>売上金額に送料を含めるか決め、列名などで分かるようにしたか。</li>
+<li>注文が1件もない月（2025年8月）が結果から抜けていないか。グラフにするなら 0 の行があったほうがよいか考えたか。</li>
+<li>「件数」が注文の件数なのか明細の行数なのか、意図どおりに数えているか（JOIN 後に COUNT(*) すると明細の行数になる）。</li>
+<li>月の合計を足すと、年間の売上と一致するか。</li></ul>
+      </section>
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">「売上」にどの注文（status）を含めるか、送料を含めるかを先に決めましょう。注文が1件もない月があると GROUP BY だけではその月の行が出ません。月の一覧を再帰CTEで作って LEFT JOIN する方法があります。</p>
+      </details>
+
+
+      <details class="answer-box examples-box">
+        <summary>解答例を見る</summary>
+        <div class="examples"><div class="example">
+<p class="example-title">解答例 1</p>
+<pre class="code-block"><code>SELECT strftime(&#39;%Y-%m&#39;, o.ordered_on) AS 年月,
+       COUNT(DISTINCT o.id) AS 注文件数,
+       SUM(oi.quantity * oi.unit_price) AS 売上金額
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.id
+WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;)
+GROUP BY strftime(&#39;%Y-%m&#39;, o.ordered_on)
+ORDER BY 年月</code></pre>
+<p class="example-note">解釈: 売上は delivered と shipped の注文の商品代金（送料は含めない）。件数は注文の件数（COUNT(DISTINCT o.id)）。長所: いちばん素直で、社内の「売上」の定義（キャンセル・返品を除く）に合う。注意点: 注文のない8月の行が出ないので、そのままグラフにすると8月が飛ばされて推移を読み違える。</p>
+</div>
+<div class="example">
+<p class="example-title">解答例 2</p>
+<pre class="code-block"><code>WITH RECURSIVE months(ym) AS (
+  SELECT &#39;2025-01&#39;
+  UNION ALL
+  SELECT strftime(&#39;%Y-%m&#39;, ym || &#39;-01&#39;, &#39;+1 month&#39;) FROM months WHERE ym &lt; &#39;2025-12&#39;
+),
+order_totals AS (
+  SELECT o.id, strftime(&#39;%Y-%m&#39;, o.ordered_on) AS ym, o.status,
+         SUM(oi.quantity * oi.unit_price) AS amount
+  FROM orders o
+  JOIN order_items oi ON oi.order_id = o.id
+  GROUP BY o.id, o.ordered_on, o.status
+)
+SELECT m.ym AS 年月,
+       COUNT(CASE WHEN t.status IN (&#39;delivered&#39;, &#39;shipped&#39;) THEN 1 END) AS 有効注文件数,
+       COALESCE(SUM(CASE WHEN t.status IN (&#39;delivered&#39;, &#39;shipped&#39;) THEN t.amount END), 0) AS 売上金額,
+       COUNT(CASE WHEN t.status IN (&#39;cancelled&#39;, &#39;returned&#39;) THEN 1 END) AS キャンセル返品件数,
+       COALESCE(SUM(CASE WHEN t.status IN (&#39;cancelled&#39;, &#39;returned&#39;) THEN t.amount END), 0) AS キャンセル返品金額
+FROM months m
+LEFT JOIN order_totals t ON t.ym = m.ym
+GROUP BY m.ym
+ORDER BY m.ym</code></pre>
+<p class="example-note">解釈: 1月〜12月の全ての月を出し、8月は 0 とする。キャンセル・返品は売上から除いたうえで、別の列に件数と金額を出す。長所: グラフにしても月が飛ばない。「キャンセルが多い月」も同時に見られ、会議で質問されても答えやすい。注意点: 先に注文ごとの合計（order_totals）を作ってから月で集計している。明細を直接 JOIN して COUNT(*) すると件数が明細の行数になってしまう。</p>
+</div>
+<div class="example">
+<p class="example-title">解答例 3</p>
+<pre class="code-block"><code>WITH RECURSIVE months(ym) AS (
+  SELECT &#39;2025-01&#39;
+  UNION ALL
+  SELECT strftime(&#39;%Y-%m&#39;, ym || &#39;-01&#39;, &#39;+1 month&#39;) FROM months WHERE ym &lt; &#39;2025-12&#39;
+),
+order_totals AS (
+  SELECT o.id, strftime(&#39;%Y-%m&#39;, o.ordered_on) AS ym, o.shipping_fee,
+         SUM(oi.quantity * oi.unit_price) AS amount
+  FROM orders o
+  JOIN order_items oi ON oi.order_id = o.id
+  WHERE o.status = &#39;delivered&#39;
+  GROUP BY o.id, o.ordered_on, o.shipping_fee
+)
+SELECT m.ym AS 年月,
+       COUNT(t.id) AS 配達済み注文件数,
+       COALESCE(SUM(t.amount), 0) AS 商品売上,
+       COALESCE(SUM(t.shipping_fee), 0) AS 送料,
+       COALESCE(SUM(t.amount + t.shipping_fee), 0) AS 送料込み売上,
+       CAST(ROUND(AVG(t.amount)) AS INTEGER) AS 平均客単価
+FROM months m
+LEFT JOIN order_totals t ON t.ym = m.ym
+GROUP BY m.ym
+ORDER BY m.ym</code></pre>
+<p class="example-note">解釈: 「確定した売上」だけを見たいと考え、配達済み（delivered）のみを対象にした。送料を含む・含まないの両方と、1注文あたりの平均（客単価）を出す。長所: 経理の数字（入金ベース）と比べやすい。送料の影響も分かる。注意点: 12月末の shipped（未着）を含めないので、解答例1・2より12月の売上が小さくなる。8月の平均客単価は注文がないため NULL（空欄）になる。どの定義を使ったかを資料に書き添える。</p>
+</div></div>
+      </details>
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A30.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 30. 部長ごとの配下の人数と人件費</span></a><a class="page-nav-link page-nav-next" href="P02.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">実践 2. 休眠顧客にクーポンを送りたい</span></a></nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

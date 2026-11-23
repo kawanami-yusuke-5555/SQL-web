@@ -1,0 +1,125 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>社員と上司の名前（自己結合）｜JOINのSQL練習問題（中級16）｜SQL練習帳</title>
+  <meta name="description" content="社員の名前と、その上司の名前を並べて出します。employees テーブル（社員）から、在籍中（left_on が NULL）で上司のいる社員について、社員I…｜中級の「JOIN」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I16.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="社員と上司の名前（自己結合）｜JOINのSQL練習問題（中級16）｜SQL練習帳">
+  <meta property="og:description" content="社員の名前と、その上司の名前を並べて出します。employees テーブル（社員）から、在籍中（left_on が NULL）で上司のいる社員について、社員I…｜中級の「JOIN」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I16.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">16. 社員と上司の名前（自己結合）</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I16" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 16</span>
+          <span class="badge badge-category">JOIN</span>
+        </p>
+        <h1 class="page-title">社員と上司の名前（自己結合）</h1>
+        <p class="problem-desc">社員の名前と、その上司の名前を並べて出します。employees テーブル（社員）から、在籍中（left_on が NULL）で上司のいる社員について、社員ID・社員の名前・上司の名前を取り出してください。manager_id は上司の社員ID（同じ employees テーブルの id）です。上司のいない社員（manager_id が NULL）は含めません。列は 社員の id, 社員の name, 上司の name の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I16">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">name</th></tr></thead><tbody>
+<tr><td>2</td><td>佐藤 恵子</td><td>大西 正樹</td></tr>
+<tr><td>3</td><td>鈴木 浩二</td><td>大西 正樹</td></tr>
+<tr><td>4</td><td>高橋 誠</td><td>大西 正樹</td></tr>
+<tr><td>5</td><td>田中 由紀</td><td>大西 正樹</td></tr>
+<tr><td>6</td><td>伊藤 隆</td><td>大西 正樹</td></tr>
+<tr><td>7</td><td>渡辺 翔太</td><td>佐藤 恵子</td></tr>
+<tr><td>8</td><td>山本 彩花</td><td>佐藤 恵子</td></tr>
+<tr><td>9</td><td>中村 大介</td><td>渡辺 翔太</td></tr>
+<tr><td>10</td><td>小林 美和</td><td>鈴木 浩二</td></tr>
+<tr><td>11</td><td>加藤 健一</td><td>鈴木 浩二</td></tr>
+<tr><td>13</td><td>山口 剛</td><td>高橋 誠</td></tr>
+<tr><td>14</td><td>松本 亜美</td><td>高橋 誠</td></tr>
+<tr><td>15</td><td>井上 拓海</td><td>田中 由紀</td></tr>
+<tr><td>16</td><td>木村 遥</td><td>田中 由紀</td></tr>
+<tr><td>17</td><td>林 浩</td><td>井上 拓海</td></tr>
+<tr><td>19</td><td>佐藤 直人</td><td>佐藤 恵子</td></tr>
+<tr><td>20</td><td>森 健太</td><td>伊藤 隆</td></tr>
+<tr><td>21</td><td>斉藤 美咲</td><td>井上 拓海</td></tr>
+</tbody></table></div>
+        <p class="expected-count">18 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">同じテーブルを2回、別々の別名（例: e と m）を付けて FROM に書くと、「社員の行」と「上司の行」を結合できます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT e.id, e.name, m.name FROM employees AS e INNER JOIN employees AS m ON m.id = e.manager_id WHERE e.left_on IS NULL</code></pre>
+        <p class="answer-explanation">自己結合では、同じテーブルを「社員として見る e」と「上司として見る m」に分け、e.manager_id = m.id でつなぎます。ON e.id = m.manager_id と逆に書くと「部下」を探すことになり、結果が変わります。上司のいない社長は INNER JOIN で自然に除かれます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I15.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 15. カテゴリ別の売上金額（4テーブル）</span></a><a class="page-nav-link page-nav-next" href="I17.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 17. 同姓同名の会員の組（自己結合）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「JOIN」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I09.html">中級 9. 高額商品とカテゴリ名</a></li>
+<li><a href="I10.html">中級 10. 部署名ごとの在籍人数</a></li>
+<li><a href="I11.html">中級 11. 一度も注文していない会員</a></li>
+<li><a href="I12.html">中級 12. 全部署の所属人数（0人の部署も）</a></li>
+<li><a href="I13.html">中級 13. 新しい会員の有効な注文件数（ON に条件を書く）</a></li>
+<li><a href="I14.html">中級 14. 注文明細に商品名を付ける（3テーブル）</a></li>
+<li><a href="I15.html">中級 15. カテゴリ別の売上金額（4テーブル）</a></li>
+<li><a href="I17.html">中級 17. 同姓同名の会員の組（自己結合）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

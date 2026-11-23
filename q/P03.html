@@ -1,0 +1,152 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>リピート率を知りたい｜顧客分析のSQL実践問題（実践3）｜SQL練習帳</title>
+  <meta name="description" content="（マーケティング部長より）うちのお店って、リピートしてくれるお客さんはどのくらいいるの？2回以上買ってくれた人の割合をざっくり知りたい。2025年の数字でいい…｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/P03.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="リピート率を知りたい｜顧客分析のSQL実践問題（実践3）｜SQL練習帳">
+  <meta property="og:description" content="（マーケティング部長より）うちのお店って、リピートしてくれるお客さんはどのくらいいるの？2回以上買ってくれた人の割合をざっくり知りたい。2025年の数字でいい…｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/P03.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#practice">実践</a></li>
+        <li aria-current="page">3. リピート率を知りたい</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="P03" data-level="practice">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">実践 3</span>
+          <span class="badge badge-category">顧客分析</span>
+        </p>
+        <h1 class="page-title">リピート率を知りたい</h1>
+        <p class="problem-desc">（マーケティング部長より）うちのお店って、リピートしてくれるお客さんはどのくらいいるの？2回以上買ってくれた人の割合をざっくり知りたい。2025年の数字でいいよ。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=P03">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+
+      <section class="practice-box" aria-labelledby="practice-heading">
+        <h2 id="practice-heading" class="box-heading">自分で確認しよう</h2>
+        <p class="box-note">実践問題には決まった答えがありません。結果が出たら、次の点を確かめてから、問題の画面で「完了」にしましょう。</p>
+        <ul class="checkpoints"><li>割合の分母を「購入したことがある人」にしたか「会員全員」にしたかを決め、結果に明示したか。</li>
+<li>キャンセル・返品の注文を「購入1回」と数えていないか。</li>
+<li>同じ日に2回注文した人を「2回」と数えるか「1日=1回」と数えるか考えたか（同じ顧客が同じ日に2件注文しているデータがある）。</li>
+<li>会員テーブルにいない顧客ID（退会して削除された顧客）の注文を、数えるか除くか決めたか。</li>
+<li>整数の割り算で 0 や切り捨てになっていないか。割合の丸め方を決めたか。</li></ul>
+      </section>
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">顧客ごとの購入回数を先に集計し（CTE かサブクエリ）、その結果を数えます。割合は 100.0 * 分子 / 分母 のように小数にしてから割ります（整数どうしの割り算は切り捨て）。分母を何にするかで値が変わります。</p>
+      </details>
+
+
+      <details class="answer-box examples-box">
+        <summary>解答例を見る</summary>
+        <div class="examples"><div class="example">
+<p class="example-title">解答例 1</p>
+<pre class="code-block"><code>WITH per_customer AS (
+  SELECT customer_id, COUNT(*) AS cnt
+  FROM orders
+  WHERE status IN (&#39;delivered&#39;, &#39;shipped&#39;)
+  GROUP BY customer_id
+)
+SELECT COUNT(*) AS 購入者数,
+       SUM(CASE WHEN cnt &gt;= 2 THEN 1 ELSE 0 END) AS リピーター数,
+       ROUND(100.0 * SUM(CASE WHEN cnt &gt;= 2 THEN 1 ELSE 0 END) / COUNT(*), 1) AS &quot;リピート率(%)&quot;
+FROM per_customer</code></pre>
+<p class="example-note">解釈: 分母は「有効な注文が1件以上ある人」、リピーターは「有効な注文が2件以上ある人」。orders だけで数えるので、会員テーブルにいない顧客ID の注文も1人として数える。長所: 1行で答えが出て、「買った人のうち何割がまた買ったか」という一般的なリピート率になる。注意点: 同じ日の2件の注文も2回と数える。二重登録の人は2人として数えている。</p>
+</div>
+<div class="example">
+<p class="example-title">解答例 2</p>
+<pre class="code-block"><code>WITH person AS (
+  SELECT id AS customer_id,
+         MIN(id) OVER (PARTITION BY name, birth_date, email) AS person_id
+  FROM customers
+),
+visits AS (
+  SELECT p.person_id, COUNT(DISTINCT o.ordered_on) AS days
+  FROM person p
+  JOIN orders o ON o.customer_id = p.customer_id
+  WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;)
+  GROUP BY p.person_id
+)
+SELECT (SELECT COUNT(DISTINCT person_id) FROM person) AS 会員数_名寄せ後,
+       COUNT(*) AS 購入者数,
+       SUM(CASE WHEN days &gt;= 2 THEN 1 ELSE 0 END) AS リピーター数,
+       ROUND(100.0 * SUM(CASE WHEN days &gt;= 2 THEN 1 ELSE 0 END) / COUNT(*), 1) AS &quot;購入者に対するリピート率(%)&quot;,
+       ROUND(100.0 * SUM(CASE WHEN days &gt;= 2 THEN 1 ELSE 0 END)
+             / (SELECT COUNT(DISTINCT person_id) FROM person), 1) AS &quot;会員に対するリピート率(%)&quot;
+FROM visits</code></pre>
+<p class="example-note">解釈: 氏名・生年月日・メールが同じ会員を同じ人とみなしてまとめ（名寄せ）、購入回数は「注文した日の数」で数える（同じ日の2件は1回）。分母は購入者と会員全員の両方を出す。長所: 「実際の人」と「来店の回数」に近い数字になり、2つの分母を並べることで率の意味の違いを説明できる。注意点: 会員テーブルにいない顧客ID の注文は JOIN で落ちる。名寄せの条件（何が同じなら同じ人か）は仮のもので、業務の担当者に確認が必要。</p>
+</div>
+<div class="example">
+<p class="example-title">解答例 3</p>
+<pre class="code-block"><code>WITH per_customer AS (
+  SELECT customer_id, COUNT(*) AS cnt
+  FROM orders
+  WHERE status IN (&#39;delivered&#39;, &#39;shipped&#39;)
+  GROUP BY customer_id
+)
+SELECT CASE WHEN cnt &gt;= 5 THEN &#39;5回以上&#39; ELSE cnt || &#39;回&#39; END AS 購入回数,
+       COUNT(*) AS 人数,
+       ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 1) AS &quot;構成比(%)&quot;
+FROM per_customer
+GROUP BY CASE WHEN cnt &gt;= 5 THEN &#39;5回以上&#39; ELSE cnt || &#39;回&#39; END
+ORDER BY MIN(cnt)</code></pre>
+<p class="example-note">解釈: 割合を1つの数字にまとめず、購入回数ごとの人数の分布で見せる。長所: 「2回で止まる人が多い」「ヘビーユーザーが一部にいる」など、施策のヒントまで読み取れる。1回の人の構成比を 100 から引けばリピート率になる。注意点: 「ざっくり知りたい」という依頼に対しては情報が多いので、解答例1の数字と一緒に補足資料として出すのがよい。</p>
+</div></div>
+      </details>
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="P02.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">実践 2. 休眠顧客にクーポンを送りたい</span></a><a class="page-nav-link page-nav-next" href="P04.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">実践 4. 発注したほうがいい商品</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「顧客分析」のほかの問題</h2>
+      <ul class="related-list"><li><a href="P02.html">実践 2. 休眠顧客にクーポンを送りたい</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

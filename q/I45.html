@@ -1,0 +1,114 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>今日時点の年齢｜日付・文字列関数のSQL練習問題（中級45）｜SQL練習帳</title>
+  <meta name="description" content="会員の生年月日から、今日時点の満年齢を求めます。基準日（今日）を 2026-01-01 とします。都道府県（prefecture）が &#39;東京都&#39; の会員につい…｜中級の「日付・文字列関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I45.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="今日時点の年齢｜日付・文字列関数のSQL練習問題（中級45）｜SQL練習帳">
+  <meta property="og:description" content="会員の生年月日から、今日時点の満年齢を求めます。基準日（今日）を 2026-01-01 とします。都道府県（prefecture）が &#39;東京都&#39; の会員につい…｜中級の「日付・文字列関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I45.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">45. 今日時点の年齢</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I45" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 45</span>
+          <span class="badge badge-category">日付・文字列関数</span>
+        </p>
+        <h1 class="page-title">今日時点の年齢</h1>
+        <p class="problem-desc">会員の生年月日から、今日時点の満年齢を求めます。基準日（今日）を 2026-01-01 とします。都道府県（prefecture）が &#39;東京都&#39; の会員について、今日時点の満年齢を求めてください。誕生日を迎えた日に1つ年を取ります（誕生日が1月1日の人は、今日すでに年を取っています）。生年月日（birth_date）が NULL の会員も含め、年齢は NULL とします。列は id, name, birth_date, 年齢 の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I45">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">birth_date</th><th scope="col">age</th></tr></thead><tbody>
+<tr><td>1</td><td>佐藤 花子</td><td>1985-04-12</td><td>40</td></tr>
+<tr><td>11</td><td>佐藤 健</td><td>1998-10-10</td><td>27</td></tr>
+<tr><td>13</td><td>山田 太郎</td><td>1970-01-01</td><td>56</td></tr>
+<tr><td>20</td><td>斎藤 舞</td><td class="null">NULL</td><td class="null">NULL</td></tr>
+<tr><td>28</td><td>鈴木 美香</td><td>1997-12-12</td><td>28</td></tr>
+<tr><td>34</td><td>長谷川 文</td><td>1994-09-30</td><td>31</td></tr>
+<tr><td>40</td><td>青木 茜</td><td>1998-08-18</td><td>27</td></tr>
+<tr><td>47</td><td>藤原 葵</td><td>1988-02-28</td><td>37</td></tr>
+<tr><td>49</td><td>佐藤 花子</td><td>1985-04-12</td><td>40</td></tr>
+</tbody></table></div>
+        <p class="expected-count">9 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">年の差（strftime(&#39;%Y&#39;, ...) どうしの差）を出し、今年の誕生日がまだ来ていなければ 1 を引きます。「月-日」は strftime(&#39;%m-%d&#39;, ...) で取り出して文字列のまま比べられます。比較の結果は 1（真）か 0（偽）になります。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name, birth_date, CAST(strftime(&#39;%Y&#39;, &#39;2026-01-01&#39;) AS INTEGER) - CAST(strftime(&#39;%Y&#39;, birth_date) AS INTEGER) - (strftime(&#39;%m-%d&#39;, birth_date) &gt; strftime(&#39;%m-%d&#39;, &#39;2026-01-01&#39;)) AS age FROM customers WHERE prefecture = &#39;東京都&#39;</code></pre>
+        <p class="answer-explanation">満年齢は「年の差」から、今年の誕生日がまだ来ていなければ 1 を引きます。SQLite の比較式は 1 か 0 を返すので、そのまま引き算に使えます。年の差だけだと、今日はまだ1月1日なので、1月1日生まれの山田 太郎さん以外の全員が1歳多くなります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I44.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 44. 登録から初回購入までの日数（julianday）</span></a><a class="page-nav-link page-nav-next" href="I46.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 46. 要対応の商品リスト（UNION）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「日付・文字列関数」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I39.html">中級 39. 月ごとの注文件数（strftime）</a></li>
+<li><a href="I40.html">中級 40. 直近14日間の注文（date）</a></li>
+<li><a href="I41.html">中級 41. 原価の表示ラベルを作る（||）</a></li>
+<li><a href="I42.html">中級 42. 氏名を姓と名に分ける（substr・instr）</a></li>
+<li><a href="I43.html">中級 43. 文字の出現回数を数える（replace・length）</a></li>
+<li><a href="I44.html">中級 44. 登録から初回購入までの日数（julianday）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

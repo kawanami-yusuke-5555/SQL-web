@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WITH 句で注文ごとの合計を作る｜CTE（WITH句）のSQL練習問題（上級1）｜SQL練習帳</title>
+  <meta name="description" content="注文ごとの合計金額を WITH 句で求め、金額の大きい注文を探します。orders テーブル（注文）と order_items テーブル（注文明細）から、明細…｜上級の「CTE（WITH句）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A01.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="WITH 句で注文ごとの合計を作る｜CTE（WITH句）のSQL練習問題（上級1）｜SQL練習帳">
+  <meta property="og:description" content="注文ごとの合計金額を WITH 句で求め、金額の大きい注文を探します。orders テーブル（注文）と order_items テーブル（注文明細）から、明細…｜上級の「CTE（WITH句）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A01.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">1. WITH 句で注文ごとの合計を作る</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A01" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 1</span>
+          <span class="badge badge-category">CTE（WITH句）</span>
+        </p>
+        <h1 class="page-title">WITH 句で注文ごとの合計を作る</h1>
+        <p class="problem-desc">注文ごとの合計金額を WITH 句で求め、金額の大きい注文を探します。orders テーブル（注文）と order_items テーブル（注文明細）から、明細の合計金額が 12000 円以上の注文を取り出してください。対象は status が &#39;delivered&#39; または &#39;shipped&#39; の注文だけで、合計金額は明細の quantity * unit_price の合計です（送料は含めません）。ちょうど 12000 円の注文も含めます。列は 注文ID（orders.id）, customer_id, ordered_on, 合計金額 の順です。並び順は問いません。まず WITH 句で「注文ごとの合計金額」の表を作り、そこから絞り込んでみましょう。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A01">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">customer_id</th><th scope="col">ordered_on</th><th scope="col">total</th></tr></thead><tbody>
+<tr><td>27</td><td>2</td><td>2025-02-26</td><td>12000</td></tr>
+<tr><td>35</td><td>3</td><td>2025-03-15</td><td>12800</td></tr>
+<tr><td>52</td><td>1</td><td>2025-04-12</td><td>14800</td></tr>
+<tr><td>101</td><td>2</td><td>2025-07-04</td><td>14800</td></tr>
+<tr><td>118</td><td>11</td><td>2025-07-31</td><td>12000</td></tr>
+<tr><td>158</td><td>3</td><td>2025-11-02</td><td>12300</td></tr>
+<tr><td>161</td><td>9</td><td>2025-11-07</td><td>14800</td></tr>
+<tr><td>176</td><td>1</td><td>2025-12-01</td><td>12000</td></tr>
+<tr><td>184</td><td>7</td><td>2025-12-11</td><td>14800</td></tr>
+</tbody></table></div>
+        <p class="expected-count">9 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">WITH 名前 AS (SELECT ...) と書くと、その SELECT の結果に名前を付けて、後ろの SELECT で表のように使えます。CTE の中で GROUP BY して合計を出し、外側の SELECT の WHERE で 12000 以上に絞ります。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH order_totals AS ( SELECT o.id, o.customer_id, o.ordered_on, SUM(oi.quantity * oi.unit_price) AS total FROM orders o JOIN order_items oi ON oi.order_id = o.id WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) GROUP BY o.id, o.customer_id, o.ordered_on) SELECT id, customer_id, ordered_on, total FROM order_totals WHERE total &gt;= 12000</code></pre>
+        <p class="answer-explanation">WITH 句（CTE）は、副問い合わせに名前を付けて先に書いておく書き方です。「注文ごとの合計」という途中の表に名前が付くので、外側の SELECT が普通の表と同じように読めます。この問題は HAVING でも書けますが、途中の表を何度も使ったり、段階を重ねたりする次の問題から CTE の便利さが効いてきます。キャンセルされた 12000 円の注文（order 124）が混ざらないよう、status の条件は CTE の中で付けます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I50.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 50. 下半期に来なくなった会員（EXCEPT）</span></a><a class="page-nav-link page-nav-next" href="A02.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 2. 平均より売れている商品（CTE を2回使う）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「CTE（WITH句）」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A02.html">上級 2. 平均より売れている商品（CTE を2回使う）</a></li>
+<li><a href="A03.html">上級 3. 売上とレビューを別々に集計してから結合する</a></li>
+<li><a href="A04.html">上級 4. CTE をつないで会員を区分ごとに集計する</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

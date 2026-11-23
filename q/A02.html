@@ -1,0 +1,122 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>平均より売れている商品（CTE を2回使う）｜CTE（WITH句）のSQL練習問題（上級2）｜SQL練習帳</title>
+  <meta name="description" content="商品ごとの売上金額を求め、その売上金額が「売れた商品の売上金額の平均」より大きい商品を取り出してください。売上は status が &#39;delivered&#39; ま…｜上級の「CTE（WITH句）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A02.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="平均より売れている商品（CTE を2回使う）｜CTE（WITH句）のSQL練習問題（上級2）｜SQL練習帳">
+  <meta property="og:description" content="商品ごとの売上金額を求め、その売上金額が「売れた商品の売上金額の平均」より大きい商品を取り出してください。売上は status が &#39;delivered&#39; ま…｜上級の「CTE（WITH句）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A02.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">2. 平均より売れている商品（CTE を2回使う）</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A02" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 2</span>
+          <span class="badge badge-category">CTE（WITH句）</span>
+        </p>
+        <h1 class="page-title">平均より売れている商品（CTE を2回使う）</h1>
+        <p class="problem-desc">商品ごとの売上金額を求め、その売上金額が「売れた商品の売上金額の平均」より大きい商品を取り出してください。売上は status が &#39;delivered&#39; または &#39;shipped&#39; の注文だけで、金額は quantity * unit_price の合計です（送料は含めません）。平均は、この条件で売上が1円以上ある商品だけの平均です（一度も売れていない商品を 0 円として平均に入れません）。平均とちょうど同じ商品は含めません。列は 商品ID（products.id）, name, 売上金額 の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A02">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">sales</th></tr></thead><tbody>
+<tr><td>1</td><td>有田焼の茶碗</td><td>41800</td></tr>
+<tr><td>2</td><td>美濃焼の湯呑み</td><td>39600</td></tr>
+<tr><td>3</td><td>波佐見焼の小皿</td><td>30000</td></tr>
+<tr><td>4</td><td>漆塗りの汁椀</td><td>28000</td></tr>
+<tr><td>5</td><td>信楽焼のマグカップ</td><td>26400</td></tr>
+<tr><td>6</td><td>白磁プレート（大）</td><td>42000</td></tr>
+<tr><td>8</td><td>ガラスタンブラー</td><td>27000</td></tr>
+<tr><td>9</td><td>ステンレスカトラリーセット</td><td>29400</td></tr>
+<tr><td>10</td><td>北欧柄マグカップ</td><td>36000</td></tr>
+<tr><td>11</td><td>鉄のフライパン26cm</td><td>55000</td></tr>
+<tr><td>12</td><td>ステンレス片手鍋</td><td>38400</td></tr>
+<tr><td>13</td><td>木製まな板</td><td>35200</td></tr>
+<tr><td>17</td><td>木製スツール</td><td>29400</td></tr>
+<tr><td>20</td><td>座椅子</td><td>35200</td></tr>
+<tr><td>21</td><td>フロアライト</td><td>59200</td></tr>
+<tr><td>23</td><td>LEDデスクライト</td><td>47600</td></tr>
+<tr><td>24</td><td>クリップライト</td><td>38000</td></tr>
+<tr><td>27</td><td>万年筆</td><td>36000</td></tr>
+<tr><td>34</td><td>2026年手帳</td><td>33000</td></tr>
+<tr><td>36</td><td>収納ボックス</td><td>27500</td></tr>
+</tbody></table></div>
+        <p class="expected-count">20 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">商品ごとの売上を CTE にしておけば、外側の SELECT で「その CTE の行」と「その CTE から計算した平均（SELECT AVG(...) FROM CTE名）」の両方に使えます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH product_sales AS ( SELECT oi.product_id, SUM(oi.quantity * oi.unit_price) AS sales FROM order_items oi JOIN orders o ON o.id = oi.order_id WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) GROUP BY oi.product_id) SELECT p.id, p.name, ps.sales FROM product_sales ps JOIN products p ON p.id = ps.product_id WHERE ps.sales &gt; (SELECT AVG(sales) FROM product_sales)</code></pre>
+        <p class="answer-explanation">同じ集計を「行として使う」ところと「平均を出す」ところの2か所で使うので、CTE にしておくと集計を1回書くだけで済みます。副問い合わせで書くと同じ GROUP BY を2回書くことになり、条件を直すときに片方だけ直し忘れる原因になります。明細1行ごとの平均（AVG(quantity * unit_price)）と比べると、「商品ごとの売上の平均」とは別の値になるので結果が変わります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A01.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 1. WITH 句で注文ごとの合計を作る</span></a><a class="page-nav-link page-nav-next" href="A03.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 3. 売上とレビューを別々に集計してから結合する</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「CTE（WITH句）」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A01.html">上級 1. WITH 句で注文ごとの合計を作る</a></li>
+<li><a href="A03.html">上級 3. 売上とレビューを別々に集計してから結合する</a></li>
+<li><a href="A04.html">上級 4. CTE をつないで会員を区分ごとに集計する</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

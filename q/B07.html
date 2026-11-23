@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>メールアドレス未登録の会員｜IS NULLのSQL練習問題（初級7）｜SQL練習帳</title>
+  <meta name="description" content="メールアドレスが未登録の会員を探します。customers テーブルから、メールアドレス（email）が登録されていない（NULL の）会員を取り出してくださ…｜初級の「IS NULL」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/B07.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="メールアドレス未登録の会員｜IS NULLのSQL練習問題（初級7）｜SQL練習帳">
+  <meta property="og:description" content="メールアドレスが未登録の会員を探します。customers テーブルから、メールアドレス（email）が登録されていない（NULL の）会員を取り出してくださ…｜初級の「IS NULL」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/B07.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#beginner">初級</a></li>
+        <li aria-current="page">7. メールアドレス未登録の会員</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="B07" data-level="beginner">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">初級 7</span>
+          <span class="badge badge-category">IS NULL</span>
+        </p>
+        <h1 class="page-title">メールアドレス未登録の会員</h1>
+        <p class="problem-desc">メールアドレスが未登録の会員を探します。customers テーブルから、メールアドレス（email）が登録されていない（NULL の）会員を取り出してください。列は id, name の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=B07">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th></tr></thead><tbody>
+<tr><td>5</td><td>伊藤 さくら</td></tr>
+<tr><td>14</td><td>佐々木 恵</td></tr>
+<tr><td>23</td><td>森 隆</td></tr>
+<tr><td>35</td><td>村上 涼</td></tr>
+<tr><td>48</td><td>岡本 蓮</td></tr>
+</tbody></table></div>
+        <p class="expected-count">5 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">NULL は「値がない」ことを表す特別な印で、= では比べられません。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name FROM customers WHERE email IS NULL</code></pre>
+        <p class="answer-explanation">NULL かどうかは IS NULL（NULL でないことは IS NOT NULL）で調べます。email = NULL と書くと、比較の結果が「不明（NULL）」になって どの行も選ばれず、0 行になります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="B06.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">初級 6. 「ペン」を含む商品名</span></a><a class="page-nav-link page-nav-next" href="B08.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">初級 8. 部署ごとに給与の高い順</span></a></nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

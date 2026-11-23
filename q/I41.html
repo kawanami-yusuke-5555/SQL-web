@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>原価の表示ラベルを作る（||）｜日付・文字列関数のSQL練習問題（中級41）｜SQL練習帳</title>
+  <meta name="description" content="文字列をつなげて、商品の表示用ラベルを作ります。products テーブルのカテゴリID（category_id）が 8（筆記具）の商品について、「商品名: …｜中級の「日付・文字列関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I41.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="原価の表示ラベルを作る（||）｜日付・文字列関数のSQL練習問題（中級41）｜SQL練習帳">
+  <meta property="og:description" content="文字列をつなげて、商品の表示用ラベルを作ります。products テーブルのカテゴリID（category_id）が 8（筆記具）の商品について、「商品名: …｜中級の「日付・文字列関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I41.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">41. 原価の表示ラベルを作る（||）</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I41" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 41</span>
+          <span class="badge badge-category">日付・文字列関数</span>
+        </p>
+        <h1 class="page-title">原価の表示ラベルを作る（||）</h1>
+        <p class="problem-desc">文字列をつなげて、商品の表示用ラベルを作ります。products テーブルのカテゴリID（category_id）が 8（筆記具）の商品について、「商品名: 原価円」という表示用の文字列を作ってください。例えば シャープペンシル なら &#39;シャープペンシル: 180円&#39; です（コロンは半角で、後ろに半角スペースを1つ入れます）。原価（cost）が NULL の商品は &#39;筆ペン: 未設定&#39; のように、原価の部分を「未設定」にします（「円」は付けません）。列は id, ラベル の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I41">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">label</th></tr></thead><tbody>
+<tr><td>25</td><td>ゲルインクボールペン（黒）: 60円</td></tr>
+<tr><td>26</td><td>ゲルインクボールペン（赤）: 60円</td></tr>
+<tr><td>27</td><td>万年筆: 5000円</td></tr>
+<tr><td>28</td><td>シャープペンシル: 180円</td></tr>
+<tr><td>29</td><td>蛍光ペン5色セット: 220円</td></tr>
+<tr><td>30</td><td>筆ペン: 未設定</td></tr>
+</tbody></table></div>
+        <p class="expected-count">6 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">文字列は || でつなげます。ただし、つなぐものに NULL が1つでもあると結果全体が NULL になります。COALESCE で NULL のときの文字列を用意しましょう。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name || &#39;: &#39; || COALESCE(cost || &#39;円&#39;, &#39;未設定&#39;) AS label FROM products WHERE category_id = 8</code></pre>
+        <p class="answer-explanation">|| は文字列の連結で、数値もそのまま文字列としてつながります。cost が NULL だと cost || &#39;円&#39; は NULL になるので、COALESCE で &#39;未設定&#39; に置き換えます。COALESCE を付けないと筆ペンのラベルが NULL になります。concat 関数は NULL を空文字として扱うので、&#39;筆ペン: 円&#39; になってしまいます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I40.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 40. 直近14日間の注文（date）</span></a><a class="page-nav-link page-nav-next" href="I42.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 42. 氏名を姓と名に分ける（substr・instr）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「日付・文字列関数」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I39.html">中級 39. 月ごとの注文件数（strftime）</a></li>
+<li><a href="I40.html">中級 40. 直近14日間の注文（date）</a></li>
+<li><a href="I42.html">中級 42. 氏名を姓と名に分ける（substr・instr）</a></li>
+<li><a href="I43.html">中級 43. 文字の出現回数を数える（replace・length）</a></li>
+<li><a href="I44.html">中級 44. 登録から初回購入までの日数（julianday）</a></li>
+<li><a href="I45.html">中級 45. 今日時点の年齢</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

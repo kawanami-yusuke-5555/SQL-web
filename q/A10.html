@@ -1,0 +1,112 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>カテゴリ別売上の構成比｜集計ウィンドウ関数のSQL練習問題（上級10）｜SQL練習帳</title>
+  <meta name="description" content="商品のカテゴリ（products.category_id）ごとの売上金額と、全体の売上に対する構成比（%）を取り出してください。売上は status が &#39;d…｜上級の「集計ウィンドウ関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A10.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="カテゴリ別売上の構成比｜集計ウィンドウ関数のSQL練習問題（上級10）｜SQL練習帳">
+  <meta property="og:description" content="商品のカテゴリ（products.category_id）ごとの売上金額と、全体の売上に対する構成比（%）を取り出してください。売上は status が &#39;d…｜上級の「集計ウィンドウ関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A10.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">10. カテゴリ別売上の構成比</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A10" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 10</span>
+          <span class="badge badge-category">集計ウィンドウ関数</span>
+        </p>
+        <h1 class="page-title">カテゴリ別売上の構成比</h1>
+        <p class="problem-desc">商品のカテゴリ（products.category_id）ごとの売上金額と、全体の売上に対する構成比（%）を取り出してください。売上は status が &#39;delivered&#39; または &#39;shipped&#39; の注文だけで、金額は quantity * unit_price の合計です（送料は含めません）。カテゴリは商品に直接付いている category_id で分け、親カテゴリへのまとめ直しはしません。売上のないカテゴリは出しません。構成比は「カテゴリの売上 ÷ 全カテゴリの売上合計 × 100」を小数第1位に ROUND した値です（整数の割り算で切り捨てにならないよう注意）。列は category_id, カテゴリ名（categories.name）, 売上金額, 構成比 の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A10">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">category_id</th><th scope="col">name</th><th scope="col">sales</th><th scope="col">share</th></tr></thead><tbody>
+<tr><td>1</td><td>キッチン</td><td>14400</td><td>1.5</td></tr>
+<tr><td>2</td><td>インテリア</td><td>22000</td><td>2.3</td></tr>
+<tr><td>5</td><td>調理器具</td><td>190200</td><td>20</td></tr>
+<tr><td>6</td><td>家具</td><td>104900</td><td>11</td></tr>
+<tr><td>7</td><td>照明</td><td>82800</td><td>8.7</td></tr>
+<tr><td>8</td><td>筆記具</td><td>61400</td><td>6.4</td></tr>
+<tr><td>9</td><td>ノート・手帳</td><td>67380</td><td>7.1</td></tr>
+<tr><td>10</td><td>和食器</td><td>165800</td><td>17.4</td></tr>
+<tr><td>11</td><td>洋食器</td><td>157800</td><td>16.6</td></tr>
+<tr><td>12</td><td>デスクライト</td><td>85600</td><td>9</td></tr>
+</tbody></table></div>
+        <p class="expected-count">10 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">SUM(列) OVER () は、行をまとめずに「全行の合計」を各行に付けます。カテゴリ別に集計した CTE に対して使えば、分母の全体合計が求まります。SQLite では整数どうしの割り算は小数点以下が切り捨てられるので、100.0 のように小数を掛けてから割ります。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH category_sales AS ( SELECT p.category_id, SUM(oi.quantity * oi.unit_price) AS sales FROM order_items oi JOIN orders o ON o.id = oi.order_id JOIN products p ON p.id = oi.product_id WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) GROUP BY p.category_id) SELECT cs.category_id, c.name, cs.sales, ROUND(100.0 * cs.sales / SUM(cs.sales) OVER (), 1) AS share FROM category_sales cs JOIN categories c ON c.id = cs.category_id</code></pre>
+        <p class="answer-explanation">SUM(sales) OVER () は全行が1つの範囲なので、どの行にも「全カテゴリの売上合計」が入ります。GROUP BY の結果に全体の値を並べたいときの定番の書き方です。100 * sales / SUM(...) のように整数だけで計算すると、SQLite では小数点以下が切り捨てられた整数になります。構成比をすべて足すと、丸めの誤差を除いておよそ 100 になります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A09.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 9. 月別売上の累計</span></a><a class="page-nav-link page-nav-next" href="A11.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 11. 会員ごとの購入額の累計（同じ日の注文に注意）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「集計ウィンドウ関数」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A09.html">上級 9. 月別売上の累計</a></li>
+<li><a href="A11.html">上級 11. 会員ごとの購入額の累計（同じ日の注文に注意）</a></li>
+<li><a href="A12.html">上級 12. 直近3回の注文金額の移動平均（フレーム指定）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

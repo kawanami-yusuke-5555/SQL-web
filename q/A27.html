@@ -1,0 +1,114 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>月別売上の累計と前月差（8月も含む）｜総合問題のSQL練習問題（上級27）｜SQL練習帳</title>
+  <meta name="description" content="2025年1月〜12月の各月の売上金額と、1月からの累計、前月との差を求めてください。売上は status が &#39;delivered&#39; または &#39;shippe…｜上級の「総合問題」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A27.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="月別売上の累計と前月差（8月も含む）｜総合問題のSQL練習問題（上級27）｜SQL練習帳">
+  <meta property="og:description" content="2025年1月〜12月の各月の売上金額と、1月からの累計、前月との差を求めてください。売上は status が &#39;delivered&#39; または &#39;shippe…｜上級の「総合問題」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A27.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">27. 月別売上の累計と前月差（8月も含む）</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A27" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 27</span>
+          <span class="badge badge-category">総合問題</span>
+        </p>
+        <h1 class="page-title">月別売上の累計と前月差（8月も含む）</h1>
+        <p class="problem-desc">2025年1月〜12月の各月の売上金額と、1月からの累計、前月との差を求めてください。売上は status が &#39;delivered&#39; または &#39;shipped&#39; の注文の明細の quantity * unit_price の合計です（送料は含めません）。注文のない8月も売上 0 の行として含めます（12 行）。列は month（&#39;2025-01&#39; の形式の文字列）, sales, cumulative_sales, diff_from_prev の順です。diff_from_prev は「その月の売上 - 前月の売上」で、前月のない1月は NULL とします（9月は8月の 0 と比べます）。month の古い順に並べます。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A27">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note">この問題は並び順も判定します。</p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">month</th><th scope="col">sales</th><th scope="col">cumulative_sales</th><th scope="col">diff_from_prev</th></tr></thead><tbody>
+<tr><td>2025-01</td><td>55960</td><td>55960</td><td class="null">NULL</td></tr>
+<tr><td>2025-02</td><td>67840</td><td>123800</td><td>11880</td></tr>
+<tr><td>2025-03</td><td>72980</td><td>196780</td><td>5140</td></tr>
+<tr><td>2025-04</td><td>75700</td><td>272480</td><td>2720</td></tr>
+<tr><td>2025-05</td><td>74750</td><td>347230</td><td>-950</td></tr>
+<tr><td>2025-06</td><td>91850</td><td>439080</td><td>17100</td></tr>
+<tr><td>2025-07</td><td>107500</td><td>546580</td><td>15650</td></tr>
+<tr><td>2025-08</td><td>0</td><td>546580</td><td>-107500</td></tr>
+<tr><td>2025-09</td><td>79250</td><td>625830</td><td>79250</td></tr>
+<tr><td>2025-10</td><td>96750</td><td>722580</td><td>17500</td></tr>
+<tr><td>2025-11</td><td>98400</td><td>820980</td><td>1650</td></tr>
+<tr><td>2025-12</td><td>131300</td><td>952280</td><td>32900</td></tr>
+</tbody></table></div>
+        <p class="expected-count">12 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">再帰CTEで月の一覧を作り、月別の売上（CTE で集計）を LEFT JOIN して COALESCE で 0 にします。そのうえで SUM(…) OVER (ORDER BY month) で累計、LAG(…) OVER (ORDER BY month) で前月の売上を求めます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH RECURSIVE months(month_start) AS ( SELECT &#39;2025-01-01&#39; UNION ALL SELECT date(month_start, &#39;+1 month&#39;) FROM months WHERE month_start &lt; &#39;2025-12-01&#39;), monthly AS ( SELECT strftime(&#39;%Y-%m&#39;, o.ordered_on) AS month, SUM(oi.quantity * oi.unit_price) AS sales FROM orders o JOIN order_items oi ON oi.order_id = o.id WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) GROUP BY month), filled AS ( SELECT strftime(&#39;%Y-%m&#39;, m.month_start) AS month, COALESCE(s.sales, 0) AS sales FROM months m LEFT JOIN monthly s ON s.month = strftime(&#39;%Y-%m&#39;, m.month_start)) SELECT month, sales, SUM(sales) OVER (ORDER BY month) AS cumulative_sales, sales - LAG(sales) OVER (ORDER BY month) AS diff_from_prev FROM filled ORDER BY month</code></pre>
+        <p class="answer-explanation">再帰CTEで「すべての月」をそろえてからウィンドウ関数を使うのがポイントです。月をそろえずに LAG を使うと、9月の「前の行」が7月になり、休止した8月を飛ばした差になってしまいます。LAG に既定値 0 を渡す（LAG(sales, 1, 0)）と、1月の差が NULL ではなく1月の売上そのものになります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A26.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 26. 連続購入が3か月以上の期間</span></a><a class="page-nav-link page-nav-next" href="A28.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 28. カテゴリ平均より売れている商品</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「総合問題」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A28.html">上級 28. カテゴリ平均より売れている商品</a></li>
+<li><a href="A29.html">上級 29. 初回購入月ごとのリピート率</a></li>
+<li><a href="A30.html">上級 30. 部長ごとの配下の人数と人件費</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

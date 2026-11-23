@@ -1,0 +1,102 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>「ペン」を含む商品名｜LIKEのSQL練習問題（初級6）｜SQL練習帳</title>
+  <meta name="description" content="商品名に「ペン」を含む商品を、部分一致で検索します。products テーブルから、商品名（name）のどこかに「ペン」という文字の並びを含む商品を、すべて取…｜初級の「LIKE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/B06.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="「ペン」を含む商品名｜LIKEのSQL練習問題（初級6）｜SQL練習帳">
+  <meta property="og:description" content="商品名に「ペン」を含む商品を、部分一致で検索します。products テーブルから、商品名（name）のどこかに「ペン」という文字の並びを含む商品を、すべて取…｜初級の「LIKE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/B06.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#beginner">初級</a></li>
+        <li aria-current="page">6. 「ペン」を含む商品名</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="B06" data-level="beginner">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">初級 6</span>
+          <span class="badge badge-category">LIKE</span>
+        </p>
+        <h1 class="page-title">「ペン」を含む商品名</h1>
+        <p class="problem-desc">商品名に「ペン」を含む商品を、部分一致で検索します。products テーブルから、商品名（name）のどこかに「ペン」という文字の並びを含む商品を、すべて取り出してください。先頭・途中・末尾のどこに含まれていてもかまいません。列は id, name の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=B06">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th></tr></thead><tbody>
+<tr><td>22</td><td>ペンダントライト</td></tr>
+<tr><td>25</td><td>ゲルインクボールペン（黒）</td></tr>
+<tr><td>26</td><td>ゲルインクボールペン（赤）</td></tr>
+<tr><td>28</td><td>シャープペンシル</td></tr>
+<tr><td>29</td><td>蛍光ペン5色セット</td></tr>
+<tr><td>30</td><td>筆ペン</td></tr>
+</tbody></table></div>
+        <p class="expected-count">6 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">LIKE では % が「0文字以上の任意の文字列」を表します。「どこかに含む」は前後の両方に % を付けます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name FROM products WHERE name LIKE &#39;%ペン%&#39;</code></pre>
+        <p class="answer-explanation">&#39;%ペン%&#39; は前後に何があっても（何もなくても）「ペン」を含めば一致します。LIKE は文字の並びだけを見るので、ペンではない「ペンダントライト」も一致する点に注意しましょう。&#39;ペン%&#39; だと先頭一致、&#39;%ペン&#39; だと末尾一致になります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="B05.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">初級 5. 期間を指定した注文（6月上旬）</span></a><a class="page-nav-link page-nav-next" href="B07.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">初級 7. メールアドレス未登録の会員</span></a></nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>発注したほうがいい商品｜在庫管理のSQL実践問題（実践4）｜SQL練習帳</title>
+  <meta name="description" content="（物流部の部長より）年末年始で在庫が心配なんだ。そろそろ発注したほうがいい商品をリストアップしてくれる？今日は 2026-01-01 だよ。｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/P04.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="発注したほうがいい商品｜在庫管理のSQL実践問題（実践4）｜SQL練習帳">
+  <meta property="og:description" content="（物流部の部長より）年末年始で在庫が心配なんだ。そろそろ発注したほうがいい商品をリストアップしてくれる？今日は 2026-01-01 だよ。｜正解が1つに決まらない業務の依頼に、SQLで答える実践問題。チェックポイントで自分の結果を確かめられます（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/P04.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#practice">実践</a></li>
+        <li aria-current="page">4. 発注したほうがいい商品</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="P04" data-level="practice">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">実践 4</span>
+          <span class="badge badge-category">在庫管理</span>
+        </p>
+        <h1 class="page-title">発注したほうがいい商品</h1>
+        <p class="problem-desc">（物流部の部長より）年末年始で在庫が心配なんだ。そろそろ発注したほうがいい商品をリストアップしてくれる？今日は 2026-01-01 だよ。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=P04">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+
+      <section class="practice-box" aria-labelledby="practice-heading">
+        <h2 id="practice-heading" class="box-heading">自分で確認しよう</h2>
+        <p class="box-note">実践問題には決まった答えがありません。結果が出たら、次の点を確かめてから、問題の画面で「完了」にしましょう。</p>
+        <ul class="checkpoints"><li>「発注が必要」の基準を、在庫数の絶対値にしたか、売れるペース（何か月分の在庫があるか）にしたか。その理由を説明できるか。</li>
+<li>廃番の商品（is_discontinued = 1）を対象から外したか。</li>
+<li>売れるペースを見る期間（年間か、直近の数か月か）を決め、期間の境界は正しいか。</li>
+<li>キャンセル・返品の注文の数量を販売数に含めていないか。</li>
+<li>在庫が 0 の商品や、最近まったく売れていない商品が、意図せず結果から落ちていないか（または意図して外したか）。</li></ul>
+      </section>
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">まずは在庫数（stock）だけで考え、次に「どのくらいのペースで売れているか」と比べる方法を考えます。販売数量は有効な注文の order_items.quantity を合計します。売れていない商品も見たいなら LEFT JOIN です。</p>
+      </details>
+
+
+      <details class="answer-box examples-box">
+        <summary>解答例を見る</summary>
+        <div class="examples"><div class="example">
+<p class="example-title">解答例 1</p>
+<pre class="code-block"><code>SELECT p.id AS 商品ID,
+       p.name AS 商品名,
+       p.stock AS 在庫数,
+       COALESCE(SUM(CASE WHEN o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) THEN oi.quantity END), 0) AS 年間販売数
+FROM products p
+LEFT JOIN order_items oi ON oi.product_id = p.id
+LEFT JOIN orders o ON o.id = oi.order_id
+WHERE p.is_discontinued = 0
+  AND p.stock &lt;= 10
+GROUP BY p.id, p.name, p.stock
+ORDER BY p.stock, p.id</code></pre>
+<p class="example-note">解釈: 販売中（廃番でない）で、在庫が 10 個以下の商品を候補とする。判断の材料として2025年の販売数も付ける。長所: 基準が分かりやすく、すぐに出せる。在庫の少ない順に並ぶので上から確認していける。注意点: 「10 個」は仮の基準。よく売れる安い商品（ボールペンなど）は在庫が多くても足りなくなることがあり、逆にほとんど売れない高額商品が候補に入る。</p>
+</div>
+<div class="example">
+<p class="example-title">解答例 2</p>
+<pre class="code-block"><code>WITH recent AS (
+  SELECT oi.product_id, SUM(oi.quantity) AS qty
+  FROM order_items oi
+  JOIN orders o ON o.id = oi.order_id
+  WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;)
+    AND o.ordered_on &gt;= &#39;2025-10-01&#39; AND o.ordered_on &lt; &#39;2026-01-01&#39;
+  GROUP BY oi.product_id
+)
+SELECT p.id AS 商品ID,
+       p.name AS 商品名,
+       p.stock AS 在庫数,
+       r.qty AS 直近3か月の販売数,
+       ROUND(r.qty / 3.0, 1) AS 月平均販売数,
+       ROUND(p.stock / (r.qty / 3.0), 1) AS 在庫月数,
+       CAST(ceil(r.qty * 2 / 3.0) AS INTEGER) - p.stock AS 発注目安数
+FROM products p
+JOIN recent r ON r.product_id = p.id
+WHERE p.is_discontinued = 0
+  AND p.stock &lt; r.qty * 2 / 3.0
+ORDER BY 在庫月数, p.id</code></pre>
+<p class="example-note">解釈: 直近3か月（2025-10-01〜2025-12-31）の販売ペースから「在庫が何か月分あるか」を求め、2か月分を下回る商品を候補とする。発注目安数は「2か月分にするために足りない数」。長所: 売れ行きを考えた基準なので、在庫が多くてもよく売れる商品を拾える。発注の数まで提案できる。注意点: 直近3か月に1つも売れていない商品は対象外になる。年末は需要が増える時期なので、ペースを多めに見積もっている可能性がある。「2か月分」も仮の基準で、仕入れにかかる日数を物流部に確認したい。</p>
+</div></div>
+      </details>
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="P03.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">実践 3. リピート率を知りたい</span></a><a class="page-nav-link page-nav-next" href="P05.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">実践 5. 商品のABC分析</span></a></nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

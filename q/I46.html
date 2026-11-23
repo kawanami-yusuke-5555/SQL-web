@@ -1,0 +1,109 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>要対応の商品リスト（UNION）｜集合演算のSQL練習問題（中級46）｜SQL練習帳</title>
+  <meta name="description" content="在庫切れの商品と評価の低い商品をまとめて、要対応の商品リストを作ります。次の2つの条件の「どちらか（または両方）」に当てはまる商品の一覧を作ってください。(1…｜中級の「集合演算」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I46.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="要対応の商品リスト（UNION）｜集合演算のSQL練習問題（中級46）｜SQL練習帳">
+  <meta property="og:description" content="在庫切れの商品と評価の低い商品をまとめて、要対応の商品リストを作ります。次の2つの条件の「どちらか（または両方）」に当てはまる商品の一覧を作ってください。(1…｜中級の「集合演算」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I46.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">46. 要対応の商品リスト（UNION）</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I46" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 46</span>
+          <span class="badge badge-category">集合演算</span>
+        </p>
+        <h1 class="page-title">要対応の商品リスト（UNION）</h1>
+        <p class="problem-desc">在庫切れの商品と評価の低い商品をまとめて、要対応の商品リストを作ります。次の2つの条件の「どちらか（または両方）」に当てはまる商品の一覧を作ってください。(1) products テーブルで在庫（stock）が 0 の商品。(2) reviews テーブルでの平均評価（rating の平均）が 3.0 以下の商品（ちょうど 3.0 も含みます）。両方に当てはまる商品も1行だけ出します。列は id, name の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I46">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th></tr></thead><tbody>
+<tr><td>5</td><td>信楽焼のマグカップ</td></tr>
+<tr><td>12</td><td>ステンレス片手鍋</td></tr>
+<tr><td>18</td><td>折りたたみテーブル</td></tr>
+<tr><td>22</td><td>ペンダントライト</td></tr>
+<tr><td>33</td><td>2025年手帳</td></tr>
+<tr><td>40</td><td>ホーローケトル</td></tr>
+</tbody></table></div>
+        <p class="expected-count">6 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">(1) と (2) をそれぞれ SELECT id, name ... で書き、UNION でつなぎます。(2) は reviews を GROUP BY product_id して HAVING で絞り、products と JOIN して name を出します。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name FROM products WHERE stock = 0 UNION SELECT p.id, p.name FROM products p JOIN reviews r ON r.product_id = p.id GROUP BY p.id, p.name HAVING AVG(r.rating) &lt;= 3.0</code></pre>
+        <p class="answer-explanation">UNION は2つの SELECT の結果を縦につなげ、重複した行を1つにまとめます。つなぐ SELECT どうしは列の数をそろえます。信楽焼のマグカップは在庫0で平均評価も 3.0 なので、UNION ALL だと2回出ます。&lt; 3.0 にすると平均がちょうど 3.0 のステンレス片手鍋が漏れます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I45.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 45. 今日時点の年齢</span></a><a class="page-nav-link page-nav-next" href="I47.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 47. 会員ごとの活動回数（UNION ALL）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「集合演算」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I47.html">中級 47. 会員ごとの活動回数（UNION ALL）</a></li>
+<li><a href="I48.html">中級 48. 年始と年末の両方に買った会員（INTERSECT）</a></li>
+<li><a href="I49.html">中級 49. 今の定価と違う単価で売れた商品（EXCEPT）</a></li>
+<li><a href="I50.html">中級 50. 下半期に来なくなった会員（EXCEPT）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>関西の会員｜INのSQL練習問題（初級4）｜SQL練習帳</title>
+  <meta name="description" content="関西（大阪府・京都府・兵庫県）に住む会員を一覧にします。customers テーブル（会員）から、都道府県（prefecture）が 大阪府・京都府・兵庫県 …｜初級の「IN」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/B04.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="関西の会員｜INのSQL練習問題（初級4）｜SQL練習帳">
+  <meta property="og:description" content="関西（大阪府・京都府・兵庫県）に住む会員を一覧にします。customers テーブル（会員）から、都道府県（prefecture）が 大阪府・京都府・兵庫県 …｜初級の「IN」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/B04.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#beginner">初級</a></li>
+        <li aria-current="page">4. 関西の会員</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="B04" data-level="beginner">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">初級 4</span>
+          <span class="badge badge-category">IN</span>
+        </p>
+        <h1 class="page-title">関西の会員</h1>
+        <p class="problem-desc">関西（大阪府・京都府・兵庫県）に住む会員を一覧にします。customers テーブル（会員）から、都道府県（prefecture）が 大阪府・京都府・兵庫県 のいずれかである会員を取り出してください。列は id, name, prefecture の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=B04">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">prefecture</th></tr></thead><tbody>
+<tr><td>2</td><td>鈴木 一郎</td><td>大阪府</td></tr>
+<tr><td>7</td><td>山本 優子</td><td>京都府</td></tr>
+<tr><td>10</td><td>加藤 浩</td><td>兵庫県</td></tr>
+<tr><td>12</td><td>吉田 愛</td><td>大阪府</td></tr>
+<tr><td>23</td><td>森 隆</td><td>大阪府</td></tr>
+<tr><td>24</td><td>池田 美穂</td><td>兵庫県</td></tr>
+<tr><td>30</td><td>藤田 恭子</td><td>京都府</td></tr>
+<tr><td>35</td><td>村上 涼</td><td>大阪府</td></tr>
+<tr><td>38</td><td>坂本 栞</td><td>兵庫県</td></tr>
+<tr><td>42</td><td>西村 結衣</td><td>京都府</td></tr>
+<tr><td>45</td><td>田中 優</td><td>大阪府</td></tr>
+</tbody></table></div>
+        <p class="expected-count">11 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">「列 IN (値1, 値2, 値3)」で、いずれかに一致する行を選べます。都道府県名は「府」「県」まで含めた文字列で入っています。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name, prefecture FROM customers WHERE prefecture IN (&#39;大阪府&#39;, &#39;京都府&#39;, &#39;兵庫県&#39;)</code></pre>
+        <p class="answer-explanation">IN は「= を OR でつないだもの」の短い書き方です。候補が増えても読みやすく書けます。文字列は完全に一致する必要があるので、&#39;大阪&#39; では &#39;大阪府&#39; に一致しません。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="B03.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">初級 3. 安い文房具（500円以下）</span></a><a class="page-nav-link page-nav-next" href="B05.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">初級 5. 期間を指定した注文（6月上旬）</span></a></nav>
+
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

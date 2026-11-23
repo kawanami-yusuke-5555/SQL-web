@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/about.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>このサイトについて｜SQL練習帳</title>
+  <meta name="description" content="SQL練習帳の特徴・使い方・練習用データの説明・運営者について。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/about.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="このサイトについて｜SQL練習帳">
+  <meta property="og:description" content="SQL練習帳の特徴・使い方・練習用データの説明・運営者について。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/about.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page doc-page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="index.html">SQL練習帳</a></li>
+        <li aria-current="page">このサイトについて</li>
+      </ol>
+    </nav>
+
+    <article class="doc">
+      <h1>このサイトについて</h1>
+      <p>SQL練習帳は、データ分析を始めたい社会人のための SQL の練習問題集です。会員登録やインストールは要りません。ブラウザの中で SQL（SQLite）を動かすので、書いた SQL や練習用のデータがどこかへ送られることもありません。</p>
+
+      <h2>特徴</h2>
+      <ul>
+        <li>全100問（初級10・中級50・上級30・実践10）。すべて登録なしで解けます。</li>
+        <li>初級〜上級は「期待される結果」の表を見ながら SQL を書き、自動で答え合わせをします。列名（AS で付ける名前）が違っても、結果の値が同じなら正解です。並び順を指定している問題だけは順番も比べます。</li>
+        <li>実践問題は、業務でよくある「あいまいな依頼」に答える練習です。決まった正解はないので、チェックポイントと解答例で自分の結果を確かめ、「完了」にします。</li>
+        <li>練習用のデータには、注文のない顧客・NULL・キャンセルされた注文・同じ値の並びなど、実際のデータでつまずきやすい点をわざと入れています。</li>
+      </ul>
+
+      <h2>練習用のデータ</h2>
+      <p>雑貨のネットショップを運営する会社の、2025年1年分のデータです（商品・カテゴリ・顧客・注文・注文明細・レビュー・部署・社員の8テーブル）。問題文の「今日」は 2026年1月1日です。データはすべて架空のもので、実在の人物・団体とは関係ありません。</p>
+
+      <h2>使い方</h2>
+      <ol>
+        <li>トップページで問題を選ぶ（<a href="q/index.html">問題の一覧</a>からも選べます）</li>
+        <li>SQL を書いて「実行」（Ctrl+Enter）し、結果を「期待される結果」と比べる</li>
+        <li>「答え合わせ」で判定する。困ったら「ヒント」「模範解答と解説」を開く</li>
+      </ol>
+      <p>進捗（解いた問題）は、お使いのブラウザの中だけに保存されます。別のブラウザや端末とは共有されません。</p>
+      <p>扱う SQL は SELECT 文（WITH 句を含む）だけです。データベースは SQLite（sql.js）なので、日付の関数など一部の書き方は MySQL・PostgreSQL などと異なります。</p>
+
+      <h2>動作環境</h2>
+      <p>Edge・Chrome・Firefox・Safari の最近の版。スマートフォンでも使えますが、SQL を書くにはパソコンが便利です。SQL を動かす仕組み（sql.js）をインターネットから読み込むため、接続が必要です。</p>
+
+      <h2>運営者</h2>
+      <p>SQL練習帳は個人が運営しています。</p>
+      <!-- 【公開時に決める】運営者の表記（ハンドル名など）と連絡先（問い合わせフォーム・SNS・GitHub の Issues など）。決まるまでは下の1文を表示する -->
+      <p>お問い合わせ先は準備中です。</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="q/index.html">問題一覧</a></li>
+        <li><a href="about.html">このサイトについて</a></li>
+        <li><a href="terms.html">利用規約</a></li>
+        <li><a href="privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

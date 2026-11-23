@@ -1,0 +1,5 @@
+# 生成物: tools/pages/run-generate.ps1 が作ったファイルです。手で編集しないでください。
+User-agent: *
+Disallow:
+
+Sitemap: https://kawanami-yusuke-5555.github.io/SQL-web/sitemap.xml

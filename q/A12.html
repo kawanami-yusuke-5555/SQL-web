@@ -1,0 +1,116 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>直近3回の注文金額の移動平均（フレーム指定）｜集計ウィンドウ関数のSQL練習問題（上級12）｜SQL練習帳</title>
+  <meta name="description" content="会員ID が 1 の会員の注文について、注文の金額と、「その注文を含む直近3回の注文」の金額の平均（移動平均）を取り出してください。対象は status が …｜上級の「集計ウィンドウ関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A12.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="直近3回の注文金額の移動平均（フレーム指定）｜集計ウィンドウ関数のSQL練習問題（上級12）｜SQL練習帳">
+  <meta property="og:description" content="会員ID が 1 の会員の注文について、注文の金額と、「その注文を含む直近3回の注文」の金額の平均（移動平均）を取り出してください。対象は status が …｜上級の「集計ウィンドウ関数」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A12.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">12. 直近3回の注文金額の移動平均（フレーム指定）</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A12" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 12</span>
+          <span class="badge badge-category">集計ウィンドウ関数</span>
+        </p>
+        <h1 class="page-title">直近3回の注文金額の移動平均（フレーム指定）</h1>
+        <p class="problem-desc">会員ID が 1 の会員の注文について、注文の金額と、「その注文を含む直近3回の注文」の金額の平均（移動平均）を取り出してください。対象は status が &#39;delivered&#39; または &#39;shipped&#39; の注文だけで、注文の金額は明細の quantity * unit_price の合計です（送料は含めません）。直近3回は、注文日の古い順に並べたときの「今の注文と、その直前の2回」です。最初の注文は1回分、2回目の注文は2回分の平均になります。移動平均は小数点以下を四捨五入して ROUND(値) で整数の桁にします。列は 注文ID（orders.id）, ordered_on, 注文の金額, 移動平均 の順で、注文日の古い順に並べます（この会員に同じ日の注文はありません）。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A12">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note">この問題は並び順も判定します。</p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">ordered_on</th><th scope="col">total</th><th scope="col">moving_avg</th></tr></thead><tbody>
+<tr><td>1</td><td>2025-01-03</td><td>1560</td><td>1560</td></tr>
+<tr><td>12</td><td>2025-01-26</td><td>3200</td><td>2380</td></tr>
+<tr><td>18</td><td>2025-02-09</td><td>7000</td><td>3920</td></tr>
+<tr><td>29</td><td>2025-03-02</td><td>1620</td><td>3940</td></tr>
+<tr><td>45</td><td>2025-03-31</td><td>1760</td><td>3460</td></tr>
+<tr><td>52</td><td>2025-04-12</td><td>14800</td><td>6060</td></tr>
+<tr><td>70</td><td>2025-05-15</td><td>4600</td><td>7053</td></tr>
+<tr><td>92</td><td>2025-06-20</td><td>5600</td><td>8333</td></tr>
+<tr><td>109</td><td>2025-07-16</td><td>9000</td><td>6400</td></tr>
+<tr><td>119</td><td>2025-09-01</td><td>3100</td><td>5900</td></tr>
+<tr><td>143</td><td>2025-10-10</td><td>8000</td><td>6700</td></tr>
+<tr><td>163</td><td>2025-11-10</td><td>3100</td><td>4733</td></tr>
+<tr><td>176</td><td>2025-12-01</td><td>12000</td><td>7700</td></tr>
+<tr><td>192</td><td>2025-12-20</td><td>5000</td><td>6700</td></tr>
+</tbody></table></div>
+        <p class="expected-count">14 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">ウィンドウ関数では、OVER の中に ROWS BETWEEN 2 PRECEDING AND CURRENT ROW と書くと、集計の範囲を「2行前から今の行まで」に限定できます（フレーム指定）。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH order_totals AS ( SELECT o.id, o.ordered_on, SUM(oi.quantity * oi.unit_price) AS total FROM orders o JOIN order_items oi ON oi.order_id = o.id WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) AND o.customer_id = 1 GROUP BY o.id, o.ordered_on) SELECT id, ordered_on, total, ROUND(AVG(total) OVER (ORDER BY ordered_on, id ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)) AS moving_avg FROM order_totals ORDER BY ordered_on, id</code></pre>
+        <p class="answer-explanation">フレーム指定 ROWS BETWEEN 2 PRECEDING AND CURRENT ROW は「2行前・1行前・今の行」の3行だけを集計の範囲にします。先頭の2行は前の行が足りないので、ある行だけで平均します。フレームを書かないと範囲は「先頭から今の行まで」になり、移動平均ではなく累積の平均になります。3 PRECEDING にすると4回分の平均になるので、「直近 n 回」は n - 1 PRECEDING と書く点に注意します。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A11.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 11. 会員ごとの購入額の累計（同じ日の注文に注意）</span></a><a class="page-nav-link page-nav-next" href="A13.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 13. 前月との売上の差（売上0の月も含める）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「集計ウィンドウ関数」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A09.html">上級 9. 月別売上の累計</a></li>
+<li><a href="A10.html">上級 10. カテゴリ別売上の構成比</a></li>
+<li><a href="A11.html">上級 11. 会員ごとの購入額の累計（同じ日の注文に注意）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>調理器具の上半期・下半期の販売数量｜CASE式のSQL練習問題（中級25）｜SQL練習帳</title>
+  <meta name="description" content="調理器具の商品ごとに、上半期と下半期の販売数量を横に並べて比べます。調理器具のカテゴリ（products.category_id が 5）の各商品について、2…｜中級の「CASE式」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I25.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="調理器具の上半期・下半期の販売数量｜CASE式のSQL練習問題（中級25）｜SQL練習帳">
+  <meta property="og:description" content="調理器具の商品ごとに、上半期と下半期の販売数量を横に並べて比べます。調理器具のカテゴリ（products.category_id が 5）の各商品について、2…｜中級の「CASE式」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I25.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">25. 調理器具の上半期・下半期の販売数量</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I25" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 25</span>
+          <span class="badge badge-category">CASE式</span>
+        </p>
+        <h1 class="page-title">調理器具の上半期・下半期の販売数量</h1>
+        <p class="problem-desc">調理器具の商品ごとに、上半期と下半期の販売数量を横に並べて比べます。調理器具のカテゴリ（products.category_id が 5）の各商品について、2025年の上半期（ordered_on が 2025-01-01〜2025-06-30）と下半期（2025-07-01〜2025-12-31）の販売数量（order_items.quantity の合計）を、横に並べて取り出してください。対象は status が &#39;delivered&#39; または &#39;shipped&#39; の注文だけです。販売のない期間は 0 を出します（この条件で販売が1件もない調理器具はないので、INNER JOIN でかまいません）。列は products.id, products.name, 上半期の数量, 下半期の数量 の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I25">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">SUM(CASE WHEN o.ordered_on &lt; &#39;2025-07-01&#39; THEN oi.quantity ELSE 0 END)</th><th scope="col">SUM(CASE WHEN o.ordered_on &gt;= &#39;2025-07-01&#39; THEN oi.quantity ELSE 0 END)</th></tr></thead><tbody>
+<tr><td>11</td><td>鉄のフライパン26cm</td><td>5</td><td>5</td></tr>
+<tr><td>12</td><td>ステンレス片手鍋</td><td>4</td><td>4</td></tr>
+<tr><td>13</td><td>木製まな板</td><td>7</td><td>4</td></tr>
+<tr><td>14</td><td>シリコンへら</td><td>11</td><td>10</td></tr>
+<tr><td>15</td><td>計量スプーンセット</td><td>11</td><td>6</td></tr>
+<tr><td>16</td><td>土鍋6号</td><td>2</td><td>0</td></tr>
+<tr><td>40</td><td>ホーローケトル</td><td>0</td><td>3</td></tr>
+</tbody></table></div>
+        <p class="expected-count">7 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">orders・order_items・products を結合し、商品ごとに GROUP BY します。期間ごとの数量は SUM(CASE WHEN 期間の条件 THEN oi.quantity ELSE 0 END) で分けて合計します。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT p.id, p.name, SUM(CASE WHEN o.ordered_on &lt; &#39;2025-07-01&#39; THEN oi.quantity ELSE 0 END), SUM(CASE WHEN o.ordered_on &gt;= &#39;2025-07-01&#39; THEN oi.quantity ELSE 0 END) FROM order_items AS oi INNER JOIN orders AS o ON o.id = oi.order_id INNER JOIN products AS p ON p.id = oi.product_id WHERE p.category_id = 5 AND o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) GROUP BY p.id, p.name</code></pre>
+        <p class="answer-explanation">THEN に 1 ではなく oi.quantity を書くと、条件に合う行の数量だけを合計できます。ELSE 0 があるので、その期間に販売がない商品も 0 になります。期間の境目（6月30日と7月1日）を &lt;= &#39;2025-07-01&#39; などと取り違えると、7月1日の注文が上半期に入ります。status の条件を忘れるとキャンセル・返品の数量も入ります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I24.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 24. 部署ごとの在籍者数と退職者数（条件付き集計）</span></a><a class="page-nav-link page-nav-next" href="I26.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 26. 低い評価が付いた商品</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「CASE式」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I21.html">中級 21. 注文の状態を日本語で表示</a></li>
+<li><a href="I22.html">中級 22. 食器の価格帯を分類する</a></li>
+<li><a href="I23.html">中級 23. 価格帯ごとの商品数</a></li>
+<li><a href="I24.html">中級 24. 部署ごとの在籍者数と退職者数（条件付き集計）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

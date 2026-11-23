@@ -1,0 +1,110 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>連続購入が3か月以上の期間｜連続期間・欠番のSQL練習問題（上級26）｜SQL練習帳</title>
+  <meta name="description" content="顧客ごとに、有効な注文（status が &#39;delivered&#39; または &#39;shipped&#39;）があった月が 3 か月以上続いた期間を求めてください。「続いた」…｜上級の「連続期間・欠番」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A26.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="連続購入が3か月以上の期間｜連続期間・欠番のSQL練習問題（上級26）｜SQL練習帳">
+  <meta property="og:description" content="顧客ごとに、有効な注文（status が &#39;delivered&#39; または &#39;shipped&#39;）があった月が 3 か月以上続いた期間を求めてください。「続いた」…｜上級の「連続期間・欠番」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A26.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">26. 連続購入が3か月以上の期間</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A26" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 26</span>
+          <span class="badge badge-category">連続期間・欠番</span>
+        </p>
+        <h1 class="page-title">連続購入が3か月以上の期間</h1>
+        <p class="problem-desc">顧客ごとに、有効な注文（status が &#39;delivered&#39; または &#39;shipped&#39;）があった月が 3 か月以上続いた期間を求めてください。「続いた」とは月の番号が1つずつ続いていることで、同じ月に何回注文しても1か月と数えます（2025年8月は注文が休止されているため、7月と9月は続いていません）。列は customer_id, start_month, end_month, months の順です。start_month と end_month は期間の最初と最後の月（&#39;2025-01&#39; の形式の文字列）、months は期間の月数（整数）です。ちょうど 3 か月の期間も含めます。customer_id の小さい順、同じ顧客なら start_month の古い順に並べます。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A26">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note">この問題は並び順も判定します。</p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">customer_id</th><th scope="col">start_month</th><th scope="col">end_month</th><th scope="col">months</th></tr></thead><tbody>
+<tr><td>1</td><td>2025-01</td><td>2025-07</td><td>7</td></tr>
+<tr><td>1</td><td>2025-09</td><td>2025-12</td><td>4</td></tr>
+<tr><td>2</td><td>2025-04</td><td>2025-07</td><td>4</td></tr>
+<tr><td>2</td><td>2025-09</td><td>2025-12</td><td>4</td></tr>
+<tr><td>3</td><td>2025-01</td><td>2025-06</td><td>6</td></tr>
+<tr><td>4</td><td>2025-05</td><td>2025-07</td><td>3</td></tr>
+<tr><td>6</td><td>2025-09</td><td>2025-11</td><td>3</td></tr>
+<tr><td>12</td><td>2025-01</td><td>2025-03</td><td>3</td></tr>
+<tr><td>12</td><td>2025-05</td><td>2025-07</td><td>3</td></tr>
+<tr><td>30</td><td>2025-04</td><td>2025-07</td><td>4</td></tr>
+</tbody></table></div>
+        <p class="expected-count">10 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">まず顧客と月の番号の組を重複なしで取り出します。次に「月の番号 - ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY 月の番号)」を計算すると、続いている月どうしは同じ値になります。その値と customer_id で GROUP BY し、MIN・MAX・COUNT で期間を求めて、HAVING で 3 か月以上を選びます。月の文字列は printf(&#39;2025-%02d&#39;, 月の番号) で作れます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH m AS ( SELECT DISTINCT customer_id, CAST(strftime(&#39;%m&#39;, ordered_on) AS INTEGER) AS mon FROM orders WHERE status IN (&#39;delivered&#39;, &#39;shipped&#39;)), g AS ( SELECT customer_id, mon, mon - ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY mon) AS grp FROM m) SELECT customer_id, printf(&#39;2025-%02d&#39;, MIN(mon)) AS start_month, printf(&#39;2025-%02d&#39;, MAX(mon)) AS end_month, COUNT(*) AS months FROM g GROUP BY customer_id, grp HAVING COUNT(*) &gt;= 3 ORDER BY customer_id, start_month</code></pre>
+        <p class="answer-explanation">連続した値は「値 - 連番」が一定になる性質を使うと、1つのグループにまとめられます（gaps and islands の定番の解き方）。例えば 1,2,3 月と 5,6 月は、月 - 連番がそれぞれ 0 と 1 になります。月を DISTINCT にしないと、同じ月の2回目の注文で連番だけが進み、続いている月が別のグループに分かれてしまいます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A25.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 25. 注文が途切れた期間</span></a><a class="page-nav-link page-nav-next" href="A27.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 27. 月別売上の累計と前月差（8月も含む）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「連続期間・欠番」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A25.html">上級 25. 注文が途切れた期間</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

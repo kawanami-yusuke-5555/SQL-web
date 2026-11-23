@@ -1,0 +1,120 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>前回の注文からの日数｜LAG・LEADのSQL練習問題（上級14）｜SQL練習帳</title>
+  <meta name="description" content="会員ID が 3 と 12 の会員の注文について、前回の注文日と、前回の注文から何日たったかを取り出してください。対象は status が &#39;delivere…｜上級の「LAG・LEAD」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A14.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="前回の注文からの日数｜LAG・LEADのSQL練習問題（上級14）｜SQL練習帳">
+  <meta property="og:description" content="会員ID が 3 と 12 の会員の注文について、前回の注文日と、前回の注文から何日たったかを取り出してください。対象は status が &#39;delivere…｜上級の「LAG・LEAD」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A14.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">14. 前回の注文からの日数</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A14" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 14</span>
+          <span class="badge badge-category">LAG・LEAD</span>
+        </p>
+        <h1 class="page-title">前回の注文からの日数</h1>
+        <p class="problem-desc">会員ID が 3 と 12 の会員の注文について、前回の注文日と、前回の注文から何日たったかを取り出してください。対象は status が &#39;delivered&#39; または &#39;shipped&#39; の注文だけで、「前回」も同じ会員の、この条件の注文の中で数えます（キャンセル・返品の注文は前回に数えません）。会員ごとに注文日の古い順に並べ、同じ日に2件あるときは注文ID の小さい方を先の注文とします（同じ日の2件目は 0 日になります）。各会員の最初の注文は、前回の注文日と日数を NULL にします。日数は julianday の差を CAST(... AS INTEGER) で整数にします。列は customer_id, 注文ID（orders.id）, ordered_on, 前回の注文日, 日数 の順で、customer_id の小さい順、同じ会員の中では注文日の古い順、同じ日なら注文ID の小さい順に並べます。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A14">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note">この問題は並び順も判定します。</p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">customer_id</th><th scope="col">id</th><th scope="col">ordered_on</th><th scope="col">prev_on</th><th scope="col">days</th></tr></thead><tbody>
+<tr><td>3</td><td>5</td><td>2025-01-10</td><td class="null">NULL</td><td class="null">NULL</td></tr>
+<tr><td>3</td><td>23</td><td>2025-02-18</td><td>2025-01-10</td><td>39</td></tr>
+<tr><td>3</td><td>35</td><td>2025-03-15</td><td>2025-02-18</td><td>25</td></tr>
+<tr><td>3</td><td>36</td><td>2025-03-15</td><td>2025-03-15</td><td>0</td></tr>
+<tr><td>3</td><td>54</td><td>2025-04-16</td><td>2025-03-15</td><td>32</td></tr>
+<tr><td>3</td><td>75</td><td>2025-05-24</td><td>2025-04-16</td><td>38</td></tr>
+<tr><td>3</td><td>98</td><td>2025-06-30</td><td>2025-05-24</td><td>37</td></tr>
+<tr><td>3</td><td>158</td><td>2025-11-02</td><td>2025-06-30</td><td>125</td></tr>
+<tr><td>3</td><td>178</td><td>2025-12-03</td><td>2025-11-02</td><td>31</td></tr>
+<tr><td>3</td><td>200</td><td>2025-12-30</td><td>2025-12-03</td><td>27</td></tr>
+<tr><td>12</td><td>6</td><td>2025-01-12</td><td class="null">NULL</td><td class="null">NULL</td></tr>
+<tr><td>12</td><td>24</td><td>2025-02-20</td><td>2025-01-12</td><td>39</td></tr>
+<tr><td>12</td><td>37</td><td>2025-03-17</td><td>2025-02-20</td><td>25</td></tr>
+<tr><td>12</td><td>78</td><td>2025-05-30</td><td>2025-03-17</td><td>74</td></tr>
+<tr><td>12</td><td>85</td><td>2025-06-10</td><td>2025-05-30</td><td>11</td></tr>
+<tr><td>12</td><td>103</td><td>2025-07-07</td><td>2025-06-10</td><td>27</td></tr>
+<tr><td>12</td><td>122</td><td>2025-09-05</td><td>2025-07-07</td><td>60</td></tr>
+<tr><td>12</td><td>139</td><td>2025-10-04</td><td>2025-09-05</td><td>29</td></tr>
+<tr><td>12</td><td>182</td><td>2025-12-08</td><td>2025-10-04</td><td>65</td></tr>
+</tbody></table></div>
+        <p class="expected-count">19 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">LAG(ordered_on) OVER (PARTITION BY customer_id ORDER BY ordered_on, id) で、同じ会員の1つ前の注文日が取れます。日付の差は julianday(後の日) - julianday(前の日) で日数になります。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH valid AS ( SELECT id, customer_id, ordered_on FROM orders WHERE status IN (&#39;delivered&#39;, &#39;shipped&#39;) AND customer_id IN (3, 12)), with_prev AS ( SELECT customer_id, id, ordered_on, LAG(ordered_on) OVER (PARTITION BY customer_id ORDER BY ordered_on, id) AS prev_on FROM valid) SELECT customer_id, id, ordered_on, prev_on, CAST(julianday(ordered_on) - julianday(prev_on) AS INTEGER) AS days FROM with_prev ORDER BY customer_id, ordered_on, id</code></pre>
+        <p class="answer-explanation">LAG に PARTITION BY customer_id を付けると、会員が変わったところで「前の行」がリセットされ、各会員の最初の注文は NULL になります。PARTITION BY を忘れると、会員12 の最初の注文に会員3 の最後の注文日が入ってしまいます。キャンセルの注文（会員3 の order 124、会員12 の order 60）を先に除いておかないと、「前回」がキャンセルした注文になります。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A13.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 13. 前月との売上の差（売上0の月も含める）</span></a><a class="page-nav-link page-nav-next" href="A15.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 15. 値上げ前の最後の販売（LEAD）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「LAG・LEAD」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A13.html">上級 13. 前月との売上の差（売上0の月も含める）</a></li>
+<li><a href="A15.html">上級 15. 値上げ前の最後の販売（LEAD）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

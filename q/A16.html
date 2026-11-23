@@ -1,0 +1,114 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>注文のない月も含めた月別の注文件数｜再帰CTEのSQL練習問題（上級16）｜SQL練習帳</title>
+  <meta name="description" content="注文のない月も 0 件として含めた、月別の注文件数の表を作ります。orders テーブルから、2025年1月〜12月の各月の注文件数を求めてください。stat…｜上級の「再帰CTE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A16.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="注文のない月も含めた月別の注文件数｜再帰CTEのSQL練習問題（上級16）｜SQL練習帳">
+  <meta property="og:description" content="注文のない月も 0 件として含めた、月別の注文件数の表を作ります。orders テーブルから、2025年1月〜12月の各月の注文件数を求めてください。stat…｜上級の「再帰CTE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A16.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">16. 注文のない月も含めた月別の注文件数</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A16" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 16</span>
+          <span class="badge badge-category">再帰CTE</span>
+        </p>
+        <h1 class="page-title">注文のない月も含めた月別の注文件数</h1>
+        <p class="problem-desc">注文のない月も 0 件として含めた、月別の注文件数の表を作ります。orders テーブルから、2025年1月〜12月の各月の注文件数を求めてください。status は問わず、キャンセル・返品も1件と数えます。2025年8月は注文が1件もありませんが、この月も注文件数 0 として1行に含めます（12 行になります）。列は month（&#39;2025-01&#39; の形式の文字列）, order_count の順です。month の古い順に並べます。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A16">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note">この問題は並び順も判定します。</p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">month</th><th scope="col">order_count</th></tr></thead><tbody>
+<tr><td>2025-01</td><td>14</td></tr>
+<tr><td>2025-02</td><td>14</td></tr>
+<tr><td>2025-03</td><td>17</td></tr>
+<tr><td>2025-04</td><td>16</td></tr>
+<tr><td>2025-05</td><td>17</td></tr>
+<tr><td>2025-06</td><td>20</td></tr>
+<tr><td>2025-07</td><td>20</td></tr>
+<tr><td>2025-08</td><td>0</td></tr>
+<tr><td>2025-09</td><td>18</td></tr>
+<tr><td>2025-10</td><td>20</td></tr>
+<tr><td>2025-11</td><td>19</td></tr>
+<tr><td>2025-12</td><td>25</td></tr>
+</tbody></table></div>
+        <p class="expected-count">12 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">注文のない月は orders に1行もないため、GROUP BY だけでは出てきません。WITH RECURSIVE で 2025-01 から 2025-12 までの月の一覧を作り、orders を LEFT JOIN します。LEFT JOIN 後に件数を数えるときは COUNT(*) ではなく COUNT(orders の列) を使います。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH RECURSIVE months(month_start) AS ( SELECT &#39;2025-01-01&#39; UNION ALL SELECT date(month_start, &#39;+1 month&#39;) FROM months WHERE month_start &lt; &#39;2025-12-01&#39;) SELECT strftime(&#39;%Y-%m&#39;, m.month_start) AS month, COUNT(o.id) AS order_count FROM months m LEFT JOIN orders o ON strftime(&#39;%Y-%m&#39;, o.ordered_on) = strftime(&#39;%Y-%m&#39;, m.month_start) GROUP BY m.month_start ORDER BY m.month_start</code></pre>
+        <p class="answer-explanation">再帰CTEは「最初の行（UNION ALL の前）」から始め、「前の行から次の行を作る部分（UNION ALL の後）」を WHERE の条件が偽になるまで繰り返します。こうして作った月の一覧を基準に LEFT JOIN すると、注文のない8月も行として残ります。COUNT(*) にすると、8月の「相手のいない1行」まで数えて 1 になってしまいます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A15.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 15. 値上げ前の最後の販売（LEAD）</span></a><a class="page-nav-link page-nav-next" href="A17.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 17. キッチンの配下のカテゴリをすべて</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「再帰CTE」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A17.html">上級 17. キッチンの配下のカテゴリをすべて</a></li>
+<li><a href="A18.html">上級 18. 社長から各社員までの経路</a></li>
+<li><a href="A19.html">上級 19. 配下のカテゴリを含めたカテゴリ別売上</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

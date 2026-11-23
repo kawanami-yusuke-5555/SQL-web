@@ -1,0 +1,123 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>低い評価が付いた商品｜サブクエリ（副問い合わせ）のSQL練習問題（中級26）｜SQL練習帳</title>
+  <meta name="description" content="低い評価のレビューが付いたことのある商品を探します。reviews テーブル（レビュー）で、評価（rating）が 3 以下のレビューが1件以上付いたことのあ…｜中級の「サブクエリ（副問い合わせ）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I26.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="低い評価が付いた商品｜サブクエリ（副問い合わせ）のSQL練習問題（中級26）｜SQL練習帳">
+  <meta property="og:description" content="低い評価のレビューが付いたことのある商品を探します。reviews テーブル（レビュー）で、評価（rating）が 3 以下のレビューが1件以上付いたことのあ…｜中級の「サブクエリ（副問い合わせ）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I26.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">26. 低い評価が付いた商品</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I26" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 26</span>
+          <span class="badge badge-category">サブクエリ（副問い合わせ）</span>
+        </p>
+        <h1 class="page-title">低い評価が付いた商品</h1>
+        <p class="problem-desc">低い評価のレビューが付いたことのある商品を探します。reviews テーブル（レビュー）で、評価（rating）が 3 以下のレビューが1件以上付いたことのある商品を、products テーブルから取り出してください。ちょうど 3 のレビューも含めます。1つの商品は1行だけ出します。列は id, name, price の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I26">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">price</th></tr></thead><tbody>
+<tr><td>2</td><td>美濃焼の湯呑み</td><td>1800</td></tr>
+<tr><td>3</td><td>波佐見焼の小皿</td><td>1200</td></tr>
+<tr><td>5</td><td>信楽焼のマグカップ</td><td>2400</td></tr>
+<tr><td>7</td><td>白磁プレート（小）</td><td>1800</td></tr>
+<tr><td>8</td><td>ガラスタンブラー</td><td>1500</td></tr>
+<tr><td>11</td><td>鉄のフライパン26cm</td><td>5800</td></tr>
+<tr><td>12</td><td>ステンレス片手鍋</td><td>4800</td></tr>
+<tr><td>14</td><td>シリコンへら</td><td>800</td></tr>
+<tr><td>18</td><td>折りたたみテーブル</td><td>12800</td></tr>
+<tr><td>20</td><td>座椅子</td><td>8800</td></tr>
+<tr><td>23</td><td>LEDデスクライト</td><td>6800</td></tr>
+<tr><td>24</td><td>クリップライト</td><td>3800</td></tr>
+<tr><td>36</td><td>収納ボックス</td><td>2500</td></tr>
+<tr><td>40</td><td>ホーローケトル</td><td>7200</td></tr>
+</tbody></table></div>
+        <p class="expected-count">14 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">まず「評価 3 以下のレビューが付いた product_id の一覧」を SELECT で作り、それを WHERE id IN ( ... ) のかっこの中に入れます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name, price FROM products WHERE id IN (SELECT product_id FROM reviews WHERE rating &lt;= 3)</code></pre>
+        <p class="answer-explanation">IN (副問い合わせ) は「かっこの中の結果のどれかに一致する行」を選びます。同じ商品に低い評価が何件あっても、商品は1行のままです。JOIN で書くと、低い評価が2件以上ある商品（信楽焼のマグカップなど）が重複して出ます。また = (副問い合わせ) にすると、SQLite ではエラーにならず最初の1件とだけ比べてしまいます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I25.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 25. 調理器具の上半期・下半期の販売数量</span></a><a class="page-nav-link page-nav-next" href="I27.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 27. 部下のいない社員（NOT IN と NULL）</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「サブクエリ（副問い合わせ）」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I27.html">中級 27. 部下のいない社員（NOT IN と NULL）</a></li>
+<li><a href="I28.html">中級 28. 最も早く発売された商品</a></li>
+<li><a href="I29.html">中級 29. 在籍中の社員の平均より給与が高い人</a></li>
+<li><a href="I30.html">中級 30. 全商品の平均価格との差</a></li>
+<li><a href="I31.html">中級 31. 注文1件あたりの平均購入金額</a></li>
+<li><a href="I32.html">中級 32. 注文回数ごとの顧客数</a></li>
+<li><a href="I33.html">中級 33. 自分のカテゴリの平均より高い商品</a></li>
+<li><a href="I34.html">中級 34. 商品ごとのレビュー件数と平均評価</a></li>
+<li><a href="I35.html">中級 35. 部署ごとの一番新しいメンバー</a></li>
+<li><a href="I36.html">中級 36. 満点のレビューを書いた会員（EXISTS）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

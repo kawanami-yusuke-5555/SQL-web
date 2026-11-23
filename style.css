@@ -1,0 +1,733 @@
+/* ===== 色（ライト） ===== */
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1f2328;
+  --muted: #59636e;
+  --border: #d0d7de;
+  --accent: #0969da;          /* 文字・枠に使う青 */
+  --accent-bg: #0969da;       /* 白文字を載せる青（ボタン・選択中） */
+  --on-accent: #ffffff;
+  --accent-soft: #ddf4ff;     /* 選択中の淡い背景 */
+  --hover: #eef1f4;
+  --focus: #0969da;
+  --ok: #1a7f37;
+  --ng: #cf222e;
+  --code-bg: #0d1117;
+  --code-text: #e6edf3;
+  /* 期待される結果（お手本）: 落ち着いた緑 */
+  --expected-bg: #f0f8f2;
+  --expected-border: #4ac26b;
+  --expected-head: #d6efdc;
+  --expected-text: #116329;
+  /* 実践問題の枠: 落ち着いた紫 */
+  --practice-bg: #f8f5ff;
+  --practice-border: #8250df;
+  --practice-text: #6639ba;
+  --badge-bg: #eef1f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --text: #e6edf3;
+    --muted: #9198a1;
+    --border: #3d444d;
+    --accent: #4493f8;
+    --accent-bg: #1f6feb;
+    --on-accent: #ffffff;
+    --accent-soft: #15284a;
+    --hover: #21262d;
+    --focus: #58a6ff;
+    --ok: #3fb950;
+    --ng: #f85149;
+    --code-bg: #010409;
+    --code-text: #e6edf3;
+    --expected-bg: #0f1f15;
+    --expected-border: #2ea043;
+    --expected-head: #173a24;
+    --expected-text: #56d364;
+    --practice-bg: #1b1530;
+    --practice-border: #8957e5;
+    --practice-text: #bc8cff;
+    --badge-bg: #21262d;
+  }
+}
+
+/* ===== 基本 ===== */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+button { font: inherit; }
+/* リンク（ブラウザ標準の青・紫はダークテーマで読みにくいので、テーマの色にそろえる） */
+a { color: var(--accent); text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+/* キーボード操作のフォーカス表示 */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+summary:focus-visible { border-radius: 4px; }
+
+/* ===== ヘッダー ===== */
+header {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 8px 16px;
+  /* 左右の端を main（最大幅 --main-max で中央寄せ）の端にそろえる */
+  padding: 14px max(24px, calc((100% - var(--main-max)) / 2 + 24px));
+  border-bottom: 1px solid var(--border); background: var(--panel);
+}
+.header-start, .header-end {
+  display: flex; align-items: center; gap: 8px 16px; min-width: 0;
+}
+.header-end { flex-wrap: wrap; margin-left: auto; }
+.header-title { min-width: 0; }
+header h1 { margin: 0; font-size: 1.4rem; }
+.sub { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+.progress-summary { margin: 0; font-weight: 600; font-size: .95rem; }
+.progress-summary:empty { display: none; }
+
+/* 表示の切り替えボタン（一覧を隠す・縦に並べる） */
+.view-toggle {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  min-height: 40px; padding: 6px 14px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--panel); color: var(--text);
+  font-size: .9rem; font-weight: 600; line-height: 1.3; white-space: nowrap; cursor: pointer;
+}
+.view-toggle:hover { background: var(--hover); }
+/* 1100px 未満では横並びにならないので、切り替えボタンは出さない */
+#layout-toggle { display: none; }
+
+/* ===== トップの紹介文（details#intro） ===== */
+/* 閉じると1行。721px 以上では本文の高さを抑えて中でスクロールし、問題文・エディタを押し下げすぎない
+   （1280x600 でもエディタが画面内に収まる高さ）。720px 以下では全文を表示する（下の @media） */
+.intro {
+  margin: 12px max(24px, calc((100% - var(--main-max)) / 2 + 24px)) 0;
+  padding: 6px 16px;
+  border-left: 4px solid var(--accent);
+}
+.intro > .intro-summary { color: var(--text); font-weight: 600; font-size: .95rem; padding: 4px 0; }
+.intro > .intro-summary:hover { color: var(--accent); }
+.intro[open] > .intro-summary { margin-bottom: 4px; }
+.intro-body {
+  max-height: clamp(6rem, 24vh, 18rem);
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  padding: 0 4px 4px 0; border-radius: 4px;
+  font-size: .92rem; line-height: 1.7;
+}
+.intro-body p, .intro-body ul, .intro-body ol { margin: 0 0 8px; }
+.intro-body ul, .intro-body ol { padding-left: 1.4em; }
+.intro-body li + li { margin-top: 2px; }
+.intro-heading { font-weight: 700; }
+.intro-body .intro-heading { margin-bottom: 2px; }
+.intro-links a { font-weight: 600; }
+.intro-sep { margin: 0 8px; color: var(--muted); }
+.intro-body .intro-note { margin: 0; color: var(--muted); font-size: .82rem; }
+@media (min-width: 900px) {
+  /* 広い画面では2列にして高さを抑える: 左 = 紹介と特徴、右 = 使い方とリンク */
+  .intro-body { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 0 32px; }
+}
+
+/* ===== 全ページ共通のフッター ===== */
+.site-footer {
+  margin-top: 8px;
+  padding: 16px max(24px, calc((100% - var(--main-max)) / 2 + 24px)) 24px;
+  border-top: 1px solid var(--border); background: var(--panel);
+  color: var(--muted); font-size: .9rem;
+}
+.site-footer-nav ul {
+  display: flex; flex-wrap: wrap; gap: 0 20px;
+  list-style: none; margin: 0; padding: 0;
+}
+/* 指で押しやすいよう、リンクの高さを確保する */
+.site-footer-nav a { display: inline-flex; align-items: center; min-height: 36px; color: var(--text); }
+.site-footer-nav a:hover { color: var(--accent); }
+.site-footer-copy { margin: 6px 0 0; font-size: .82rem; }
+
+/* ===== 全体レイアウト ===== */
+:root {
+  --main-max: 1760px; --sidebar-w: clamp(232px, 18vw, 280px);
+  /* ヘッダーの高さの目安（1行のとき約 83px）。sticky の列やサイドバーを初期表示の画面内に収めるのに使う */
+  --header-h: 84px;
+  /* サイドバーで一覧より上にある部分（レベルタブ2段 + 間隔 + 「問題一覧」の見出し + 枠線）の高さの目安 */
+  --sidebar-head-h: 172px;
+}
+main {
+  display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr); gap: 16px;
+  padding: 16px 24px; max-width: var(--main-max); margin: 0 auto;
+}
+
+/* ===== サイドバー（レベルタブ + 問題一覧） ===== */
+#sidebar {
+  display: flex; flex-direction: column; gap: 8px;
+  align-self: start; min-width: 0;
+  position: sticky; top: 16px;
+  /* 初期表示（ヘッダーの下から始まる）でも下端が画面の外に出ないよう、ヘッダーの高さを引く */
+  max-height: calc(100vh - var(--header-h) - 32px);
+}
+
+#level-tabs {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;
+}
+#level-tabs:empty { display: none; }
+.level-tab {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; min-height: 44px; padding: 6px 8px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--panel); color: var(--text); cursor: pointer;
+  font-weight: 600; line-height: 1.2; white-space: nowrap;
+}
+.level-tab:hover { background: var(--hover); }
+.level-tab.active,
+.level-tab[aria-pressed="true"],
+.level-tab[aria-selected="true"] {
+  background: var(--accent-bg); border-color: var(--accent-bg); color: var(--on-accent);
+}
+.level-progress { font-size: .78rem; font-weight: 400; color: var(--muted); }
+.level-tab.active .level-progress,
+.level-tab[aria-pressed="true"] .level-progress,
+.level-tab[aria-selected="true"] .level-progress { color: var(--on-accent); }
+/* 全問終えたレベル（app.js が class "complete" を付けた場合） */
+.level-tab.complete .level-progress::after { content: " ✓"; }
+
+#list-box { padding: 0; overflow: hidden; min-width: 0; }
+#list-box > summary {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 10px 12px; color: var(--text); font-weight: 600;
+  list-style: none;
+}
+#list-box > summary::-webkit-details-marker { display: none; }
+#list-box > summary::before { content: "▸"; color: var(--muted); flex: none; }
+#list-box[open] > summary::before { content: "▾"; }
+.list-box-label { white-space: nowrap; flex-shrink: 0; }
+.list-current { color: var(--muted); font-weight: 400; font-size: .85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+#problem-list {
+  padding: 4px 6px 8px;
+  border-top: 1px solid var(--border);
+  /* サイドバーの高さ（画面 - ヘッダー - 上下の余白）から、一覧より上の部分を引いた残り */
+  max-height: max(160px, calc(100vh - var(--header-h) - 32px - var(--sidebar-head-h)));
+  overflow-y: auto; overscroll-behavior: contain;
+}
+#problem-list:empty { display: none; }
+#problem-list button {
+  display: flex; align-items: baseline; gap: 8px; width: 100%;
+  text-align: left; padding: 8px 10px; margin: 1px 0;
+  border: 0; border-radius: 6px;
+  background: transparent; color: var(--text); cursor: pointer; font-size: .9rem; line-height: 1.4;
+}
+#problem-list button:hover { background: var(--hover); }
+#problem-list button:focus-visible { outline-offset: -3px; }
+#problem-list button.active,
+#problem-list button[aria-current="true"] {
+  background: var(--accent-bg); color: var(--on-accent);
+}
+.problem-num {
+  flex: none; min-width: 2.2em;
+  color: var(--muted); font-variant-numeric: tabular-nums; font-size: .85rem;
+}
+.problem-name { flex: 1; min-width: 0; }
+#problem-list .done { margin-left: auto; flex: none; color: var(--ok); font-weight: 700; }
+#problem-list button.active .problem-num,
+#problem-list button.active .done,
+#problem-list button[aria-current="true"] .problem-num,
+#problem-list button[aria-current="true"] .done { color: var(--on-accent); }
+/* 一覧内の小見出し（カテゴリの区切りを入れる場合: class "list-group"） */
+.list-group {
+  margin: 10px 10px 4px; font-size: .78rem; font-weight: 600; color: var(--muted);
+}
+.list-group:first-child { margin-top: 4px; }
+
+/* ===== 作業エリア ===== */
+#workspace { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+/* 左列（問題・お手本）と右列（エディタ以下）。1列表示のときは縦に並ぶだけ */
+.ws-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+#problem { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+#problem h2 { margin: 0 0 8px; font-size: 1.15rem; line-height: 1.4; }
+#problem p { margin: 0 0 8px; line-height: 1.7; }
+#problem-desc { white-space: pre-line; }
+
+.problem-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+#problem .problem-meta { margin: 0; min-width: 0; }
+
+/* 問題カードの上端の行: 左 = バッジ、右 = 前後の問題ボタン。狭いときはボタンが次の行へ回る */
+.problem-head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 8px;
+}
+.problem-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+/* 前後の問題ボタン。ヘッダーの切り替えボタン（.view-toggle）と同じ系統で、カードの中なので少し小さめ */
+.problem-nav-btn {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  min-height: 36px; padding: 4px 12px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--panel); color: var(--text);
+  font-size: .85rem; font-weight: 600; line-height: 1.3; white-space: nowrap; cursor: pointer;
+}
+.problem-nav-btn:hover:not(:disabled) { background: var(--hover); border-color: var(--accent); }
+/* 押せないとき（レベルの先頭・末尾、読み込み前）: 薄く表示し、枠を点線にして形でも区別する */
+.problem-nav-btn:disabled {
+  opacity: .5; cursor: not-allowed; border-style: dashed; background: transparent;
+}
+.badge {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  font-size: .8rem; line-height: 1.6; border: 1px solid var(--border);
+  background: var(--badge-bg); color: var(--text);
+}
+.badge:empty { display: none; }
+.badge-level { border-color: var(--accent); color: var(--accent); background: transparent; font-weight: 600; }
+/* バッジの横の「この問題のページ」（a#problem-page-link。href と hidden は app.js） */
+.problem-page-link {
+  display: inline-flex; align-items: center; min-height: 24px; padding: 0 4px;
+  font-size: .82rem; line-height: 1.4; white-space: nowrap; border-radius: 4px;
+}
+
+/* 各ブロック共通の見出し */
+.box-heading {
+  display: block; margin: 0 0 6px; font-size: 1rem; font-weight: 700;
+}
+.box-note { margin: 0 0 10px; font-size: .88rem; color: var(--muted); line-height: 1.6; }
+
+/* 期待される結果（お手本の表） */
+.expected-box {
+  background: var(--expected-bg);
+  border: 1px solid var(--expected-border);
+  border-left-width: 6px;
+  border-radius: 8px; padding: 12px 16px;
+}
+.expected-box .box-heading { color: var(--expected-text); }
+/* 開閉の見出し（summary）。閉じていても「お手本」「期待される結果」と ▸ が見える */
+.expected-box > .expected-summary {
+  display: flex; align-items: center; gap: 8px;
+  margin: -4px -8px; padding: 4px 8px; border-radius: 6px;
+  color: var(--expected-text); list-style: none;
+}
+.expected-box > .expected-summary::-webkit-details-marker { display: none; }
+.expected-box > .expected-summary::before {
+  content: "▸"; flex: none; width: 1em; text-align: center; font-size: 1rem;
+}
+.expected-box[open] > .expected-summary::before { content: "▾"; }
+/* 右端の「開く／閉じる」。ほかの折りたたみ（ヒント・模範解答）と同じく控えめな文字だけにする
+   （読み上げには details 自体の開閉状態が伝わるので、ここは読み上げない） */
+.expected-box > .expected-summary::after {
+  content: "開く"; content: "開く" / "";
+  margin-left: auto; flex: none;
+  font-size: .82rem; font-weight: 400; color: var(--muted);
+}
+.expected-box[open] > .expected-summary::after { content: "閉じる"; content: "閉じる" / ""; }
+.expected-box > .expected-summary:hover { background: var(--expected-head); color: var(--expected-text); }
+.expected-box > .expected-summary .box-heading { margin: 0; min-width: 0; }
+.expected-box[open] > .expected-summary { margin-bottom: 6px; }
+.expected-box .box-heading::before { content: "お手本"; font-size: .78rem; font-weight: 600; padding: 1px 6px; margin-right: 6px; border: 1px solid var(--expected-border); border-radius: 4px; vertical-align: 1px; }
+#expected table { border-color: var(--expected-border); }
+#expected th, #expected td { border-color: var(--expected-border); }
+#expected th { background: var(--expected-head); }
+#expected:empty::before { content: "（期待される結果を準備しています）"; color: var(--muted); font-size: .88rem; }
+#expected .expected-error { margin: 0; color: var(--ng); font-weight: 600; }
+#expected .expected-count { margin: 6px 0 0; color: var(--muted); font-size: .82rem; }
+.level-tab > .level-name { display: block; }
+#problem-list .list-empty { margin: 8px 10px; color: var(--muted); font-size: .88rem; }
+
+/* エディタ */
+/* 見出し・エディタ・ボタンを1枚のカードにまとめ、問題のカードと上端・見た目をそろえる */
+.editor-area {
+  display: flex; flex-direction: column; gap: 10px; min-width: 0;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px;
+}
+.editor-area > .box-heading { margin: 0; }
+#editor {
+  width: 100%; min-height: 140px; resize: vertical;
+  font-family: Consolas, "Courier New", monospace; font-size: 15px; line-height: 1.5;
+  padding: 12px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--code-bg); color: var(--code-text);
+}
+#editor::placeholder { color: #8b949e; }
+
+/* ボタン */
+.buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.buttons button {
+  min-height: 40px; padding: 8px 16px; border-radius: 6px;
+  border: 1px solid var(--accent-bg);
+  background: var(--accent-bg); color: var(--on-accent); cursor: pointer;
+}
+.buttons button:hover:not(:disabled) { filter: brightness(1.08); }
+.buttons button.secondary { background: transparent; color: var(--text); border-color: var(--border); }
+.buttons button.secondary:hover:not(:disabled) { background: var(--hover); filter: none; }
+.buttons button:disabled { opacity: .5; cursor: not-allowed; }
+
+/* 実行結果 */
+.result-box {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px;
+}
+#message { min-height: 1.5em; font-weight: 600; margin-bottom: 6px; }
+#message:empty { margin-bottom: 0; }
+#message.ok { color: var(--ok); }
+#message.ng { color: var(--ng); }
+#result:empty::before { content: "SQLを実行すると、ここに結果が表示されます。"; color: var(--muted); font-size: .88rem; }
+
+/* 表（結果の表だけは横スクロール可） */
+.table-scroll, #result, #expected { overflow-x: auto; max-width: 100%; }
+#result, #expected { overflow-wrap: normal; }
+table { border-collapse: collapse; background: var(--panel); font-size: .9rem; }
+th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; white-space: nowrap; }
+th { background: var(--bg); }
+td.null { color: var(--muted); font-style: italic; }
+
+/* 折りたたみ */
+details { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+summary { cursor: pointer; color: var(--muted); padding: 2px 0; }
+summary:hover { color: var(--text); }
+details[open] > summary { margin-bottom: 8px; }
+#list-box[open] > summary { margin-bottom: 0; }
+#problem details { background: transparent; }
+#schema h3 { font-size: .95rem; margin: 12px 0 4px; }
+
+/* SQLのコード（模範解答・解答例） */
+.code-block, #answer-sql, #examples pre {
+  margin: 0 0 8px; padding: 12px; border-radius: 6px;
+  background: var(--code-bg); color: var(--code-text);
+  font-family: Consolas, "Courier New", monospace; font-size: 14px; line-height: 1.5;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+#answer-sql:empty { display: none; }
+#answer-explanation { margin: 0; line-height: 1.7; }
+
+/* 実践問題の枠 */
+.practice-box {
+  background: var(--practice-bg);
+  border: 1px solid var(--practice-border);
+  border-left-width: 6px;
+  border-radius: 8px; padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.practice-box .box-heading { color: var(--practice-text); margin: 0; }
+.practice-box .box-note { margin: 0; }
+
+.checkpoints { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.checkpoints li {
+  position: relative; padding: 8px 10px 8px 34px; line-height: 1.6;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+}
+.checkpoints li::before {
+  content: ""; position: absolute; left: 10px; top: .72em;
+  width: 14px; height: 14px; border: 2px solid var(--practice-border); border-radius: 3px;
+}
+/* app.js がチェックボックスを入れる場合 */
+.checkpoints li:has(input[type="checkbox"]) { padding-left: 10px; }
+.checkpoints li:has(input[type="checkbox"])::before { content: none; }
+.checkpoints label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+.checkpoints input[type="checkbox"] { margin-top: .35em; width: 16px; height: 16px; flex: none; accent-color: var(--practice-border); }
+
+#examples-box { background: var(--panel); }
+#examples > * + * { margin-top: 8px; }
+.example { border-top: 1px solid var(--border); padding-top: 10px; }
+.example:first-child { border-top: 0; padding-top: 0; }
+.example-title { margin: 0 0 6px; font-weight: 700; font-size: .92rem; }
+#examples p { margin: 0 0 8px; line-height: 1.7; }
+.practice-box .buttons button { background: var(--practice-border); border-color: var(--practice-border); color: #fff; }
+/* 完了済み（app.js が class "done" を付けた場合） */
+#self-check-btn.done { background: transparent; color: var(--ok); border-color: var(--ok); }
+
+/* ===== 一覧を隠す（<html data-sidebar="closed"> または属性なし） ===== */
+/* 既定の配置は「一覧を隠す」。app.js が属性を付ける前（属性なし）も隠した見た目にして、
+   一覧が一瞬出てから消えるちらつきを防ぐ。一覧を出すのは data-sidebar="open" のときだけ。
+   720px 以下（スマホ）は折りたためる一覧のまま使うので、ここでは 721px 以上だけ */
+@media (min-width: 721px) {
+  html:not([data-sidebar="open"]) main { grid-template-columns: minmax(0, 1fr); }
+  html:not([data-sidebar="open"]) #sidebar { display: none; }
+}
+
+/* ===== 広い画面（1100px 以上） ===== */
+/* data-layout="split"（または属性なし）: 左列 = 問題とお手本、右列 = エディタ・ボタン・実行結果など
+   data-layout="stack": 上 = 問題とお手本（横に2つ並べる）、下 = エディタ以下。幅いっぱい */
+@media (min-width: 1100px) {
+  #layout-toggle { display: inline-flex; }
+
+  /* --- 横並び（split） --- */
+  html:not([data-layout="stack"]) #workspace {
+    display: grid;
+    /* 一覧あり: 問題 5 : エディタ 6（問題列は最低 340px） */
+    grid-template-columns: minmax(340px, 5fr) minmax(0, 6fr);
+    gap: 20px; align-items: start;
+  }
+  /* 一覧なし（属性なしを含む）: 幅いっぱいを問題とエディタで半々に使う */
+  html:not([data-sidebar="open"]):not([data-layout="stack"]) #workspace {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+  }
+  /* 左列はスクロールしても画面に残り、はみ出す分は列の中でスクロール。
+     初期表示（ヘッダーの下から始まる）でも下端が画面に収まるよう、ヘッダーの高さを引く */
+  html:not([data-layout="stack"]) .ws-col-problem {
+    position: sticky; top: 16px;
+    max-height: calc(100vh - var(--header-h) - 32px);
+    overflow-y: auto; overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  /* 列の箱は #workspace の端にそろえる（はみ出させない）。代わりに列の中のフォーカス枠を
+     内側に描き、スクロール領域の端で切れないようにする */
+  html:not([data-layout="stack"]) .ws-col-problem :focus-visible { outline-offset: -3px; }
+  /* 右列が短くて画面の下が空かないよう、エディタを画面の高さに合わせて高くする */
+  html:not([data-layout="stack"]) #editor { min-height: clamp(180px, 32vh, 400px); }
+
+  /* --- 縦並び（stack） --- */
+  /* 問題文とお手本を横に並べて上段の高さを抑え、エディタを近くに置く。
+     2枚のカードは高さをそろえ（stretch）、問題文の下に大きな空白が見えないようにする */
+  html[data-layout="stack"] .ws-col-problem {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px; align-items: stretch;
+  }
+  /* お手本を閉じたときは見出しの高さだけにする（空の緑の箱を伸ばさない） */
+  html[data-layout="stack"] .ws-col-problem > #expected-box:not([open]) { align-self: start; }
+  /* 実践問題などでお手本が無いときは、問題文が幅いっぱいを使う */
+  html[data-layout="stack"] .ws-col-problem:has(> #expected-box[hidden]) { grid-template-columns: minmax(0, 1fr); }
+  /* お手本の表が長くても上段が高くなりすぎないよう、表の領域は高さを抑えて中で縦スクロール
+     （1440×900 でエディタと実行結果の見出しが画面内に入る高さ） */
+  html[data-layout="stack"] #expected {
+    max-height: clamp(160px, 30vh, 420px);
+    overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  }
+  /* 縦にスクロールしても列名が見えるよう、表の見出し行を上に固定する */
+  html[data-layout="stack"] #expected th { position: sticky; top: 0; z-index: 1; }
+  html[data-layout="stack"] #editor { min-height: 160px; }
+}
+
+/* ===== タブレット・スマホ ===== */
+@media (max-width: 720px) {
+  header { padding: 12px 16px; }
+  main { grid-template-columns: minmax(0, 1fr); padding: 12px; gap: 12px; }
+
+  /* スマホでは一覧は折りたためる形のまま。隠すボタンは出さない */
+  #sidebar-toggle { display: none; }
+
+  #sidebar { position: static; max-height: none; }
+
+  /* レベルタブは横一列。入りきらないときは横スクロール */
+  #level-tabs {
+    display: flex; gap: 6px;
+    overflow-x: auto; scrollbar-width: thin;
+    padding-bottom: 2px;
+  }
+  .level-tab { flex: 1 0 auto; min-width: 72px; }
+
+  /* 50問でも画面を占領しないよう、一覧は高さを抑えて中でスクロール */
+  #problem-list { max-height: 45vh; }
+
+  #problem, .expected-box, .result-box, .practice-box, .editor-area { padding: 12px; }
+  .buttons button { flex: 1 1 auto; }
+  /* 指で押しやすい高さにする */
+  .problem-nav-btn { min-height: 40px; }
+}
+@media (max-width: 400px) {
+  header h1 { font-size: 1.25rem; }
+  .sub { font-size: .82rem; }
+  main { padding: 8px; }
+  .level-tab { min-width: 64px; padding: 6px 4px; font-size: .92rem; }
+  #editor { font-size: 14px; min-height: 120px; }
+  /* 前後ボタンはバッジの下の行に、幅いっぱい・半分ずつで並べる */
+  .problem-nav { flex: 1 1 100%; margin-left: 0; flex-wrap: nowrap; }
+  .problem-nav-btn { flex: 1 1 0; min-width: 0; padding: 4px 8px; }
+}
+
+/* 紹介文・フッターの左右の余白を main にそろえる（スマホ） */
+@media (max-width: 720px) {
+  .intro { margin: 12px 12px 0; padding: 6px 12px; }
+  .site-footer { padding: 14px 16px 20px; }
+}
+@media (max-width: 400px) {
+  .intro { margin: 8px 8px 0; }
+  .intro > .intro-summary { font-size: .9rem; }
+}
+/* スマホ・タブレット: 紹介文は高さを抑えず全文を表示する。
+   中のスクロールは気づかれにくく、ページのスクロールと取り合うため（「使い方」と各リンクまでページのスクロールで届く） */
+@media (max-width: 720px) {
+  .intro-body { max-height: none; overflow-y: visible; overscroll-behavior: auto; padding-right: 0; }
+}
+
+/* =====================================================================
+   静的ページ（q/<id>.html・q/index.html・about / privacy / terms）
+   テンプレートは tools/pages/templates/。<body class="static-page">。スクリプトなし
+   ===================================================================== */
+:root { --page-max: 880px; }
+
+/* 共通ヘッダー（header.site-header。見た目はアプリのヘッダーと同じ系統）。本文の幅に端をそろえる */
+.static-page .site-header,
+.static-page .site-footer {
+  padding-left: max(24px, calc((100% - var(--page-max)) / 2 + 24px));
+  padding-right: max(24px, calc((100% - var(--page-max)) / 2 + 24px));
+}
+.site-name { margin: 0; font-size: 1.3rem; font-weight: 700; line-height: 1.3; }
+.site-name a { color: var(--text); text-decoration: none; }
+.site-name a:hover { color: var(--accent); text-decoration: underline; }
+.site-header-nav { margin-left: auto; }
+.header-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 40px; padding: 6px 14px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--panel); color: var(--text);
+  font-size: .9rem; font-weight: 600; line-height: 1.3; white-space: nowrap; text-decoration: none;
+}
+.header-link:hover { background: var(--hover); border-color: var(--accent); }
+
+/* 本文（main.page）。アプリの main（グリッド）を使わず、読みやすい幅の1列にする */
+main.page {
+  display: block; max-width: var(--page-max); margin: 0 auto;
+  padding: 16px 24px 32px;
+}
+
+/* パンくず */
+.breadcrumb ol {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  list-style: none; margin: 0 0 12px; padding: 0;
+  font-size: .85rem; color: var(--muted); line-height: 1.8;
+}
+.breadcrumb li + li::before { content: "›"; content: "›" / ""; margin: 0 8px; color: var(--muted); }
+.breadcrumb [aria-current="page"] { color: var(--text); }
+
+/* ページの見出し（h1） */
+.page-title { margin: 8px 0 10px; font-size: 1.45rem; line-height: 1.4; }
+.page-lead { margin: 0 0 14px; line-height: 1.8; }
+
+/* 問題ページ: 問題のカード → 期待される結果（または実践のチェックポイント） → ヒント → 模範解答 */
+.problem-page { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.problem-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px;
+}
+.problem-card .problem-meta { margin: 0; }
+.problem-page .problem-desc { margin: 0 0 16px; line-height: 1.8; white-space: pre-line; }
+
+/* 「この問題を解く」ボタン（実体は a。アプリの「実行」ボタンと同じ青） */
+.solve { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 0; }
+.solve-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 8px 20px; border-radius: 6px;
+  border: 1px solid var(--accent-bg); background: var(--accent-bg); color: var(--on-accent);
+  font-weight: 700; line-height: 1.4; text-decoration: none; text-align: center;
+}
+.solve-btn:hover { filter: brightness(1.08); color: var(--on-accent); }
+.solve-btn:visited { color: var(--on-accent); }
+.solve-note { margin: 0; font-size: .85rem; color: var(--muted); }
+
+/* 期待される結果（section.expected-box。アプリのお手本と同じ緑の枠） */
+.static-expected > .box-heading { margin-bottom: 6px; }
+.ordered-note { font-weight: 600; color: var(--expected-text); }
+.box-note.ordered-note { margin-top: -6px; }
+.ordered-note:empty { display: none; }
+.expected-table { overflow-x: auto; max-width: 100%; overflow-wrap: normal; }
+.expected-table table, .expected-table th, .expected-table td { border-color: var(--expected-border); }
+.expected-table th { background: var(--expected-head); }
+.expected-box > .expected-count { margin: 6px 0 0; color: var(--muted); font-size: .82rem; }
+
+/* 実践: チェックポイント（ul.checkpoints の li は生成器が作る。チェックボックスはなし） */
+.practice-box > .checkpoints:empty { display: none; }
+/* 静的ページでは押せないので、四角い枠（チェックボックス風）ではなく実践の色の小さな丸にする */
+.static-page .checkpoints li { padding-left: 28px; }
+.static-page .checkpoints li::before {
+  left: 12px; top: calc(8px + .8em - 4px);
+  width: 8px; height: 8px; border: 0; border-radius: 50%;
+  background: var(--practice-border);
+}
+
+/* ヒント・模範解答・解答例の折りたたみ */
+.problem-page details > p { margin: 0; line-height: 1.7; }
+.problem-page details > p + p { margin-top: 8px; }
+.code-block code { font: inherit; }
+.examples > * + * { margin-top: 8px; }
+.examples .example-note { margin: 0 0 8px; line-height: 1.7; }
+
+/* 前後の問題（nav.page-nav の中の a は生成器が作る） */
+.page-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.page-nav:empty { display: none; }
+.page-nav-link {
+  flex: 1 1 240px; min-width: 0;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--panel); color: var(--text); text-decoration: none;
+}
+.page-nav-link:hover { border-color: var(--accent); background: var(--hover); }
+.page-nav-label { font-size: .82rem; font-weight: 600; color: var(--muted); }
+.page-nav-title { font-weight: 600; color: var(--accent); line-height: 1.5; }
+.page-nav-link:hover .page-nav-title { text-decoration: underline; }
+.page-nav-next { margin-left: auto; text-align: right; align-items: flex-end; }
+
+/* 同じカテゴリの問題（section.related。ul.related-list の li は生成器が作る） */
+.related {
+  margin-top: 20px; padding: 14px 18px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+}
+.related:has(> .related-list:empty) { display: none; }
+.related-heading { margin: 0 0 6px; font-size: 1rem; }
+.related-list, .q-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 0 16px;
+  list-style: none; margin: 0; padding: 0;
+}
+.related-list a, .q-list a { display: block; padding: 6px 4px; line-height: 1.5; border-radius: 4px; }
+.q-num { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* 一覧ページ（q/index.html）: レベル（h2）→ カテゴリ（h3）→ 問題のリンク */
+.list-actions { margin: 0 0 8px; }
+.level-jump ul {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  list-style: none; margin: 16px 0 0; padding: 0;
+}
+.level-jump a {
+  display: inline-flex; align-items: center; min-height: 36px; padding: 4px 14px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--panel);
+  color: var(--text); font-weight: 600; font-size: .9rem; text-decoration: none;
+}
+.level-jump a:hover { border-color: var(--accent); background: var(--hover); }
+.level-section {
+  margin-top: 20px; padding: 16px 20px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+}
+.level-heading {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px;
+  margin: 0 0 4px; font-size: 1.25rem; scroll-margin-top: 16px;
+}
+.level-count { font-size: .9rem; font-weight: 400; color: var(--muted); }
+.level-desc { margin: 0 0 8px; font-size: .92rem; line-height: 1.7; color: var(--muted); }
+.category-heading {
+  margin: 16px 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--border); font-size: 1rem;
+}
+
+/* 規約などの文書ページ（about / privacy / terms） */
+.doc {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  padding: 20px 24px; line-height: 1.8;
+}
+.doc h1 { margin: 0 0 12px; font-size: 1.5rem; line-height: 1.4; }
+.doc h2 {
+  margin: 28px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border);
+  font-size: 1.1rem; line-height: 1.5;
+}
+.doc p, .doc ul, .doc ol { margin: 0 0 12px; }
+.doc ul, .doc ol { padding-left: 1.5em; }
+.doc li + li { margin-top: 4px; }
+.doc > :last-child { margin-bottom: 0; }
+.doc-date { color: var(--muted); font-size: .9rem; }
+
+@media (max-width: 720px) {
+  .static-page .site-header,
+  .static-page .site-footer { padding-left: 16px; padding-right: 16px; }
+  main.page { padding: 12px 16px 24px; }
+  .problem-card, .level-section, .related { padding: 14px 14px; }
+  .doc { padding: 16px; }
+  .page-title { font-size: 1.3rem; }
+}
+@media (max-width: 400px) {
+  main.page { padding: 8px 8px 20px; }
+  .site-name { font-size: 1.2rem; }
+  .solve-btn { flex: 1 1 100%; }
+  .problem-card, .level-section, .related, .doc { padding: 12px; }
+  .doc h1 { font-size: 1.3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}

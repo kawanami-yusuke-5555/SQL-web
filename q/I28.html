@@ -1,0 +1,114 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>最も早く発売された商品｜サブクエリ（副問い合わせ）のSQL練習問題（中級28）｜SQL練習帳</title>
+  <meta name="description" content="いちばん早く発売された商品を探します。products テーブルから、発売日（released_on）が全商品の中で最も早い商品を取り出してください。最も早い…｜中級の「サブクエリ（副問い合わせ）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/I28.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="最も早く発売された商品｜サブクエリ（副問い合わせ）のSQL練習問題（中級28）｜SQL練習帳">
+  <meta property="og:description" content="いちばん早く発売された商品を探します。products テーブルから、発売日（released_on）が全商品の中で最も早い商品を取り出してください。最も早い…｜中級の「サブクエリ（副問い合わせ）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/I28.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#intermediate">中級</a></li>
+        <li aria-current="page">28. 最も早く発売された商品</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="I28" data-level="intermediate">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">中級 28</span>
+          <span class="badge badge-category">サブクエリ（副問い合わせ）</span>
+        </p>
+        <h1 class="page-title">最も早く発売された商品</h1>
+        <p class="problem-desc">いちばん早く発売された商品を探します。products テーブルから、発売日（released_on）が全商品の中で最も早い商品を取り出してください。最も早い日に発売された商品が複数あるときは、そのすべてを出します。列は id, name, released_on の順です。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=I28">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">released_on</th></tr></thead><tbody>
+<tr><td>25</td><td>ゲルインクボールペン（黒）</td><td>2022-04-01</td></tr>
+<tr><td>26</td><td>ゲルインクボールペン（赤）</td><td>2022-04-01</td></tr>
+<tr><td>28</td><td>シャープペンシル</td><td>2022-04-01</td></tr>
+<tr><td>31</td><td>方眼ノートA5</td><td>2022-04-01</td></tr>
+<tr><td>32</td><td>方眼ノートB5</td><td>2022-04-01</td></tr>
+</tbody></table></div>
+        <p class="expected-count">5 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">最も早い発売日は SELECT MIN(released_on) FROM products で求められます。この1つの値を返す副問い合わせを、WHERE の = の右側に書きます。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>SELECT id, name, released_on FROM products WHERE released_on = (SELECT MIN(released_on) FROM products)</code></pre>
+        <p class="answer-explanation">1行1列だけを返す副問い合わせ（スカラー副問い合わせ）は、ふつうの値と同じように比較に使えます。ORDER BY released_on LIMIT 1 だと、同じ日に発売された商品が5つあるのに1件しか出ません。「最小の値を持つ行すべて」が欲しいときは MIN と比べます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="I27.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">中級 27. 部下のいない社員（NOT IN と NULL）</span></a><a class="page-nav-link page-nav-next" href="I29.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">中級 29. 在籍中の社員の平均より給与が高い人</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「サブクエリ（副問い合わせ）」のほかの問題</h2>
+      <ul class="related-list"><li><a href="I26.html">中級 26. 低い評価が付いた商品</a></li>
+<li><a href="I27.html">中級 27. 部下のいない社員（NOT IN と NULL）</a></li>
+<li><a href="I29.html">中級 29. 在籍中の社員の平均より給与が高い人</a></li>
+<li><a href="I30.html">中級 30. 全商品の平均価格との差</a></li>
+<li><a href="I31.html">中級 31. 注文1件あたりの平均購入金額</a></li>
+<li><a href="I32.html">中級 32. 注文回数ごとの顧客数</a></li>
+<li><a href="I33.html">中級 33. 自分のカテゴリの平均より高い商品</a></li>
+<li><a href="I34.html">中級 34. 商品ごとのレビュー件数と平均評価</a></li>
+<li><a href="I35.html">中級 35. 部署ごとの一番新しいメンバー</a></li>
+<li><a href="I36.html">中級 36. 満点のレビューを書いた会員（EXISTS）</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>社長から各社員までの経路｜再帰CTEのSQL練習問題（上級18）｜SQL練習帳</title>
+  <meta name="description" content="組織図をたどって、社員ごとに社長からの経路と階層を求めます。employees テーブル（manager_id が上司の社員ID、社長は manager_id…｜上級の「再帰CTE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A18.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="社長から各社員までの経路｜再帰CTEのSQL練習問題（上級18）｜SQL練習帳">
+  <meta property="og:description" content="組織図をたどって、社員ごとに社長からの経路と階層を求めます。employees テーブル（manager_id が上司の社員ID、社長は manager_id…｜上級の「再帰CTE」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A18.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">18. 社長から各社員までの経路</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A18" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 18</span>
+          <span class="badge badge-category">再帰CTE</span>
+        </p>
+        <h1 class="page-title">社長から各社員までの経路</h1>
+        <p class="problem-desc">組織図をたどって、社員ごとに社長からの経路と階層を求めます。employees テーブル（manager_id が上司の社員ID、社長は manager_id が NULL）を使い、在籍中の社員（left_on が NULL）それぞれについて、組織の何段目にいるかと、社長から本人までの経路を求めてください。列は id, name, level, path の順です。level は社長を 1、社長の直属の部下を 2 …とします。path は社長から本人までの社員名を、上の人から順に &#39; &gt; &#39;（前後に半角スペース）でつないだ文字列です（例: &#39;大西 正樹 &gt; 佐藤 恵子&#39;）。社長の path は社長の名前だけです。並び順は問いません。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A18">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note"></p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">id</th><th scope="col">name</th><th scope="col">level</th><th scope="col">path</th></tr></thead><tbody>
+<tr><td>1</td><td>大西 正樹</td><td>1</td><td>大西 正樹</td></tr>
+<tr><td>6</td><td>伊藤 隆</td><td>2</td><td>大西 正樹 &gt; 伊藤 隆</td></tr>
+<tr><td>2</td><td>佐藤 恵子</td><td>2</td><td>大西 正樹 &gt; 佐藤 恵子</td></tr>
+<tr><td>5</td><td>田中 由紀</td><td>2</td><td>大西 正樹 &gt; 田中 由紀</td></tr>
+<tr><td>3</td><td>鈴木 浩二</td><td>2</td><td>大西 正樹 &gt; 鈴木 浩二</td></tr>
+<tr><td>4</td><td>高橋 誠</td><td>2</td><td>大西 正樹 &gt; 高橋 誠</td></tr>
+<tr><td>20</td><td>森 健太</td><td>3</td><td>大西 正樹 &gt; 伊藤 隆 &gt; 森 健太</td></tr>
+<tr><td>19</td><td>佐藤 直人</td><td>3</td><td>大西 正樹 &gt; 佐藤 恵子 &gt; 佐藤 直人</td></tr>
+<tr><td>8</td><td>山本 彩花</td><td>3</td><td>大西 正樹 &gt; 佐藤 恵子 &gt; 山本 彩花</td></tr>
+<tr><td>7</td><td>渡辺 翔太</td><td>3</td><td>大西 正樹 &gt; 佐藤 恵子 &gt; 渡辺 翔太</td></tr>
+<tr><td>15</td><td>井上 拓海</td><td>3</td><td>大西 正樹 &gt; 田中 由紀 &gt; 井上 拓海</td></tr>
+<tr><td>16</td><td>木村 遥</td><td>3</td><td>大西 正樹 &gt; 田中 由紀 &gt; 木村 遥</td></tr>
+<tr><td>11</td><td>加藤 健一</td><td>3</td><td>大西 正樹 &gt; 鈴木 浩二 &gt; 加藤 健一</td></tr>
+<tr><td>10</td><td>小林 美和</td><td>3</td><td>大西 正樹 &gt; 鈴木 浩二 &gt; 小林 美和</td></tr>
+<tr><td>13</td><td>山口 剛</td><td>3</td><td>大西 正樹 &gt; 高橋 誠 &gt; 山口 剛</td></tr>
+<tr><td>14</td><td>松本 亜美</td><td>3</td><td>大西 正樹 &gt; 高橋 誠 &gt; 松本 亜美</td></tr>
+<tr><td>9</td><td>中村 大介</td><td>4</td><td>大西 正樹 &gt; 佐藤 恵子 &gt; 渡辺 翔太 &gt; 中村 大介</td></tr>
+<tr><td>21</td><td>斉藤 美咲</td><td>4</td><td>大西 正樹 &gt; 田中 由紀 &gt; 井上 拓海 &gt; 斉藤 美咲</td></tr>
+<tr><td>17</td><td>林 浩</td><td>4</td><td>大西 正樹 &gt; 田中 由紀 &gt; 井上 拓海 &gt; 林 浩</td></tr>
+</tbody></table></div>
+        <p class="expected-count">19 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">最初の行は manager_id IS NULL の社員（level 1、path は自分の名前）。次の行は「manager_id が直前の社員の id である社員」を JOIN し、level + 1、path || &#39; &gt; &#39; || 名前 とします。在籍中かどうかの絞り込みは、最後の SELECT で行います。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH RECURSIVE org(id, name, level, path, left_on) AS ( SELECT id, name, 1, name, left_on FROM employees WHERE manager_id IS NULL UNION ALL SELECT e.id, e.name, o.level + 1, o.path || &#39; &gt; &#39; || e.name, e.left_on FROM employees e JOIN org o ON e.manager_id = o.id) SELECT id, name, level, path FROM org WHERE left_on IS NULL</code></pre>
+        <p class="answer-explanation">再帰の各段で「上司の path に自分の名前を足す」ので、上から順の経路が積み上がります。名前を前に足す（e.name || &#39; &gt; &#39; || o.path）と、本人から社長へ向かう逆順になります。組織は最大4階層で、深さはデータによって違いますが、再帰CTEなら段数を決めずにたどれます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A17.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 17. キッチンの配下のカテゴリをすべて</span></a><a class="page-nav-link page-nav-next" href="A19.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 19. 配下のカテゴリを含めたカテゴリ別売上</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「再帰CTE」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A16.html">上級 16. 注文のない月も含めた月別の注文件数</a></li>
+<li><a href="A17.html">上級 17. キッチンの配下のカテゴリをすべて</a></li>
+<li><a href="A19.html">上級 19. 配下のカテゴリを含めたカテゴリ別売上</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/privacy.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>プライバシーについて｜SQL練習帳</title>
+  <meta name="description" content="SQL練習帳が保存するデータ（ブラウザの中だけ）と、Cookie・アクセス解析を使っていないことの説明。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/privacy.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="プライバシーについて｜SQL練習帳">
+  <meta property="og:description" content="SQL練習帳が保存するデータ（ブラウザの中だけ）と、Cookie・アクセス解析を使っていないことの説明。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/privacy.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page doc-page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="index.html">SQL練習帳</a></li>
+        <li aria-current="page">プライバシーについて</li>
+      </ol>
+    </nav>
+
+    <!-- D5 の既定値「解析なし」の前提。解析を入れることになったら書き直す。
+         GitHub Pages 以外で公開することになったら、3 の1つ目を公開先に合わせて書き直す -->
+    <article class="doc">
+      <h1>プライバシーについて</h1>
+
+      <h2>1. 集める情報</h2>
+      <p>本サイトは、会員登録・入力フォーム・Cookie・アクセス解析ツール・広告を使っていません。運営者が利用者の個人情報を集めることはありません。</p>
+
+      <h2>2. ブラウザの中に保存するデータ</h2>
+      <p>本サイトは、使いやすさのために次のデータを、お使いのブラウザの「ローカルストレージ」に保存します。これらはブラウザの中だけにあり、運営者を含めてどこにも送信されません。</p>
+      <ul>
+        <li>解いた問題の記録（進捗）</li>
+        <li>最後に開いた問題</li>
+        <li>画面の並べ方（一覧の表示・横並び／縦並び）</li>
+      </ul>
+      <p>書いた SQL と練習用のデータベースは、ブラウザの中で動かしているだけで、保存も送信もしません。<br>
+      保存したデータは、ブラウザの設定で「サイトのデータ」を削除すると消えます。</p>
+
+      <h2>3. 外部のサービス</h2>
+      <ul>
+        <li>本サイトは GitHub Pages（GitHub, Inc. のサービス）で公開しています。ページを表示するときの通信で、IP アドレスなどが GitHub に記録されることがあります。</li>
+        <li>SQL を動かす仕組み（sql.js）を、cdnjs（Cloudflare, Inc. が運営する配信サービス）から読み込みます。このとき IP アドレスなどが cdnjs に送られます。</li>
+      </ul>
+      <p>それぞれの扱いは、各社のプライバシーポリシーに従います。</p>
+
+      <h2>4. この説明の変更</h2>
+      <p>内容を変えるときは、このページを更新してお知らせします。</p>
+
+      <p class="doc-date">制定: 2026年11月23日<!-- 【公開時に決める】公開日に合わせて直してよい --></p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="q/index.html">問題一覧</a></li>
+        <li><a href="about.html">このサイトについて</a></li>
+        <li><a href="terms.html">利用規約</a></li>
+        <li><a href="privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>

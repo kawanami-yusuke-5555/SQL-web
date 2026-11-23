@@ -1,0 +1,105 @@
+<!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/problem.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CTE をつないで会員を区分ごとに集計する｜CTE（WITH句）のSQL練習問題（上級4）｜SQL練習帳</title>
+  <meta name="description" content="会員ごとの購入金額を求めて区分に分け、区分ごとの人数と購入金額の合計を取り出してください。購入金額は status が &#39;delivered&#39; または &#39;sh…｜上級の「CTE（WITH句）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/q/A04.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="CTE をつないで会員を区分ごとに集計する｜CTE（WITH句）のSQL練習問題（上級4）｜SQL練習帳">
+  <meta property="og:description" content="会員ごとの購入金額を求めて区分に分け、区分ごとの人数と購入金額の合計を取り出してください。購入金額は status が &#39;delivered&#39; または &#39;sh…｜上級の「CTE（WITH句）」の練習問題。ブラウザでSQLを書いて、その場で答え合わせ（登録不要）。">
+  <meta property="og:url" content="https://kawanami-yusuke-5555.github.io/SQL-web/q/A04.html">
+  <meta property="og:image" content="https://kawanami-yusuke-5555.github.io/SQL-web/ogp.png">
+  <meta property="og:site_name" content="SQL練習帳">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <p class="site-name"><a href="../index.html">SQL練習帳</a></p>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
+    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="../q/index.html">問題一覧</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumb" aria-label="現在の位置">
+      <ol>
+        <li><a href="../index.html">SQL練習帳</a></li>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../q/index.html#advanced">上級</a></li>
+        <li aria-current="page">4. CTE をつないで会員を区分ごとに集計する</li>
+      </ol>
+    </nav>
+
+    <article class="problem-page" data-id="A04" data-level="advanced">
+      <div class="problem-card">
+        <p class="problem-meta">
+          <span class="badge badge-level">上級 4</span>
+          <span class="badge badge-category">CTE（WITH句）</span>
+        </p>
+        <h1 class="page-title">CTE をつないで会員を区分ごとに集計する</h1>
+        <p class="problem-desc">会員ごとの購入金額を求めて区分に分け、区分ごとの人数と購入金額の合計を取り出してください。購入金額は status が &#39;delivered&#39; または &#39;shipped&#39; の注文の quantity * unit_price の合計です（送料は含めません）。対象は customers テーブルに登録されていて、この条件の注文が1件以上ある会員だけです（customers にいない顧客ID の注文は含めません）。区分は、購入金額が 50000 円以上なら &#39;A&#39;、20000 円以上なら &#39;B&#39;、それ未満なら &#39;C&#39; です（ちょうど 50000 円は &#39;A&#39;、ちょうど 20000 円は &#39;B&#39;）。列は 区分, 人数, 購入金額の合計 の順で、区分の A, B, C の順に並べます。</p>
+        <div class="solve">
+          <a class="solve-btn" href="../index.html?id=A04">この問題を解く（SQLを書く）</a>
+          <p class="solve-note">ブラウザだけで動きます。登録は不要です。</p>
+        </div>
+      </div>
+
+      <section class="expected-box static-expected" aria-labelledby="expected-heading">
+        <h2 id="expected-heading" class="box-heading">期待される結果</h2>
+        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
+        <p class="box-note ordered-note">この問題は並び順も判定します。</p>
+        <div class="table-scroll expected-table"><table><thead><tr><th scope="col">grade</th><th scope="col">COUNT(*)</th><th scope="col">SUM(amount)</th></tr></thead><tbody>
+<tr><td>A</td><td>4</td><td>271540</td></tr>
+<tr><td>B</td><td>13</td><td>440800</td></tr>
+<tr><td>C</td><td>25</td><td>234940</td></tr>
+</tbody></table></div>
+        <p class="expected-count">3 行</p>
+      </section>
+
+
+      <details class="hint-box">
+        <summary>ヒント</summary>
+        <p class="hint-text">CTE は前に書いた CTE を参照できます。1つ目の CTE で会員ごとの購入金額、2つ目の CTE で CASE を使って区分を付け、最後の SELECT で区分ごとに GROUP BY します。</p>
+      </details>
+
+      <details class="answer-box">
+        <summary>模範解答と解説を見る</summary>
+        <pre class="code-block"><code>WITH customer_sales AS ( SELECT c.id, SUM(oi.quantity * oi.unit_price) AS amount FROM customers c JOIN orders o ON o.customer_id = c.id JOIN order_items oi ON oi.order_id = o.id WHERE o.status IN (&#39;delivered&#39;, &#39;shipped&#39;) GROUP BY c.id), classified AS ( SELECT id, amount, CASE WHEN amount &gt;= 50000 THEN &#39;A&#39; WHEN amount &gt;= 20000 THEN &#39;B&#39; ELSE &#39;C&#39; END AS grade FROM customer_sales) SELECT grade, COUNT(*), SUM(amount) FROM classified GROUP BY grade ORDER BY grade</code></pre>
+        <p class="answer-explanation">CTE をカンマでつなぐと、「会員ごとの金額 → 区分を付ける → 区分ごとに集計」のように処理を段階に分けて書けます。1つの SELECT にまとめると GROUP BY を2段重ねた副問い合わせになり、読みにくくなります。customers と結合しないと、存在しない顧客ID 51 の注文（order 69）が1人分として数えられます。</p>
+      </details>
+
+    </article>
+
+    <nav class="page-nav" aria-label="前後の問題"><a class="page-nav-link page-nav-prev" href="A03.html" rel="prev"><span class="page-nav-label">← 前の問題</span><span class="page-nav-title">上級 3. 売上とレビューを別々に集計してから結合する</span></a><a class="page-nav-link page-nav-next" href="A05.html" rel="next"><span class="page-nav-label">次の問題 →</span><span class="page-nav-title">上級 5. ROW_NUMBER で通し番号を振る</span></a></nav>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="related-heading">「CTE（WITH句）」のほかの問題</h2>
+      <ul class="related-list"><li><a href="A01.html">上級 1. WITH 句で注文ごとの合計を作る</a></li>
+<li><a href="A02.html">上級 2. 平均より売れている商品（CTE を2回使う）</a></li>
+<li><a href="A03.html">上級 3. 売上とレビューを別々に集計してから結合する</a></li></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer-nav" aria-label="サイトの案内">
+      <ul>
+        <li><a href="../q/index.html">問題一覧</a></li>
+        <li><a href="../about.html">このサイトについて</a></li>
+        <li><a href="../terms.html">利用規約</a></li>
+        <li><a href="../privacy.html">プライバシー</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer-copy">© SQL練習帳</p>
+  </footer>
+</body>
+</html>
