@@ -1,6 +1,9 @@
 // app.js — SQL練習帳の画面ロジック
 //
-// 読み込み順（index.html）: sql.js -> problems/setup.js -> problems/*.js -> judge.js -> app.js
+// 解答画面 app.html のロジック（v1.3.0 で index.html から app.html に移動。トップ index.html は
+// tools/pages/ が生成する JS なしの問題一覧で、このファイルは読み込まない）。
+//
+// 読み込み順（app.html）: sql.js -> problems/setup.js -> problems/*.js -> judge.js -> app.js
 // 使うグローバル: initSqlJs（sql.js）、SETUP_SQL・PROBLEMS（problems/）、Judge（judge.js）
 //
 // このファイルの構成（上から順に）:
@@ -11,20 +14,21 @@
 //   4. 画面の部品（表・メッセージ・要素の作成）
 //   5. 一覧の描画（レベルタブ・問題一覧・全体の進捗・前後の問題へのボタン）
 //   6. 問題の表示（初級〜上級 / 実践 / 準備中）
-//   6b. URL とタブの題名（?id= で開く・replaceState・#problem-page-link・紹介文 #intro の開閉）
+//   6b. URL とタブの題名（?id= で開く・replaceState・#problem-page-link）
 //   7. 操作（実行・答え合わせ・自己完了・リセット）
 //   8. 起動
 //
-// URL の扱い（v1.2.0〜。docs/requirements-v1.2.md 4.3）:
-//   - index.html?id=I27 で開くと、その問題を最初に開く（「最後に開いた問題」より優先）。
+// URL の扱い（v1.2.0〜。docs/requirements-v1.2.md 4.3、v1.3.0 の変更は docs/requirements-v1.3.md）:
+//   - app.html?id=I27 で開くと、その問題を最初に開く（「最後に開いた問題」より優先）。
 //     存在しない id・不正な値は無視して従来どおり開く（console に1行出すだけ）。
+//     ?id= なしの app.html は「最後に開いた問題」（なければ先頭の問題）を開く（トップの「続きから解く」）。
 //   - 問題を開くたびに history.replaceState でアドレスを ?id=<id> にする（履歴は増やさない。
 //     ほかのパラメータ・ハッシュは消える）。file:// などで使えなくても止まらない。
-//   - タブの題名は「<タイトル>（<レベル><番号>）｜SQL練習帳」。問題がないときは index.html の題名に戻す。
-//   - #problem-page-link（静的ページ q/<id>.html へのリンク）と #intro（紹介文）は、
-//     index.html にあるときだけ動かす（ない古い index.html でも例外にしない）。
-//   - 紹介文は、URL に有効な id がある・進捗が1問以上ある・最後に開いた問題が保存されている、
-//     のどれかなら起動時に閉じる。開閉の状態は保存しない。
+//   - タブの題名は「<タイトル>（<レベル><番号>）｜SQL練習帳」。問題がないときは app.html の題名に戻す。
+//   - #problem-page-link（静的ページ q/<id>.html へのリンク）は、app.html にあるときだけ動かす
+//     （ない古いページでも例外にしない）。
+//   - 紹介文 #intro の開閉は v1.3.0 で廃止（紹介文はトップ index.html に静的に置く）。
+//     旧 URL index.html?id= の転送はしない（docs/requirements-v1.3.md K9）。
 //
 // 規約: 画面に出す文字列は必ず textContent で入れる（innerHTML に文字列を入れない）。
 // 動作確認: tests/app/run-app-test.ps1（Edge ヘッドレスで画面を操作して確かめる）。
@@ -57,10 +61,10 @@
   // v0.1.0 の保存キー（index ベース）。問題が入れ替わったため読まない・消さない
   //   'sqlrenshu-progress'
 
-  // タブの題名の末尾に付けるサイト名（6b.）。問題がないときは index.html の <title> に戻す
+  // タブの題名の末尾に付けるサイト名（6b.）。問題がないときは app.html の <title> に戻す
   const SITE_NAME = 'SQL練習帳';
   const BASE_TITLE = document.title;
-  // 問題を開く URL のパラメータ名（index.html?id=I27）と、静的な問題ページの場所（q/I27.html）
+  // 問題を開く URL のパラメータ名（app.html?id=I27）と、静的な問題ページの場所（q/I27.html）
   const URL_ID_PARAM = 'id';
   const PROBLEM_PAGE_DIR = 'q/';
 
@@ -91,7 +95,7 @@
   // <html data-sidebar="open|closed" data-layout="split|stack"> を付け外しし、見た目は style.css が決める。
   // 画面のちらつきを減らすため、問題の表示より前（このすぐ下）で反映する。
   // 進捗の保存（3.）とは独立させる: ここでの localStorage の失敗は console に出すだけで、
-  // 利用者への注意は進捗側（storageWarning）が出す。ボタンがない古い index.html でも例外にしない。
+  // 利用者への注意は進捗側（storageWarning）が出す。ボタンがない古いページでも例外にしない。
 
   // 保存された文字列を解釈する。読めない項目は既定値にする（読める項目は生かす）
   function parseUiPrefs(raw) {
@@ -464,7 +468,7 @@
   // ---- 前後の問題へ（#prev-btn / #next-btn。docs/reviews.md N1） ----
   // 一覧を隠した配置（既定）でも、一覧を出さずに次の問題へ進めるようにする。
   // 対象は「今のレベルの一覧の並び順」での前後。レベルはまたがない（先頭・末尾ではボタンを押せない）。
-  // ボタンがない古い index.html でも例外にしない（ボタンがなければ何もしない）。
+  // ボタンがない古いページでも例外にしない（ボタンがなければ何もしない）。
 
   // item の前後の問題 { prev, next }（ない側は null）
   function neighbors(item) {
@@ -476,7 +480,7 @@
   }
 
   // ボタンの押せる／押せないと、行き先の問題名（title。マウスを乗せると出る）を合わせる。
-  // ボタンの文言は index.html のまま変えない
+  // ボタンの文言は app.html のまま変えない
   function renderPrevNext(item) {
     const { prev, next } = neighbors(item);
     [['prev-btn', prev], ['next-btn', next]].forEach(([id, target]) => {
@@ -487,7 +491,7 @@
     });
   }
 
-  // 問題文とお手本の列（index.html の .ws-col-problem。古い index.html では null）。
+  // 問題文とお手本の列（app.html の .ws-col-problem。古いページでは null）。
   // 横並び（style.css）ではこの列が sticky で、中でスクロールする
   function problemColumn() {
     return document.querySelector('.ws-col-problem');
@@ -698,8 +702,9 @@
   // 6b. URL とタブの題名（v1.2.0〜。docs/requirements-v1.2.md 4.3）
   // ===========================================================================
   //
-  // ここで扱う要素（#intro・#problem-page-link）は v1.2.0 で index.html に足したもの。
-  // ない index.html でも動くよう、要素があるときだけ触る。
+  // ここで扱う要素 #problem-page-link は v1.2.0 で足したもの（v1.3.0 から app.html にある）。
+  // ない古いページでも動くよう、要素があるときだけ触る。
+  // 紹介文 #intro の開閉（applyIntroState）は v1.3.0 で削除した（紹介文はトップ index.html へ）。
 
   // URL の ?id= を読む。{ id: 有効な問題の id か null, given: パラメータがあったか }
   function readUrlProblemId() {
@@ -750,14 +755,6 @@
         link.hidden = true;
       }
     }
-  }
-
-  // 紹介文 #intro を起動時に閉じるか決める。初めての人には開いたまま（index.html の open）見せ、
-  // 戻ってきた人・問題を指定して来た人には閉じる。開閉の状態は保存しない
-  function applyIntroState({ hasUrlId, hasProgress, hasLastProblem }) {
-    const intro = $('intro');
-    if (!intro) return;
-    if (hasUrlId || hasProgress || hasLastProblem) intro.open = false;
   }
 
   // ===========================================================================
@@ -867,7 +864,7 @@
   $('check-btn').onclick = check;
   $('reset-btn').onclick = onReset;
   $('self-check-btn').onclick = toggleSelfCheck;
-  // 前後の問題へ（ボタンがない古い index.html では登録しない）
+  // 前後の問題へ（ボタンがない古いページでは登録しない）
   if ($('prev-btn')) $('prev-btn').addEventListener('click', () => goRelative(-1));
   if ($('next-btn')) $('next-btn').addEventListener('click', () => goRelative(+1));
   // 畳んだ一覧を開き直したとき、選択中の問題が見える位置にする
@@ -900,12 +897,6 @@
   // 最初に開く問題: URL の ?id= → 最後に開いた問題 → 先頭の問題
   const urlProblem = readUrlProblemId();
   const lastId = storageGet(LAST_PROBLEM_KEY);
-  // 紹介文の開閉は、selectProblem が「最後に開いた問題」を保存する前の状態で決める
-  applyIntroState({
-    hasUrlId: urlProblem.id !== null,
-    hasProgress: Object.keys(solved).length > 0,
-    hasLastProblem: lastId !== null && lastId !== '',
-  });
   const first = (urlProblem.id && store.byId.get(urlProblem.id))
     || (lastId && store.byId.get(lastId))
     || LEVELS.map((l) => store.byLevel[l.key][0]).find(Boolean);

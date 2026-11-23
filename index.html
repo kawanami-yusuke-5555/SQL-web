@@ -1,14 +1,11 @@
 <!doctype html>
+<!-- 生成物: tools/pages/run-generate.ps1 が tools/pages/templates/top.html と問題データ（problems/）から作ったファイルです。手で編集しないでください。直すときはテンプレートか問題データを直して生成し直します（README「静的ページの生成」）。 -->
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SQL練習帳｜登録不要・ブラウザで解けるSQL練習問題100問</title>
   <meta name="description" content="データ分析を始めたい社会人のためのSQL練習問題集。ネットショップの売上・顧客データを題材に、「期待される結果」の表を見ながらSQLを書き、その場で自動の答え合わせ。登録不要で全100問、あいまいな業務の依頼に答える実践問題つき。">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <!-- site-meta の間は生成器（tools/pages/run-generate.ps1）が site-config.json の siteUrl から書き直す。手で編集しない -->
-  <!-- site-meta:begin -->
   <link rel="canonical" href="https://kawanami-yusuke-5555.github.io/SQL-web/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="SQL練習帳｜登録不要・ブラウザで解けるSQL練習問題100問">
@@ -18,152 +15,151 @@
   <meta property="og:site_name" content="SQL練習帳">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
-  <!-- site-meta:end -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header>
-    <div class="header-start">
-      <!-- 一覧を出す／隠す（文言と aria-expanded は app.js が切り替える。720px 以下では表示しない）
-           初期値は既定の配置（一覧を隠す）に合わせておき、app.js 読み込み前のちらつきを防ぐ -->
-      <button type="button" id="sidebar-toggle" class="view-toggle" aria-controls="sidebar" aria-expanded="false">一覧を出す</button>
-      <div class="header-title">
-        <h1>SQL練習帳</h1>
-        <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
-      </div>
+<body class="static-page">
+  <header class="site-header">
+    <div class="header-title">
+      <h1 class="site-name">SQL練習帳</h1>
+      <p class="sub">データ分析のためのSQL練習問題 100問（登録不要）</p>
     </div>
-    <div class="header-end">
-      <p id="progress-summary" class="progress-summary" aria-live="polite"></p>
-      <!-- 横並び／縦並びの切り替え（文言は app.js が切り替える。1100px 未満では表示しない） -->
-      <button type="button" id="layout-toggle" class="view-toggle" aria-controls="workspace">縦に並べる</button>
-    </div>
+    <nav class="site-header-nav" aria-label="サイト内の移動">
+      <a class="header-link" href="about.html">このサイトについて</a>
+    </nav>
   </header>
 
-  <!-- サイトの紹介（静的な文。開閉は app.js。初めての人には開き、進捗や ?id= があると閉じる）。
-       開いても作業の邪魔にならないよう、本文は高さを抑えて中でスクロールする（style.css）。
-       この中には details を入れない（tests/app/run-app-test.ps1 が最初の閉じタグまでを紹介文として扱う） -->
-  <details id="intro" class="intro" open>
-    <summary class="intro-summary">はじめての方へ: SQL練習帳でできること</summary>
-    <div class="intro-body" tabindex="0" role="region" aria-label="SQL練習帳でできること">
-      <div class="intro-main">
-        <p class="intro-lead">データ分析を始めたい社会人のための、SQL の練習問題集です。雑貨のネットショップの売上・顧客・社員のデータを使って、仕事でよく出る集計を手を動かして身につけます。</p>
-        <ul class="intro-points">
-          <li><strong>登録なしで全100問。</strong>インストールも不要で、このページだけで SQL を書いて実行できます。</li>
-          <li><strong>「期待される結果」の表が最初から見えます。</strong>何を出せばよいか迷わずに書けます。答え合わせは自動で、列名が違っても結果が同じなら正解です。</li>
-          <li><strong>実務の「あいまいな依頼」まで練習できます。</strong>初級10・中級50・上級30問のあとに、「休眠顧客にクーポンを送りたい」「リピート率を知りたい」のような依頼に、自分で結果の形を決めて答える実践問題が10問あります。</li>
-        </ul>
-      </div>
-      <div class="intro-side">
-        <p class="intro-heading">使い方</p>
-        <ol class="intro-steps">
-          <li>下の問題を読み、「期待される結果」の表を確かめる</li>
-          <li>SQL を書いて「実行」（Ctrl+Enter）</li>
-          <li>「答え合わせ」で判定。困ったら「ヒント」や「模範解答と解説」を開く</li>
-        </ol>
-        <p class="intro-links"><a href="q/index.html">問題の一覧を見る（全100問）</a><span class="intro-sep" aria-hidden="true">・</span><a href="about.html">このサイトについて</a></p>
-        <p class="intro-note">進捗はこのブラウザの中だけに保存されます（サーバーには送りません）。</p>
-      </div>
-    </div>
-  </details>
-
-  <main>
-    <aside id="sidebar" aria-label="問題の選択">
-      <nav id="level-tabs" aria-label="レベルの切り替え"></nav>
-      <details id="list-box" open>
-        <summary>
-          <span class="list-box-label">問題一覧</span>
-          <span id="list-current" class="list-current"></span>
-        </summary>
-        <div id="problem-list"></div>
-      </details>
-    </aside>
-
-    <section id="workspace" aria-label="問題と解答">
-      <!-- 左列（広い画面）: 問題文とお手本。スクロールしても画面に残る -->
-      <div class="ws-col ws-col-problem">
-      <div id="problem">
-        <!-- 上端の行: 左にレベル・カテゴリのバッジ、右に前後の問題へ進むボタン
-             （動作と disabled の切り替えは app.js。読み込み前は押せないよう disabled にしておく） -->
-        <div class="problem-head">
-          <p class="problem-meta">
-            <span id="problem-level" class="badge badge-level"></span>
-            <span id="problem-category" class="badge badge-category"></span>
-            <!-- この問題の静的ページ（解説・期待される結果を1ページで見られる。共有用の URL）。
-                 href と hidden の切り替えは app.js（問題がないときは隠す） -->
-            <a id="problem-page-link" class="problem-page-link" hidden title="解説と期待される結果を1ページで見られます（共有用の URL）">この問題のページ</a>
-          </p>
-          <nav class="problem-nav" aria-label="前後の問題">
-            <button type="button" id="prev-btn" class="problem-nav-btn" disabled>← 前の問題</button>
-            <button type="button" id="next-btn" class="problem-nav-btn" disabled>次の問題 →</button>
-          </nav>
-        </div>
-        <h2 id="problem-title">読み込み中…</h2>
-        <p id="problem-desc"></p>
-        <details id="hint-box">
-          <summary>ヒント</summary>
-          <p id="problem-hint"></p>
-        </details>
-      </div>
-
-      <details id="expected-box" class="expected-box" open>
-        <summary class="expected-summary">
-          <h3 id="expected-heading" class="box-heading">期待される結果</h3>
-        </summary>
-        <p class="box-note">この表と同じ結果になるSQLを書きましょう（列名は違っていても正解になります）。</p>
-        <div id="expected" class="table-scroll"></div>
-      </details>
-      </div>
-
-      <!-- 右列（広い画面）: エディタ・ボタン・実行結果など -->
-      <div class="ws-col ws-col-work">
-      <div class="editor-area">
-        <label for="editor" class="box-heading">SQLを書く</label>
-        <textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="ここにSQLを書きます（Ctrl+Enterで実行）"></textarea>
-        <div class="buttons">
-          <button type="button" id="run-btn" disabled>実行 (Ctrl+Enter)</button>
-          <button type="button" id="check-btn" disabled>答え合わせ</button>
-          <button type="button" id="reset-btn" class="secondary">データをリセット</button>
-        </div>
-      </div>
-
-      <section id="result-box" class="result-box" aria-labelledby="result-heading">
-        <h3 id="result-heading" class="box-heading">実行結果</h3>
-        <div id="message" role="status" aria-live="polite"></div>
-        <div id="result" class="table-scroll"></div>
-      </section>
-
-      <section id="practice-box" class="practice-box" aria-labelledby="practice-heading" hidden>
-        <h3 id="practice-heading" class="box-heading">自分で確認しよう</h3>
-        <p class="box-note">実践問題には決まった答えがありません。結果が出たら、次の点を確かめてから「完了」にしましょう。</p>
-        <ul id="checkpoints" class="checkpoints"></ul>
-        <details id="examples-box">
-          <summary>解答例を見る</summary>
-          <div id="examples"></div>
-        </details>
-        <div class="buttons">
-          <button type="button" id="self-check-btn">確認した（完了にする）</button>
-        </div>
-      </section>
-
-      <details id="answer-box">
-        <summary>模範解答と解説を見る</summary>
-        <pre id="answer-sql" class="code-block"></pre>
-        <p id="answer-explanation"></p>
-      </details>
-
-      <details id="schema-box">
-        <summary>テーブル一覧</summary>
-        <div id="schema"></div>
-      </details>
-      </div>
+  <main class="page top-page">
+    <!-- 紹介文（静的。開閉なし） -->
+    <section class="top-intro" aria-labelledby="top-intro-heading">
+      <h2 id="top-intro-heading" class="top-intro-heading">SQL練習帳でできること</h2>
+      <p class="top-lead">データ分析を始めたい社会人のための、SQL の練習問題集です。雑貨のネットショップの売上・顧客・社員のデータを使って、仕事でよく出る集計を手を動かして身につけます。</p>
+      <ul class="top-points">
+        <li><strong>登録なしで全100問。</strong>インストールも不要で、ブラウザだけで SQL を書いて実行できます。</li>
+        <li><strong>「期待される結果」の表が最初から見えます。</strong>何を出せばよいか迷わずに書けます。答え合わせは自動で、列名が違っても結果が同じなら正解です。</li>
+        <li><strong>実務の「あいまいな依頼」まで練習できます。</strong>初級10・中級50・上級30問のあとに、「休眠顧客にクーポンを送りたい」「リピート率を知りたい」のような依頼に、自分で結果の形を決めて答える実践問題が10問あります。</li>
+      </ul>
     </section>
+
+    <!-- 解き始める: 続きから（app.html はアプリが前回開いた問題を開く）／最初から。JS なしなので両方とも常に表示する -->
+    <section class="top-start" aria-label="解き始める">
+      <p class="solve top-actions">
+        <a class="solve-btn top-continue" href="app.html">続きから解く</a>
+        <a class="solve-btn solve-btn-sub top-first" href="app.html?id=B01">最初から解く</a>
+      </p>
+      <p class="top-actions-note">「続きから解く」は前回開いた問題を開きます（初めての方は最初の問題から）。進捗はこのブラウザの中だけに保存されます。</p>
+      <p class="top-steps-heading">使い方</p>
+      <ol class="top-steps">
+        <li>下の一覧から問題を選ぶ（タイトルで問題ページ、「解く」で解答画面が開きます）</li>
+        <li>SQL を書いて「実行」（Ctrl+Enter）</li>
+        <li>「答え合わせ」で判定。困ったら「ヒント」や「模範解答と解説」を開く</li>
+      </ol>
+    </section>
+
+    <h2 id="list" class="top-list-title">問題一覧（全100問）</h2>
+
+    <!-- レベルの見出しへ移動（id はレベルの key。生成器が一覧の h2 に付ける） -->
+    <nav class="level-jump" aria-label="レベルへ移動">
+      <ul>
+        <li><a href="#beginner">初級</a></li>
+        <li><a href="#intermediate">中級</a></li>
+        <li><a href="#advanced">上級</a></li>
+        <li><a href="#practice">実践</a></li>
+      </ul>
+    </nav>
+
+    <section class="level-section" aria-labelledby="beginner">
+<h2 id="beginner" class="level-heading">初級<span class="level-count">（10問）</span></h2>
+<p class="level-desc">SELECT・WHERE・ORDER BY など、1つのテーブルから行と列を取り出す基本。</p>
+<h3 class="category-heading">列の指定と別名</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B01.html"><span class="q-num">1.</span> 列を選んで名前を付ける</a> <a class="q-solve" href="app.html?id=B01" aria-label="1. 列を選んで名前を付ける を解く">解く</a></li></ul>
+<h3 class="category-heading">比較演算子</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B02.html"><span class="q-num">2.</span> 在庫が少ない商品</a> <a class="q-solve" href="app.html?id=B02" aria-label="2. 在庫が少ない商品 を解く">解く</a></li></ul>
+<h3 class="category-heading">AND・OR</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B03.html"><span class="q-num">3.</span> 安い文房具（500円以下）</a> <a class="q-solve" href="app.html?id=B03" aria-label="3. 安い文房具（500円以下） を解く">解く</a></li></ul>
+<h3 class="category-heading">IN</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B04.html"><span class="q-num">4.</span> 関西の会員</a> <a class="q-solve" href="app.html?id=B04" aria-label="4. 関西の会員 を解く">解く</a></li></ul>
+<h3 class="category-heading">BETWEEN</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B05.html"><span class="q-num">5.</span> 期間を指定した注文（6月上旬）</a> <a class="q-solve" href="app.html?id=B05" aria-label="5. 期間を指定した注文（6月上旬） を解く">解く</a></li></ul>
+<h3 class="category-heading">LIKE</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B06.html"><span class="q-num">6.</span> 「ペン」を含む商品名</a> <a class="q-solve" href="app.html?id=B06" aria-label="6. 「ペン」を含む商品名 を解く">解く</a></li></ul>
+<h3 class="category-heading">IS NULL</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B07.html"><span class="q-num">7.</span> メールアドレス未登録の会員</a> <a class="q-solve" href="app.html?id=B07" aria-label="7. メールアドレス未登録の会員 を解く">解く</a></li></ul>
+<h3 class="category-heading">ORDER BY（複数キー）</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B08.html"><span class="q-num">8.</span> 部署ごとに給与の高い順</a> <a class="q-solve" href="app.html?id=B08" aria-label="8. 部署ごとに給与の高い順 を解く">解く</a></li></ul>
+<h3 class="category-heading">LIMIT</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B09.html"><span class="q-num">9.</span> 在庫のある高額商品 上位5件</a> <a class="q-solve" href="app.html?id=B09" aria-label="9. 在庫のある高額商品 上位5件 を解く">解く</a></li></ul>
+<h3 class="category-heading">DISTINCT</h3>
+<ul class="q-list"><li><a class="q-link" href="q/B10.html"><span class="q-num">10.</span> クーポンコードの種類</a> <a class="q-solve" href="app.html?id=B10" aria-label="10. クーポンコードの種類 を解く">解く</a></li></ul>
+</section>
+
+<section class="level-section" aria-labelledby="intermediate">
+<h2 id="intermediate" class="level-heading">中級<span class="level-count">（50問）</span></h2>
+<p class="level-desc">集計（GROUP BY）・JOIN・NULL の扱い・CASE 式・サブクエリ・日付関数・集合演算。データ分析の中心になる書き方。</p>
+<h3 class="category-heading">集計</h3>
+<ul class="q-list"><li><a class="q-link" href="q/I01.html"><span class="q-num">1.</span> COUNT(*) と COUNT(列) の違い</a> <a class="q-solve" href="app.html?id=I01" aria-label="1. COUNT(*) と COUNT(列) の違い を解く">解く</a></li><li><a class="q-link" href="q/I02.html"><span class="q-num">2.</span> カテゴリごとの商品数</a> <a class="q-solve" href="app.html?id=I02" aria-label="2. カテゴリごとの商品数 を解く">解く</a></li><li><a class="q-link" href="q/I03.html"><span class="q-num">3.</span> 部署ごとの在籍人数と給与の合計</a> <a class="q-solve" href="app.html?id=I03" aria-label="3. 部署ごとの在籍人数と給与の合計 を解く">解く</a></li><li><a class="q-link" href="q/I04.html"><span class="q-num">4.</span> 会員の多い都道府県順</a> <a class="q-solve" href="app.html?id=I04" aria-label="4. 会員の多い都道府県順 を解く">解く</a></li><li><a class="q-link" href="q/I05.html"><span class="q-num">5.</span> レビューが4件以上ある商品</a> <a class="q-solve" href="app.html?id=I05" aria-label="5. レビューが4件以上ある商品 を解く">解く</a></li><li><a class="q-link" href="q/I06.html"><span class="q-num">6.</span> 有効な注文が7件以上の会員</a> <a class="q-solve" href="app.html?id=I06" aria-label="6. 有効な注文が7件以上の会員 を解く">解く</a></li><li><a class="q-link" href="q/I07.html"><span class="q-num">7.</span> レビューを書いた会員は何人？</a> <a class="q-solve" href="app.html?id=I07" aria-label="7. レビューを書いた会員は何人？ を解く">解く</a></li><li><a class="q-link" href="q/I08.html"><span class="q-num">8.</span> 同じ商品に2回以上レビューした会員</a> <a class="q-solve" href="app.html?id=I08" aria-label="8. 同じ商品に2回以上レビューした会員 を解く">解く</a></li></ul>
+<h3 class="category-heading">JOIN</h3>
+<ul class="q-list"><li><a class="q-link" href="q/I09.html"><span class="q-num">9.</span> 高額商品とカテゴリ名</a> <a class="q-solve" href="app.html?id=I09" aria-label="9. 高額商品とカテゴリ名 を解く">解く</a></li><li><a class="q-link" href="q/I10.html"><span class="q-num">10.</span> 部署名ごとの在籍人数</a> <a class="q-solve" href="app.html?id=I10" aria-label="10. 部署名ごとの在籍人数 を解く">解く</a></li><li><a class="q-link" href="q/I11.html"><span class="q-num">11.</span> 一度も注文していない会員</a> <a class="q-solve" href="app.html?id=I11" aria-label="11. 一度も注文していない会員 を解く">解く</a></li><li><a class="q-link" href="q/I12.html"><span class="q-num">12.</span> 全部署の所属人数（0人の部署も）</a> <a class="q-solve" href="app.html?id=I12" aria-label="12. 全部署の所属人数（0人の部署も） を解く">解く</a></li><li><a class="q-link" href="q/I13.html"><span class="q-num">13.</span> 新しい会員の有効な注文件数（ON に条件を書く）</a> <a class="q-solve" href="app.html?id=I13" aria-label="13. 新しい会員の有効な注文件数（ON に条件を書く） を解く">解く</a></li><li><a class="q-link" href="q/I14.html"><span class="q-num">14.</span> 注文明細に商品名を付ける（3テーブル）</a> <a class="q-solve" href="app.html?id=I14" aria-label="14. 注文明細に商品名を付ける（3テーブル） を解く">解く</a></li><li><a class="q-link" href="q/I15.html"><span class="q-num">15.</span> カテゴリ別の売上金額（4テーブル）</a> <a class="q-solve" href="app.html?id=I15" aria-label="15. カテゴリ別の売上金額（4テーブル） を解く">解く</a></li><li><a class="q-link" href="q/I16.html"><span class="q-num">16.</span> 社員と上司の名前（自己結合）</a> <a class="q-solve" href="app.html?id=I16" aria-label="16. 社員と上司の名前（自己結合） を解く">解く</a></li><li><a class="q-link" href="q/I17.html"><span class="q-num">17.</span> 同姓同名の会員の組（自己結合）</a> <a class="q-solve" href="app.html?id=I17" aria-label="17. 同姓同名の会員の組（自己結合） を解く">解く</a></li></ul>
+<h3 class="category-heading">NULL処理</h3>
+<ul class="q-list"><li><a class="q-link" href="q/I18.html"><span class="q-num">18.</span> 未登録のメールアドレスを「未登録」と表示</a> <a class="q-solve" href="app.html?id=I18" aria-label="18. 未登録のメールアドレスを「未登録」と表示 を解く">解く</a></li><li><a class="q-link" href="q/I19.html"><span class="q-num">19.</span> 社員の部署名（未配属は「未配属」）</a> <a class="q-solve" href="app.html?id=I19" aria-label="19. 社員の部署名（未配属は「未配属」） を解く">解く</a></li><li><a class="q-link" href="q/I20.html"><span class="q-num">20.</span> 家具の注文数量（一度も注文されていない商品は 0）</a> <a class="q-solve" href="app.html?id=I20" aria-label="20. 家具の注文数量（一度も注文されていない商品は 0） を解く">解く</a></li></ul>
+<h3 class="category-heading">CASE式</h3>
+<ul class="q-list"><li><a class="q-link" href="q/I21.html"><span class="q-num">21.</span> 注文の状態を日本語で表示</a> <a class="q-solve" href="app.html?id=I21" aria-label="21. 注文の状態を日本語で表示 を解く">解く</a></li><li><a class="q-link" href="q/I22.html"><span class="q-num">22.</span> 食器の価格帯を分類する</a> <a class="q-solve" href="app.html?id=I22" aria-label="22. 食器の価格帯を分類する を解く">解く</a></li><li><a class="q-link" href="q/I23.html"><span class="q-num">23.</span> 価格帯ごとの商品数</a> <a class="q-solve" href="app.html?id=I23" aria-label="23. 価格帯ごとの商品数 を解く">解く</a></li><li><a class="q-link" href="q/I24.html"><span class="q-num">24.</span> 部署ごとの在籍者数と退職者数（条件付き集計）</a> <a class="q-solve" href="app.html?id=I24" aria-label="24. 部署ごとの在籍者数と退職者数（条件付き集計） を解く">解く</a></li><li><a class="q-link" href="q/I25.html"><span class="q-num">25.</span> 調理器具の上半期・下半期の販売数量</a> <a class="q-solve" href="app.html?id=I25" aria-label="25. 調理器具の上半期・下半期の販売数量 を解く">解く</a></li></ul>
+<h3 class="category-heading">サブクエリ（副問い合わせ）</h3>
+<ul class="q-list"><li><a class="q-link" href="q/I26.html"><span class="q-num">26.</span> 低い評価が付いた商品</a> <a class="q-solve" href="app.html?id=I26" aria-label="26. 低い評価が付いた商品 を解く">解く</a></li><li><a class="q-link" href="q/I27.html"><span class="q-num">27.</span> 部下のいない社員（NOT IN と NULL）</a> <a class="q-solve" href="app.html?id=I27" aria-label="27. 部下のいない社員（NOT IN と NULL） を解く">解く</a></li><li><a class="q-link" href="q/I28.html"><span class="q-num">28.</span> 最も早く発売された商品</a> <a class="q-solve" href="app.html?id=I28" aria-label="28. 最も早く発売された商品 を解く">解く</a></li><li><a class="q-link" href="q/I29.html"><span class="q-num">29.</span> 在籍中の社員の平均より給与が高い人</a> <a class="q-solve" href="app.html?id=I29" aria-label="29. 在籍中の社員の平均より給与が高い人 を解く">解く</a></li><li><a class="q-link" href="q/I30.html"><span class="q-num">30.</span> 全商品の平均価格との差</a> <a class="q-solve" href="app.html?id=I30" aria-label="30. 全商品の平均価格との差 を解く">解く</a></li><li><a class="q-link" href="q/I31.html"><span class="q-num">31.</span> 注文1件あたりの平均購入金額</a> <a class="q-solve" href="app.html?id=I31" aria-label="31. 注文1件あたりの平均購入金額 を解く">解く</a></li><li><a class="q-link" href="q/I32.html"><span class="q-num">32.</span> 注文回数ごとの顧客数</a> <a class="q-solve" href="app.html?id=I32" aria-label="32. 注文回数ごとの顧客数 を解く">解く</a></li><li><a class="q-link" href="q/I33.html"><span class="q-num">33.</span> 自分のカテゴリの平均より高い商品</a> <a class="q-solve" href="app.html?id=I33" aria-label="33. 自分のカテゴリの平均より高い商品 を解く">解く</a></li><li><a class="q-link" href="q/I34.html"><span class="q-num">34.</span> 商品ごとのレビュー件数と平均評価</a> <a class="q-solve" href="app.html?id=I34" aria-label="34. 商品ごとのレビュー件数と平均評価 を解く">解く</a></li><li><a class="q-link" href="q/I35.html"><span class="q-num">35.</span> 部署ごとの一番新しいメンバー</a> <a class="q-solve" href="app.html?id=I35" aria-label="35. 部署ごとの一番新しいメンバー を解く">解く</a></li><li><a class="q-link" href="q/I36.html"><span class="q-num">36.</span> 満点のレビューを書いた会員（EXISTS）</a> <a class="q-solve" href="app.html?id=I36" aria-label="36. 満点のレビューを書いた会員（EXISTS） を解く">解く</a></li><li><a class="q-link" href="q/I37.html"><span class="q-num">37.</span> 有効な注文が1件もない会員（NOT EXISTS）</a> <a class="q-solve" href="app.html?id=I37" aria-label="37. 有効な注文が1件もない会員（NOT EXISTS） を解く">解く</a></li><li><a class="q-link" href="q/I38.html"><span class="q-num">38.</span> 買っていない商品へのレビュー</a> <a class="q-solve" href="app.html?id=I38" aria-label="38. 買っていない商品へのレビュー を解く">解く</a></li></ul>
+<h3 class="category-heading">日付・文字列関数</h3>
+<ul class="q-list"><li><a class="q-link" href="q/I39.html"><span class="q-num">39.</span> 月ごとの注文件数（strftime）</a> <a class="q-solve" href="app.html?id=I39" aria-label="39. 月ごとの注文件数（strftime） を解く">解く</a></li><li><a class="q-link" href="q/I40.html"><span class="q-num">40.</span> 直近14日間の注文（date）</a> <a class="q-solve" href="app.html?id=I40" aria-label="40. 直近14日間の注文（date） を解く">解く</a></li><li><a class="q-link" href="q/I41.html"><span class="q-num">41.</span> 原価の表示ラベルを作る（||）</a> <a class="q-solve" href="app.html?id=I41" aria-label="41. 原価の表示ラベルを作る（||） を解く">解く</a></li><li><a class="q-link" href="q/I42.html"><span class="q-num">42.</span> 氏名を姓と名に分ける（substr・instr）</a> <a class="q-solve" href="app.html?id=I42" aria-label="42. 氏名を姓と名に分ける（substr・instr） を解く">解く</a></li><li><a class="q-link" href="q/I43.html"><span class="q-num">43.</span> 文字の出現回数を数える（replace・length）</a> <a class="q-solve" href="app.html?id=I43" aria-label="43. 文字の出現回数を数える（replace・length） を解く">解く</a></li><li><a class="q-link" href="q/I44.html"><span class="q-num">44.</span> 登録から初回購入までの日数（julianday）</a> <a class="q-solve" href="app.html?id=I44" aria-label="44. 登録から初回購入までの日数（julianday） を解く">解く</a></li><li><a class="q-link" href="q/I45.html"><span class="q-num">45.</span> 今日時点の年齢</a> <a class="q-solve" href="app.html?id=I45" aria-label="45. 今日時点の年齢 を解く">解く</a></li></ul>
+<h3 class="category-heading">集合演算</h3>
+<ul class="q-list"><li><a class="q-link" href="q/I46.html"><span class="q-num">46.</span> 要対応の商品リスト（UNION）</a> <a class="q-solve" href="app.html?id=I46" aria-label="46. 要対応の商品リスト（UNION） を解く">解く</a></li><li><a class="q-link" href="q/I47.html"><span class="q-num">47.</span> 会員ごとの活動回数（UNION ALL）</a> <a class="q-solve" href="app.html?id=I47" aria-label="47. 会員ごとの活動回数（UNION ALL） を解く">解く</a></li><li><a class="q-link" href="q/I48.html"><span class="q-num">48.</span> 年始と年末の両方に買った会員（INTERSECT）</a> <a class="q-solve" href="app.html?id=I48" aria-label="48. 年始と年末の両方に買った会員（INTERSECT） を解く">解く</a></li><li><a class="q-link" href="q/I49.html"><span class="q-num">49.</span> 今の定価と違う単価で売れた商品（EXCEPT）</a> <a class="q-solve" href="app.html?id=I49" aria-label="49. 今の定価と違う単価で売れた商品（EXCEPT） を解く">解く</a></li><li><a class="q-link" href="q/I50.html"><span class="q-num">50.</span> 下半期に来なくなった会員（EXCEPT）</a> <a class="q-solve" href="app.html?id=I50" aria-label="50. 下半期に来なくなった会員（EXCEPT） を解く">解く</a></li></ul>
+</section>
+
+<section class="level-section" aria-labelledby="advanced">
+<h2 id="advanced" class="level-heading">上級<span class="level-count">（30問）</span></h2>
+<p class="level-desc">CTE（WITH 句）・ウィンドウ関数・前月比（LAG）・グループ内の上位N件・縦横変換など、分析の定番の手法。</p>
+<h3 class="category-heading">CTE（WITH句）</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A01.html"><span class="q-num">1.</span> WITH 句で注文ごとの合計を作る</a> <a class="q-solve" href="app.html?id=A01" aria-label="1. WITH 句で注文ごとの合計を作る を解く">解く</a></li><li><a class="q-link" href="q/A02.html"><span class="q-num">2.</span> 平均より売れている商品（CTE を2回使う）</a> <a class="q-solve" href="app.html?id=A02" aria-label="2. 平均より売れている商品（CTE を2回使う） を解く">解く</a></li><li><a class="q-link" href="q/A03.html"><span class="q-num">3.</span> 売上とレビューを別々に集計してから結合する</a> <a class="q-solve" href="app.html?id=A03" aria-label="3. 売上とレビューを別々に集計してから結合する を解く">解く</a></li><li><a class="q-link" href="q/A04.html"><span class="q-num">4.</span> CTE をつないで会員を区分ごとに集計する</a> <a class="q-solve" href="app.html?id=A04" aria-label="4. CTE をつないで会員を区分ごとに集計する を解く">解く</a></li></ul>
+<h3 class="category-heading">順位系ウィンドウ関数</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A05.html"><span class="q-num">5.</span> ROW_NUMBER で通し番号を振る</a> <a class="q-solve" href="app.html?id=A05" aria-label="5. ROW_NUMBER で通し番号を振る を解く">解く</a></li><li><a class="q-link" href="q/A06.html"><span class="q-num">6.</span> RANK と DENSE_RANK の違い</a> <a class="q-solve" href="app.html?id=A06" aria-label="6. RANK と DENSE_RANK の違い を解く">解く</a></li><li><a class="q-link" href="q/A07.html"><span class="q-num">7.</span> 部署ごとの給与順位（PARTITION BY）</a> <a class="q-solve" href="app.html?id=A07" aria-label="7. 部署ごとの給与順位（PARTITION BY） を解く">解く</a></li><li><a class="q-link" href="q/A08.html"><span class="q-num">8.</span> NTILE で会員を4つのグループに分ける</a> <a class="q-solve" href="app.html?id=A08" aria-label="8. NTILE で会員を4つのグループに分ける を解く">解く</a></li></ul>
+<h3 class="category-heading">集計ウィンドウ関数</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A09.html"><span class="q-num">9.</span> 月別売上の累計</a> <a class="q-solve" href="app.html?id=A09" aria-label="9. 月別売上の累計 を解く">解く</a></li><li><a class="q-link" href="q/A10.html"><span class="q-num">10.</span> カテゴリ別売上の構成比</a> <a class="q-solve" href="app.html?id=A10" aria-label="10. カテゴリ別売上の構成比 を解く">解く</a></li><li><a class="q-link" href="q/A11.html"><span class="q-num">11.</span> 会員ごとの購入額の累計（同じ日の注文に注意）</a> <a class="q-solve" href="app.html?id=A11" aria-label="11. 会員ごとの購入額の累計（同じ日の注文に注意） を解く">解く</a></li><li><a class="q-link" href="q/A12.html"><span class="q-num">12.</span> 直近3回の注文金額の移動平均（フレーム指定）</a> <a class="q-solve" href="app.html?id=A12" aria-label="12. 直近3回の注文金額の移動平均（フレーム指定） を解く">解く</a></li></ul>
+<h3 class="category-heading">LAG・LEAD</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A13.html"><span class="q-num">13.</span> 前月との売上の差（売上0の月も含める）</a> <a class="q-solve" href="app.html?id=A13" aria-label="13. 前月との売上の差（売上0の月も含める） を解く">解く</a></li><li><a class="q-link" href="q/A14.html"><span class="q-num">14.</span> 前回の注文からの日数</a> <a class="q-solve" href="app.html?id=A14" aria-label="14. 前回の注文からの日数 を解く">解く</a></li><li><a class="q-link" href="q/A15.html"><span class="q-num">15.</span> 値上げ前の最後の販売（LEAD）</a> <a class="q-solve" href="app.html?id=A15" aria-label="15. 値上げ前の最後の販売（LEAD） を解く">解く</a></li></ul>
+<h3 class="category-heading">再帰CTE</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A16.html"><span class="q-num">16.</span> 注文のない月も含めた月別の注文件数</a> <a class="q-solve" href="app.html?id=A16" aria-label="16. 注文のない月も含めた月別の注文件数 を解く">解く</a></li><li><a class="q-link" href="q/A17.html"><span class="q-num">17.</span> キッチンの配下のカテゴリをすべて</a> <a class="q-solve" href="app.html?id=A17" aria-label="17. キッチンの配下のカテゴリをすべて を解く">解く</a></li><li><a class="q-link" href="q/A18.html"><span class="q-num">18.</span> 社長から各社員までの経路</a> <a class="q-solve" href="app.html?id=A18" aria-label="18. 社長から各社員までの経路 を解く">解く</a></li><li><a class="q-link" href="q/A19.html"><span class="q-num">19.</span> 配下のカテゴリを含めたカテゴリ別売上</a> <a class="q-solve" href="app.html?id=A19" aria-label="19. 配下のカテゴリを含めたカテゴリ別売上 を解く">解く</a></li></ul>
+<h3 class="category-heading">グループ内上位N件</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A20.html"><span class="q-num">20.</span> カテゴリごとの高額商品 上位2件（廃番を除く）</a> <a class="q-solve" href="app.html?id=A20" aria-label="20. カテゴリごとの高額商品 上位2件（廃番を除く） を解く">解く</a></li><li><a class="q-link" href="q/A21.html"><span class="q-num">21.</span> カテゴリごとの売れ筋 上位2位（同数は含める）</a> <a class="q-solve" href="app.html?id=A21" aria-label="21. カテゴリごとの売れ筋 上位2位（同数は含める） を解く">解く</a></li><li><a class="q-link" href="q/A22.html"><span class="q-num">22.</span> 四半期ごとの売上上位3商品</a> <a class="q-solve" href="app.html?id=A22" aria-label="22. 四半期ごとの売上上位3商品 を解く">解く</a></li></ul>
+<h3 class="category-heading">ピボット（縦横変換）</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A23.html"><span class="q-num">23.</span> 月別・ステータス別の注文件数を横に並べる</a> <a class="q-solve" href="app.html?id=A23" aria-label="23. 月別・ステータス別の注文件数を横に並べる を解く">解く</a></li><li><a class="q-link" href="q/A24.html"><span class="q-num">24.</span> 最上位カテゴリ × 四半期の売上表</a> <a class="q-solve" href="app.html?id=A24" aria-label="24. 最上位カテゴリ × 四半期の売上表 を解く">解く</a></li></ul>
+<h3 class="category-heading">連続期間・欠番</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A25.html"><span class="q-num">25.</span> 注文が途切れた期間</a> <a class="q-solve" href="app.html?id=A25" aria-label="25. 注文が途切れた期間 を解く">解く</a></li><li><a class="q-link" href="q/A26.html"><span class="q-num">26.</span> 連続購入が3か月以上の期間</a> <a class="q-solve" href="app.html?id=A26" aria-label="26. 連続購入が3か月以上の期間 を解く">解く</a></li></ul>
+<h3 class="category-heading">総合問題</h3>
+<ul class="q-list"><li><a class="q-link" href="q/A27.html"><span class="q-num">27.</span> 月別売上の累計と前月差（8月も含む）</a> <a class="q-solve" href="app.html?id=A27" aria-label="27. 月別売上の累計と前月差（8月も含む） を解く">解く</a></li><li><a class="q-link" href="q/A28.html"><span class="q-num">28.</span> カテゴリ平均より売れている商品</a> <a class="q-solve" href="app.html?id=A28" aria-label="28. カテゴリ平均より売れている商品 を解く">解く</a></li><li><a class="q-link" href="q/A29.html"><span class="q-num">29.</span> 初回購入月ごとのリピート率</a> <a class="q-solve" href="app.html?id=A29" aria-label="29. 初回購入月ごとのリピート率 を解く">解く</a></li><li><a class="q-link" href="q/A30.html"><span class="q-num">30.</span> 部長ごとの配下の人数と人件費</a> <a class="q-solve" href="app.html?id=A30" aria-label="30. 部長ごとの配下の人数と人件費 を解く">解く</a></li></ul>
+</section>
+
+<section class="level-section" aria-labelledby="practice">
+<h2 id="practice" class="level-heading">実践<span class="level-count">（10問）</span></h2>
+<p class="level-desc">「月次の売上レポートがほしい」のような業務の依頼に、自分で結果の形を決めて答える。決まった答えはなく、チェックポイントで確かめる。</p>
+<h3 class="category-heading">売上分析</h3>
+<ul class="q-list"><li><a class="q-link" href="q/P01.html"><span class="q-num">1.</span> 月次売上レポート</a> <a class="q-solve" href="app.html?id=P01" aria-label="1. 月次売上レポート を解く">解く</a></li></ul>
+<h3 class="category-heading">顧客分析</h3>
+<ul class="q-list"><li><a class="q-link" href="q/P02.html"><span class="q-num">2.</span> 休眠顧客にクーポンを送りたい</a> <a class="q-solve" href="app.html?id=P02" aria-label="2. 休眠顧客にクーポンを送りたい を解く">解く</a></li><li><a class="q-link" href="q/P03.html"><span class="q-num">3.</span> リピート率を知りたい</a> <a class="q-solve" href="app.html?id=P03" aria-label="3. リピート率を知りたい を解く">解く</a></li></ul>
+<h3 class="category-heading">在庫管理</h3>
+<ul class="q-list"><li><a class="q-link" href="q/P04.html"><span class="q-num">4.</span> 発注したほうがいい商品</a> <a class="q-solve" href="app.html?id=P04" aria-label="4. 発注したほうがいい商品 を解く">解く</a></li></ul>
+<h3 class="category-heading">商品分析</h3>
+<ul class="q-list"><li><a class="q-link" href="q/P05.html"><span class="q-num">5.</span> 商品のABC分析</a> <a class="q-solve" href="app.html?id=P05" aria-label="5. 商品のABC分析 を解く">解く</a></li><li><a class="q-link" href="q/P06.html"><span class="q-num">6.</span> カテゴリ別の売れ筋と不振</a> <a class="q-solve" href="app.html?id=P06" aria-label="6. カテゴリ別の売れ筋と不振 を解く">解く</a></li><li><a class="q-link" href="q/P07.html"><span class="q-num">7.</span> レビュー評価と売上の関係</a> <a class="q-solve" href="app.html?id=P07" aria-label="7. レビュー評価と売上の関係 を解く">解く</a></li></ul>
+<h3 class="category-heading">コホート分析</h3>
+<ul class="q-list"><li><a class="q-link" href="q/P08.html"><span class="q-num">8.</span> 登録した時期ごとの継続（コホート）</a> <a class="q-solve" href="app.html?id=P08" aria-label="8. 登録した時期ごとの継続（コホート） を解く">解く</a></li></ul>
+<h3 class="category-heading">データ品質</h3>
+<ul class="q-list"><li><a class="q-link" href="q/P09.html"><span class="q-num">9.</span> データにおかしなところがないか</a> <a class="q-solve" href="app.html?id=P09" aria-label="9. データにおかしなところがないか を解く">解く</a></li></ul>
+<h3 class="category-heading">人事分析</h3>
+<ul class="q-list"><li><a class="q-link" href="q/P10.html"><span class="q-num">10.</span> 部署別の人件費と人員構成</a> <a class="q-solve" href="app.html?id=P10" aria-label="10. 部署別の人件費と人員構成 を解く">解く</a></li></ul>
+</section>
   </main>
 
-  <!-- 全ページ共通のフッター（生成ページのテンプレート tools/pages/templates/ と同じマークアップ。リンクは相対パス） -->
   <footer class="site-footer">
     <nav class="site-footer-nav" aria-label="サイトの案内">
       <ul>
-        <li><a href="q/index.html">問題一覧</a></li>
+        <li><a href="index.html">問題一覧</a></li>
         <li><a href="about.html">このサイトについて</a></li>
         <li><a href="terms.html">利用規約</a></li>
         <li><a href="privacy.html">プライバシー</a></li>
@@ -171,16 +167,5 @@
     </nav>
     <p class="site-footer-copy">© SQL練習帳</p>
   </footer>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
-  <script src="problems/setup.js"></script>
-  <script src="problems/beginner.js"></script>
-  <script src="problems/intermediate-1.js"></script>
-  <script src="problems/intermediate-2.js"></script>
-  <script src="problems/advanced-1.js"></script>
-  <script src="problems/advanced-2.js"></script>
-  <script src="problems/practice.js"></script>
-  <script src="judge.js"></script>
-  <script src="app.js"></script>
 </body>
 </html>
